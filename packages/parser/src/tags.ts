@@ -493,7 +493,7 @@ function normalize(t: string): string {
     .trim()
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+    .replace(/\p{Diacritic}/gu, '');
 }
 
 function matchesAny(tagLower: string, list: readonly string[]): boolean {
