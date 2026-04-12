@@ -213,3 +213,7 @@ The card primitives borrow ideas from several excellent projects:
 ## License
 
 [MIT](./LICENSE)
+
+---
+
+Made with music by [Suno](https://suno.com/)
