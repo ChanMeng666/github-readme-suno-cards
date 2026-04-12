@@ -1,0 +1,28 @@
+name: Update Suno cards from manifest
+
+on:
+  push:
+    paths:
+      - 'suno-songs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Render cards from suno-songs.yml
+        uses: ChanMeng666/github-readme-suno-cards@v0.1
+        with:
+          manifest_path: './suno-songs.yml'
+          theme: auto
+
+      - name: Commit README changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'chore(suno-cards): manifest refresh'
+          add: './README.md'

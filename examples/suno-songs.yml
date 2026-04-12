@@ -1,0 +1,14 @@
+# Example Suno songs manifest.
+#
+# Each entry is either a plain string (song UUID / URL / short URL) or an
+# object with `id` and optional `featured: true` flag.
+#
+# All three forms below are accepted:
+#   - a885e43c-6918-456f-a5f0-0e8e29e61066
+#   - https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066
+#   - https://suno.com/s/Fgjo6R52kPsRs16o
+songs:
+  - id: a885e43c-6918-456f-a5f0-0e8e29e61066
+    featured: true
+  - https://suno.com/song/another-uuid-goes-here
+  - https://suno.com/s/YourShortCode

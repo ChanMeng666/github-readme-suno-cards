@@ -1,0 +1,21 @@
+{
+  "just_now": "たった今",
+  "seconds_ago": "{n}秒前",
+  "minutes_ago": "{n}分前",
+  "hours_ago": "{n}時間前",
+  "days_ago": "{n}日前",
+  "weeks_ago": "{n}週間前",
+  "months_ago": "{n}ヶ月前",
+  "years_ago": "{n}年前",
+  "plays": "再生",
+  "likes": "いいね",
+  "followers": "フォロワー",
+  "songs": "曲",
+  "new_badge": "NEW",
+  "not_found": "曲が見つかりません",
+  "private": "非公開の曲です",
+  "not_ready": "生成中…",
+  "error": "Sunoエラー",
+  "by": "by",
+  "listen_on_suno": "Sunoで聴く"
+}

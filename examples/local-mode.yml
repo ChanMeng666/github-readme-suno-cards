@@ -1,0 +1,35 @@
+name: Update Suno cards (self-hosted SVGs)
+
+on:
+  schedule:
+    - cron: '0 0 * * *'   # Daily at midnight
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Local mode pre-renders SVGs into .suno-cards/ so the README never
+# depends on any hosted service. Covers are downloaded and embedded as
+# base64 data URIs into each committed SVG file.
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pre-render Suno card SVGs
+        uses: ChanMeng666/github-readme-suno-cards@v0.1
+        with:
+          handle: YOUR_HANDLE
+          sort: created_at
+          max: 6
+          render_mode: local
+          local_cards_dir: '.suno-cards'
+
+      - name: Commit README and SVGs
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'chore(suno-cards): refresh local SVGs'
+          add: |
+            ./README.md
+            ./.suno-cards/

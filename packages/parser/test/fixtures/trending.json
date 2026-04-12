@@ -1,0 +1,128 @@
+{
+  "entity_type": "playlist_schema",
+  "id": "1190bf92-10dc-4ce5-968a-7a377f37f984",
+  "name": "Explore",
+  "playlist_clips": [
+    {
+      "clip": {
+        "status": "complete",
+        "title": "Tsunami-Raptor (LIVE)",
+        "play_count": 34192,
+        "upvote_count": 443,
+        "allow_comments": true,
+        "is_verified": false,
+        "id": "b3142399-f73e-4fc7-b5da-738cf6957e6f",
+        "entity_type": "song_schema",
+        "video_url": "https://cdn1.suno.ai/b3142399-f73e-4fc7-b5da-738cf6957e6f.mp4",
+        "audio_url": "https://cdn1.suno.ai/b3142399-f73e-4fc7-b5da-738cf6957e6f.mp3",
+        "image_url": "https://cdn2.suno.ai/f587f768-4a39-4235-9bac-91026183c2c0_cd755389.jpeg",
+        "image_large_url": "https://cdn2.suno.ai/f587f768-4a39-4235-9bac-91026183c2c0_cd755389.jpeg",
+        "major_model_version": "v3.5",
+        "model_name": "chirp-v3",
+        "metadata": {
+          "tags": "Live audio, bootleg, VHS, concert, audience",
+          "concat_history": [
+            {
+              "infill": false,
+              "id": "b0a87596-96c3-48d9-81f0-4a36591f644c",
+              "source": "web",
+              "type": "concat",
+              "continue_at": 227
+            },
+            {
+              "id": "f587f768-4a39-4235-9bac-91026183c2c0"
+            }
+          ],
+          "type": "concat",
+          "duration": 255.95997916666667,
+          "has_vocal": false,
+          "can_remix": true,
+          "is_remix": false
+        },
+        "is_liked": false,
+        "user_id": "ef1f2354-9a3d-4ba6-ba88-ef9be6fd56ab",
+        "display_name": "Stei Camel 🐪",
+        "handle": "steicamel",
+        "is_handle_updated": true,
+        "avatar_image_url": "https://cdn2.suno.ai/7f227e21-0600-4142-9566-f727d10d1ada.jpeg",
+        "is_trashed": false,
+        "is_hidden": false,
+        "created_at": "2024-09-17T09:59:00.297Z",
+        "is_public": true,
+        "flag_count": 5,
+        "is_contest_clip": false,
+        "has_hook": false,
+        "batch_index": 0
+      },
+      "relative_index": 0
+    },
+    {
+      "clip": {
+        "status": "complete",
+        "title": "The Boss",
+        "play_count": 15668,
+        "upvote_count": 328,
+        "allow_comments": true,
+        "is_verified": true,
+        "id": "030ce74c-90a6-40bf-9cc1-cb51601157cb",
+        "entity_type": "song_schema",
+        "video_url": "https://cdn1.suno.ai/030ce74c-90a6-40bf-9cc1-cb51601157cb.mp4",
+        "audio_url": "https://cdn1.suno.ai/030ce74c-90a6-40bf-9cc1-cb51601157cb.mp3",
+        "image_url": "https://cdn2.suno.ai/030ce74c-90a6-40bf-9cc1-cb51601157cb_f42ddfb7.jpeg",
+        "image_large_url": "https://cdn2.suno.ai/030ce74c-90a6-40bf-9cc1-cb51601157cb_f42ddfb7.jpeg",
+        "major_model_version": "v3.5",
+        "model_name": "chirp-v3",
+        "metadata": {
+          "tags": "Hip-hop/rap, r&b, country - female",
+          "prompt": "",
+          "concat_history": [
+            {
+              "id": "020e39a0-2f91-49a8-8b74-6547355a8183",
+              "type": "concat",
+              "infill": false,
+              "source": "web",
+              "continue_at": 104
+            },
+            {
+              "id": "1638ec3e-0d26-4d9b-a35b-e78ccbfdc9e7"
+            }
+          ],
+          "type": "concat",
+          "duration": 169.27997916666666,
+          "can_remix": true,
+          "is_remix": false
+        },
+        "is_liked": false,
+        "user_id": "37e0e733-2b1d-4526-b8dd-7c4b59bac4c3",
+        "display_name": "AiMagician",
+        "handle": "aimagician",
+        "is_handle_updated": true,
+        "avatar_image_url": "https://cdn1.suno.ai/650b423c.webp",
+        "is_trashed": false,
+        "is_hidden": false,
+        "created_at": "2024-09-17T15:58:52.596Z",
+        "is_public": true,
+        "flag_count": 5,
+        "is_contest_clip": false,
+        "has_hook": false,
+        "batch_index": 0
+      },
+      "relative_index": 1
+    }
+  ],
+  "num_total_results": 49,
+  "current_page": 1,
+  "is_owned": false,
+  "is_trashed": false,
+  "is_public": true,
+  "is_hidden": false,
+  "description": "Top 10 Songs",
+  "upvote_count": 4,
+  "dislike_count": 0,
+  "flag_count": 0,
+  "skip_count": 0,
+  "play_count": 62,
+  "song_count": 49,
+  "total_duration": 10627.51925,
+  "is_discover_playlist": false
+}

@@ -1,0 +1,140 @@
+name: 'Suno Cards'
+description: 'Display your Suno AI-generated music as dynamic cards in your GitHub README.'
+author: 'Chan Meng'
+branding:
+  icon: 'music'
+  color: 'purple'
+
+inputs:
+  # ──── Data source ──────────────────────────────────────────────────────────
+  handle:
+    description: 'Your Suno handle (auto-discovery mode — fetches all public songs).'
+    required: false
+  manifest_path:
+    description: 'Path to a YAML file listing song IDs. Used if `handle` is not set.'
+    required: false
+    default: './suno-songs.yml'
+  song_ids:
+    description: 'Comma-separated list of Suno song IDs. Alternative to manifest_path.'
+    required: false
+
+  # ──── Filters & ranking ────────────────────────────────────────────────────
+  sort:
+    description: 'Sort order: created_at | play_count | upvote_count | name'
+    required: false
+    default: 'created_at'
+  max:
+    description: 'Maximum number of song cards to render (1-20).'
+    required: false
+    default: '6'
+  include_tags:
+    description: 'Only include songs with any of these tags (CSV, case-insensitive).'
+    required: false
+  exclude_tags:
+    description: 'Exclude songs with any of these tags (CSV, case-insensitive).'
+    required: false
+  min_duration:
+    description: 'Minimum song duration in seconds.'
+    required: false
+  max_duration:
+    description: 'Maximum song duration in seconds.'
+    required: false
+  min_plays:
+    description: 'Minimum play count to include a song.'
+    required: false
+  min_likes:
+    description: 'Minimum upvote count to include a song.'
+    required: false
+  pinned_first:
+    description: 'Respect the `is_pinned` flag above the sort order.'
+    required: false
+    default: 'true'
+  featured:
+    description: 'CSV of song UUIDs to pin above everything else.'
+    required: false
+  allow_explicit:
+    description: 'Include songs marked explicit.'
+    required: false
+    default: 'true'
+  show_profile_card:
+    description: 'Render a profile summary card above the song cards.'
+    required: false
+    default: 'true'
+
+  # ──── Output ───────────────────────────────────────────────────────────────
+  render_mode:
+    description: '`service` (default, live cards via hosted Vercel URL) or `local` (pre-render SVGs into your repo).'
+    required: false
+    default: 'service'
+  local_cards_dir:
+    description: 'Directory relative to README to write SVGs into. Only used in local mode.'
+    required: false
+    default: '.suno-cards'
+  readme_path:
+    description: 'Path to the README file to update.'
+    required: false
+    default: './README.md'
+  comment_tag_name:
+    description: 'HTML comment marker name. Allows multiple action instances in one README.'
+    required: false
+    default: 'SUNO-CARDS'
+  output_type:
+    description: '`markdown` or `html`. HTML uses <picture> for dark/light theme.'
+    required: false
+    default: 'markdown'
+  theme:
+    description: '`auto` (default), `dark`, or `light`.'
+    required: false
+    default: 'auto'
+  lang:
+    description: '`en`, `zh`, or `ja`.'
+    required: false
+    default: 'en'
+  width:
+    description: 'Card width in pixels (200-1200).'
+    required: false
+  bg_color:
+    description: 'Card background color (hex, with or without `#`).'
+    required: false
+  text_color:
+    description: 'Card title / primary text color.'
+    required: false
+  accent_color:
+    description: 'Accent color (equalizer bars, chips, stats numbers).'
+    required: false
+  base_url:
+    description: 'Base URL of the hosted card service.'
+    required: false
+    default: 'https://sunocards.vercel.app'
+
+  # ──── Commit behavior ──────────────────────────────────────────────────────
+  output_only:
+    description: 'Skip writing to README — emit results only via action outputs.'
+    required: false
+    default: 'false'
+  commit_message:
+    description: 'Commit message for README updates.'
+    required: false
+    default: 'chore(suno-cards): update README'
+  committer_username:
+    description: 'Git committer username.'
+    required: false
+    default: 'github-actions[bot]'
+  committer_email:
+    description: 'Git committer email.'
+    required: false
+    default: '41898282+github-actions[bot]@users.noreply.github.com'
+
+outputs:
+  profile:
+    description: 'JSON-encoded SunoProfile (if a profile was fetched).'
+  clips:
+    description: 'JSON-encoded array of SunoSong objects.'
+  cards_block:
+    description: 'The markdown/HTML block that was written to the README.'
+  rendered_files:
+    description: 'JSON-encoded array of SVG file paths written (local mode only).'
+
+runs:
+  using: 'node20'
+  main: 'action/dist/index.js'

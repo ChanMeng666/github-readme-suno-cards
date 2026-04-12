@@ -1,0 +1,21 @@
+{
+  "just_now": "just now",
+  "seconds_ago": "{n}s ago",
+  "minutes_ago": "{n}m ago",
+  "hours_ago": "{n}h ago",
+  "days_ago": "{n}d ago",
+  "weeks_ago": "{n}w ago",
+  "months_ago": "{n}mo ago",
+  "years_ago": "{n}y ago",
+  "plays": "plays",
+  "likes": "likes",
+  "followers": "followers",
+  "songs": "songs",
+  "new_badge": "NEW",
+  "not_found": "Song not found",
+  "private": "Song is private",
+  "not_ready": "Generating…",
+  "error": "Suno error",
+  "by": "by",
+  "listen_on_suno": "Listen on Suno"
+}

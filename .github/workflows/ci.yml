@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: typecheck · test · lint · bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - uses: actions/setup-node@v4
+        with:
+          # Node 22+ is needed for `node --experimental-strip-types build.ts`
+          # to run the esbuild bundle script. The bundled action/dist/index.js
+          # itself is plain JS and runs on Node 20 at Action runtime.
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint (biome)
+        run: pnpm check
+
+      - name: Typecheck all packages
+        run: pnpm typecheck
+
+      - name: Run tests
+        run: pnpm test
+
+      # Action marketplace requires the compiled `dist/index.js` to be committed.
+      # Rebuild it in CI and fail if the committed bundle drifted from source —
+      # same safety gate blog-post-workflow uses.
+      - name: Rebuild action bundle
+        working-directory: action
+        run: pnpm build
+
+      - name: Verify committed dist matches rebuild
+        run: |
+          if ! git diff --quiet action/dist; then
+            echo "::error::action/dist/ is out of sync with action/src/."
+            echo "Run \`pnpm --filter @suno-cards/action build\` locally and commit the result."
+            git diff action/dist
+            exit 1
+          fi

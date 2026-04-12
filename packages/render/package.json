@@ -1,0 +1,25 @@
+{
+  "name": "@suno-cards/render",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@suno-cards/parser": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "20.16.11",
+    "typescript": "5.6.3",
+    "valibot": "0.42.1",
+    "vitest": "2.1.3"
+  }
+}

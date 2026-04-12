@@ -1,0 +1,29 @@
+{
+  "name": "@suno-cards/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3456",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@suno-cards/parser": "workspace:*",
+    "@suno-cards/render": "workspace:*",
+    "next": "15.1.11",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "valibot": "0.42.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.16.11",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "typescript": "5.6.3",
+    "vitest": "2.1.3"
+  }
+}

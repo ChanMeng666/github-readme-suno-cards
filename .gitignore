@@ -1,0 +1,12 @@
+node_modules/
+dist/
+# Action marketplace requires the compiled bundle to be committed.
+!action/dist/
+.next/
+coverage/
+*.log
+.DS_Store
+.env
+.env.local
+.vercel/
+.vercel

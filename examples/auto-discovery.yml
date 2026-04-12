@@ -1,0 +1,31 @@
+name: Update Suno cards in README
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # Every 6 hours
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Auto-discover Suno songs for @YOUR_HANDLE
+        uses: ChanMeng666/github-readme-suno-cards@v0.1
+        with:
+          handle: YOUR_HANDLE
+          sort: play_count
+          max: 6
+          show_profile_card: true
+          theme: auto
+          lang: en
+
+      - name: Commit README changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'chore(suno-cards): refresh'
+          add: './README.md'
