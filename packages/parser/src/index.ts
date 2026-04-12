@@ -39,7 +39,7 @@ export async function fetchPlaylistByInput(
       uuid = normalized.uuid;
       break;
     case 'uuid':
-      // Bare UUIDs default to clip interpretation (§9 cross-table); caller
+      // Bare UUIDs default to clip interpretation; caller
       // explicitly asked for playlist, so allow override here.
       uuid = normalized.uuid;
       break;
