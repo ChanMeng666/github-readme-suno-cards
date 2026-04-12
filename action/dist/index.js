@@ -11,6 +11,9 @@ var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require
   if (typeof require !== "undefined") return require.apply(this, arguments);
   throw Error('Dynamic require of "' + x + '" is not supported');
 });
+var __esm = (fn, res) => function __init() {
+  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+};
 var __commonJS = (cb, mod) => function __require2() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
@@ -19814,6 +19817,1530 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
   }
 });
 
+// ../node_modules/.pnpm/valibot@0.42.1_typescript@5.6.3/node_modules/valibot/dist/index.js
+function getGlobalConfig(config2) {
+  return {
+    lang: config2?.lang ?? store?.lang,
+    message: config2?.message,
+    abortEarly: config2?.abortEarly ?? store?.abortEarly,
+    abortPipeEarly: config2?.abortPipeEarly ?? store?.abortPipeEarly
+  };
+}
+function getGlobalMessage(lang) {
+  return store2?.get(lang);
+}
+function getSchemaMessage(lang) {
+  return store3?.get(lang);
+}
+function getSpecificMessage(reference, lang) {
+  return store4?.get(reference)?.get(lang);
+}
+function _stringify(input) {
+  const type = typeof input;
+  if (type === "string") {
+    return `"${input}"`;
+  }
+  if (type === "number" || type === "bigint" || type === "boolean") {
+    return `${input}`;
+  }
+  if (type === "object" || type === "function") {
+    return (input && Object.getPrototypeOf(input)?.constructor?.name) ?? "null";
+  }
+  return type;
+}
+function _addIssue(context, label, dataset, config2, other) {
+  const input = other && "input" in other ? other.input : dataset.value;
+  const expected = other?.expected ?? context.expects ?? null;
+  const received = other?.received ?? _stringify(input);
+  const issue = {
+    kind: context.kind,
+    type: context.type,
+    input,
+    expected,
+    received,
+    message: `Invalid ${label}: ${expected ? `Expected ${expected} but r` : "R"}eceived ${received}`,
+    requirement: context.requirement,
+    path: other?.path,
+    issues: other?.issues,
+    lang: config2.lang,
+    abortEarly: config2.abortEarly,
+    abortPipeEarly: config2.abortPipeEarly
+  };
+  const isSchema = context.kind === "schema";
+  const message = other?.message ?? context.message ?? getSpecificMessage(context.reference, issue.lang) ?? (isSchema ? getSchemaMessage(issue.lang) : null) ?? config2.message ?? getGlobalMessage(issue.lang);
+  if (message) {
+    issue.message = typeof message === "function" ? (
+      // @ts-expect-error
+      message(issue)
+    ) : message;
+  }
+  if (isSchema) {
+    dataset.typed = false;
+  }
+  if (dataset.issues) {
+    dataset.issues.push(issue);
+  } else {
+    dataset.issues = [issue];
+  }
+}
+function uuid(message) {
+  return {
+    kind: "validation",
+    type: "uuid",
+    reference: uuid,
+    async: false,
+    expects: null,
+    requirement: UUID_REGEX,
+    message,
+    _run(dataset, config2) {
+      if (dataset.typed && !this.requirement.test(dataset.value)) {
+        _addIssue(this, "UUID", dataset, config2);
+      }
+      return dataset;
+    }
+  };
+}
+function getDefault(schema, dataset, config2) {
+  return typeof schema.default === "function" ? (
+    // @ts-expect-error
+    schema.default(dataset, config2)
+  ) : (
+    // @ts-expect-error
+    schema.default
+  );
+}
+function array(item, message) {
+  return {
+    kind: "schema",
+    type: "array",
+    reference: array,
+    expects: "Array",
+    async: false,
+    item,
+    message,
+    _run(dataset, config2) {
+      const input = dataset.value;
+      if (Array.isArray(input)) {
+        dataset.typed = true;
+        dataset.value = [];
+        for (let key = 0; key < input.length; key++) {
+          const value2 = input[key];
+          const itemDataset = this.item._run({ typed: false, value: value2 }, config2);
+          if (itemDataset.issues) {
+            const pathItem = {
+              type: "array",
+              origin: "value",
+              input,
+              key,
+              value: value2
+            };
+            for (const issue of itemDataset.issues) {
+              if (issue.path) {
+                issue.path.unshift(pathItem);
+              } else {
+                issue.path = [pathItem];
+              }
+              dataset.issues?.push(issue);
+            }
+            if (!dataset.issues) {
+              dataset.issues = itemDataset.issues;
+            }
+            if (config2.abortEarly) {
+              dataset.typed = false;
+              break;
+            }
+          }
+          if (!itemDataset.typed) {
+            dataset.typed = false;
+          }
+          dataset.value.push(itemDataset.value);
+        }
+      } else {
+        _addIssue(this, "type", dataset, config2);
+      }
+      return dataset;
+    }
+  };
+}
+function boolean(message) {
+  return {
+    kind: "schema",
+    type: "boolean",
+    reference: boolean,
+    expects: "boolean",
+    async: false,
+    message,
+    _run(dataset, config2) {
+      if (typeof dataset.value === "boolean") {
+        dataset.typed = true;
+      } else {
+        _addIssue(this, "type", dataset, config2);
+      }
+      return dataset;
+    }
+  };
+}
+function nullable(wrapped, ...args) {
+  const schema = {
+    kind: "schema",
+    type: "nullable",
+    reference: nullable,
+    expects: `(${wrapped.expects} | null)`,
+    async: false,
+    wrapped,
+    _run(dataset, config2) {
+      if (dataset.value === null) {
+        if ("default" in this) {
+          dataset.value = getDefault(
+            this,
+            dataset,
+            config2
+          );
+        }
+        if (dataset.value === null) {
+          dataset.typed = true;
+          return dataset;
+        }
+      }
+      return this.wrapped._run(dataset, config2);
+    }
+  };
+  if (0 in args) {
+    schema.default = args[0];
+  }
+  return schema;
+}
+function number(message) {
+  return {
+    kind: "schema",
+    type: "number",
+    reference: number,
+    expects: "number",
+    async: false,
+    message,
+    _run(dataset, config2) {
+      if (typeof dataset.value === "number" && !isNaN(dataset.value)) {
+        dataset.typed = true;
+      } else {
+        _addIssue(this, "type", dataset, config2);
+      }
+      return dataset;
+    }
+  };
+}
+function object(entries, message) {
+  return {
+    kind: "schema",
+    type: "object",
+    reference: object,
+    expects: "Object",
+    async: false,
+    entries,
+    message,
+    _run(dataset, config2) {
+      const input = dataset.value;
+      if (input && typeof input === "object") {
+        dataset.typed = true;
+        dataset.value = {};
+        for (const key in this.entries) {
+          const value2 = input[key];
+          const valueDataset = this.entries[key]._run(
+            { typed: false, value: value2 },
+            config2
+          );
+          if (valueDataset.issues) {
+            const pathItem = {
+              type: "object",
+              origin: "value",
+              input,
+              key,
+              value: value2
+            };
+            for (const issue of valueDataset.issues) {
+              if (issue.path) {
+                issue.path.unshift(pathItem);
+              } else {
+                issue.path = [pathItem];
+              }
+              dataset.issues?.push(issue);
+            }
+            if (!dataset.issues) {
+              dataset.issues = valueDataset.issues;
+            }
+            if (config2.abortEarly) {
+              dataset.typed = false;
+              break;
+            }
+          }
+          if (!valueDataset.typed) {
+            dataset.typed = false;
+          }
+          if (valueDataset.value !== void 0 || key in input) {
+            dataset.value[key] = valueDataset.value;
+          }
+        }
+      } else {
+        _addIssue(this, "type", dataset, config2);
+      }
+      return dataset;
+    }
+  };
+}
+function optional(wrapped, ...args) {
+  const schema = {
+    kind: "schema",
+    type: "optional",
+    reference: optional,
+    expects: `(${wrapped.expects} | undefined)`,
+    async: false,
+    wrapped,
+    _run(dataset, config2) {
+      if (dataset.value === void 0) {
+        if ("default" in this) {
+          dataset.value = getDefault(
+            this,
+            dataset,
+            config2
+          );
+        }
+        if (dataset.value === void 0) {
+          dataset.typed = true;
+          return dataset;
+        }
+      }
+      return this.wrapped._run(dataset, config2);
+    }
+  };
+  if (0 in args) {
+    schema.default = args[0];
+  }
+  return schema;
+}
+function string(message) {
+  return {
+    kind: "schema",
+    type: "string",
+    reference: string,
+    expects: "string",
+    async: false,
+    message,
+    _run(dataset, config2) {
+      if (typeof dataset.value === "string") {
+        dataset.typed = true;
+      } else {
+        _addIssue(this, "type", dataset, config2);
+      }
+      return dataset;
+    }
+  };
+}
+function unknown() {
+  return {
+    kind: "schema",
+    type: "unknown",
+    reference: unknown,
+    expects: "unknown",
+    async: false,
+    _run(dataset) {
+      dataset.typed = true;
+      return dataset;
+    }
+  };
+}
+function pipe(...pipe2) {
+  return {
+    ...pipe2[0],
+    pipe: pipe2,
+    _run(dataset, config2) {
+      for (const item of pipe2) {
+        if (item.kind !== "metadata") {
+          if (dataset.issues && (item.kind === "schema" || item.kind === "transformation")) {
+            dataset.typed = false;
+            break;
+          }
+          if (!dataset.issues || !config2.abortEarly && !config2.abortPipeEarly) {
+            dataset = item._run(dataset, config2);
+          }
+        }
+      }
+      return dataset;
+    }
+  };
+}
+function safeParse(schema, input, config2) {
+  const dataset = schema._run(
+    { typed: false, value: input },
+    getGlobalConfig(config2)
+  );
+  return {
+    typed: dataset.typed,
+    success: !dataset.issues,
+    output: dataset.value,
+    issues: dataset.issues
+  };
+}
+var EMOJI_REGEX, UUID_REGEX, store, store2, store3, store4;
+var init_dist = __esm({
+  "../node_modules/.pnpm/valibot@0.42.1_typescript@5.6.3/node_modules/valibot/dist/index.js"() {
+    EMOJI_REGEX = // eslint-disable-next-line redos-detector/no-unsafe-regex, regexp/no-dupe-disjunctions -- false positives
+    new RegExp("^(?:[\\u{1F1E6}-\\u{1F1FF}]{2}|\\u{1F3F4}[\\u{E0061}-\\u{E007A}]{2}[\\u{E0030}-\\u{E0039}\\u{E0061}-\\u{E007A}]{1,3}\\u{E007F}|(?:\\p{Emoji}\\uFE0F\\u20E3?|\\p{Emoji_Modifier_Base}\\p{Emoji_Modifier}?|\\p{Emoji_Presentation})(?:\\u200D(?:\\p{Emoji}\\uFE0F\\u20E3?|\\p{Emoji_Modifier_Base}\\p{Emoji_Modifier}?|\\p{Emoji_Presentation}))*)+$", "u");
+    UUID_REGEX = /^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/iu;
+  }
+});
+
+// ../packages/parser/src/errors.ts
+var SunoError, SunoInvalidInputError, SunoNotFoundError, SunoHandleNotFoundError, SunoPrivateError, SunoNotReadyError, SunoSchemaError, SunoNetworkError;
+var init_errors = __esm({
+  "../packages/parser/src/errors.ts"() {
+    "use strict";
+    SunoError = class extends Error {
+      constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+      }
+    };
+    SunoInvalidInputError = class extends SunoError {
+      constructor(input) {
+        super(`Not a recognizable Suno URL, UUID, or handle: ${input}`);
+        this.input = input;
+      }
+    };
+    SunoNotFoundError = class extends SunoError {
+      constructor(uuid2) {
+        super(`Song not found: ${uuid2}`);
+        this.uuid = uuid2;
+      }
+    };
+    SunoHandleNotFoundError = class extends SunoError {
+      constructor(handle) {
+        super(`Handle not found: @${handle}`);
+        this.handle = handle;
+      }
+    };
+    SunoPrivateError = class extends SunoError {
+      constructor(uuid2) {
+        super(`Song is private or unlisted: ${uuid2}`);
+        this.uuid = uuid2;
+      }
+    };
+    SunoNotReadyError = class extends SunoError {
+      constructor(uuid2, status) {
+        super(`Song is not ready (status=${status}): ${uuid2}`);
+        this.uuid = uuid2;
+        this.status = status;
+      }
+    };
+    SunoSchemaError = class extends SunoError {
+      constructor(endpoint, issues, rawBody) {
+        super(`Suno API response failed schema validation at ${endpoint}`);
+        this.endpoint = endpoint;
+        this.issues = issues;
+        this.rawBody = rawBody;
+      }
+    };
+    SunoNetworkError = class extends SunoError {
+      endpoint;
+      cause;
+      constructor(endpoint, cause) {
+        super(`Network error calling ${endpoint}: ${String(cause)}`);
+        this.endpoint = endpoint;
+        this.cause = cause;
+      }
+    };
+  }
+});
+
+// ../packages/parser/src/fetcher.ts
+function pickUserAgent() {
+  return USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)] ?? USER_AGENTS[0];
+}
+async function fetchJson(url, opts = {}) {
+  const fetchImpl = opts.fetchImpl ?? fetch;
+  const timeoutMs = opts.timeoutMs ?? 1e4;
+  const totalAttempts = 1 + (opts.retries ?? 1);
+  let lastError = null;
+  for (let attempt = 0; attempt < totalAttempts; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    if (opts.signal) {
+      if (opts.signal.aborted) controller.abort();
+      else opts.signal.addEventListener("abort", () => controller.abort(), { once: true });
+    }
+    try {
+      const init = {
+        method: "GET",
+        signal: controller.signal,
+        headers: {
+          "User-Agent": pickUserAgent(),
+          Accept: "application/json"
+        }
+      };
+      if (opts.revalidateSeconds != null || opts.cacheTags) {
+        init.next = {
+          ...opts.revalidateSeconds != null && { revalidate: opts.revalidateSeconds },
+          ...opts.cacheTags && { tags: opts.cacheTags }
+        };
+      }
+      const res = await fetchImpl(url, init);
+      clearTimeout(timer);
+      if ((res.status >= 500 || res.status === 429) && attempt + 1 < totalAttempts) {
+        lastError = new Error(`HTTP ${res.status}`);
+        continue;
+      }
+      if (res.status < 200 || res.status >= 300) {
+        return { status: res.status, body: null };
+      }
+      const body = await res.json();
+      return { status: res.status, body };
+    } catch (err) {
+      clearTimeout(timer);
+      lastError = err;
+      if (attempt + 1 >= totalAttempts) break;
+    }
+  }
+  throw new SunoNetworkError(url, lastError);
+}
+var USER_AGENTS;
+var init_fetcher = __esm({
+  "../packages/parser/src/fetcher.ts"() {
+    "use strict";
+    init_errors();
+    USER_AGENTS = [
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0",
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+    ];
+  }
+});
+
+// ../packages/parser/src/tags.ts
+function normalize(t2) {
+  return t2.trim().toLowerCase().normalize("NFD").replace(new RegExp("\\p{Diacritic}", "gu"), "");
+}
+function matchesAny(tagLower, list) {
+  for (const kw of list) {
+    if (tagLower.includes(kw)) return true;
+  }
+  return false;
+}
+function splitTags(raw) {
+  if (!raw) return [];
+  return raw.split(/[,，/\n]|\s--\s/).map((t2) => t2.trim()).filter((t2) => t2.length > 0);
+}
+function classifyTags(tags) {
+  const out = {
+    genre: [],
+    era: [],
+    instrument: [],
+    mood: [],
+    vocal: [],
+    key: [],
+    production: [],
+    tempo: [],
+    other: []
+  };
+  for (const raw of tags) {
+    const lower = normalize(raw);
+    if (TEMPO_RE.test(lower) || matchesAny(lower, TEMPO_WORDS)) {
+      out.tempo.push(raw);
+      continue;
+    }
+    if (KEY_RE.test(lower) || KEY_PREFIX_RE.test(lower)) {
+      out.key.push(raw);
+      continue;
+    }
+    if (ERA_RE.test(lower) || matchesAny(lower, ERA_WORDS)) {
+      out.era.push(raw);
+      continue;
+    }
+    if (matchesAny(lower, VOCALS)) {
+      out.vocal.push(raw);
+      continue;
+    }
+    if (matchesAny(lower, INSTRUMENTS)) {
+      out.instrument.push(raw);
+      continue;
+    }
+    if (matchesAny(lower, GENRES)) {
+      out.genre.push(raw);
+      continue;
+    }
+    if (matchesAny(lower, PRODUCTION)) {
+      out.production.push(raw);
+      continue;
+    }
+    if (matchesAny(lower, MOODS)) {
+      out.mood.push(raw);
+      continue;
+    }
+    out.other.push(raw);
+  }
+  return out;
+}
+var INSTRUMENTS, MOODS, VOCALS, KEY_RE, KEY_PREFIX_RE, TEMPO_RE, TEMPO_WORDS, ERA_RE, ERA_WORDS, PRODUCTION, GENRES;
+var init_tags = __esm({
+  "../packages/parser/src/tags.ts"() {
+    "use strict";
+    INSTRUMENTS = [
+      // Keyboards / pianos
+      "piano",
+      "keyboard",
+      "organ",
+      "harpsichord",
+      "electric piano",
+      "fender rhodes",
+      "rhodes",
+      "mellotron",
+      // Strings
+      "guitar",
+      "acoustic guitar",
+      "electric guitar",
+      "bass",
+      "bassline",
+      "violin",
+      "viola",
+      "cello",
+      "double bass",
+      "harp",
+      "strings",
+      "mandolin",
+      "banjo",
+      "ukulele",
+      "sitar",
+      // Winds / brass
+      "saxophone",
+      "flute",
+      "clarinet",
+      "oboe",
+      "bassoon",
+      "trumpet",
+      "trombone",
+      "french horn",
+      "tuba",
+      "brass",
+      "harmonica",
+      "accordion",
+      // Drums / percussion
+      "drums",
+      "drum",
+      "drum machine",
+      "percussion",
+      "xylophone",
+      "marimba",
+      "glockenspiel",
+      "bongo",
+      "conga",
+      "tabla",
+      "handpan",
+      "hang drum",
+      // Electronic
+      "synth",
+      "synthesizer",
+      "sampler",
+      "sequencer",
+      "808"
+    ];
+    MOODS = [
+      // Sad / dark
+      "melancholic",
+      "melancholy",
+      "sad",
+      "depressing",
+      "mournful",
+      "lamenting",
+      "wistful",
+      "somber",
+      "dark",
+      "moody",
+      "gloomy",
+      "brooding",
+      "bleak",
+      // Happy / uplifting
+      "happy",
+      "joyful",
+      "cheerful",
+      "upbeat",
+      "uplifting",
+      "hopeful",
+      "optimistic",
+      "feel-good",
+      "triumphant",
+      // Calm / serene
+      "chill",
+      "relaxed",
+      "calm",
+      "peaceful",
+      "soothing",
+      "meditative",
+      "tranquil",
+      "ambient",
+      // Energetic / aggressive
+      "energetic",
+      "aggressive",
+      "intense",
+      "powerful",
+      "fierce",
+      "angry",
+      "driving",
+      // Romantic / emotional
+      "romantic",
+      "emotional",
+      "passionate",
+      "sensual",
+      "soulful",
+      // Atmospheric / cinematic
+      "ethereal",
+      "dreamy",
+      "atmospheric",
+      "cinematic",
+      "epic",
+      "dramatic",
+      "haunting",
+      "eerie",
+      "creepy",
+      "horror",
+      "spooky",
+      "mysterious",
+      "immersive",
+      // Nostalgic / reflective
+      "nostalgic",
+      "nostalgia",
+      "reflective",
+      "philosophical",
+      "introspective",
+      "bittersweet",
+      // Playful / quirky
+      "anthemic",
+      "bright",
+      "catchy",
+      "groovy",
+      "quirky",
+      "playful",
+      "humorous",
+      "humor",
+      "ironic",
+      "irony",
+      "parody",
+      "sarcastic",
+      "sarcasm",
+      "funny",
+      "jumpy",
+      "bouncy",
+      "rhythmic",
+      "atmosphere",
+      // Sacred / ritual
+      "meditative",
+      "ritual",
+      "shamanic",
+      "pagan",
+      "worship",
+      "sacred",
+      "devotional",
+      // Surreal
+      "psychedelic",
+      "hypnotic",
+      "trippy",
+      "weirdcore",
+      "dreamcore",
+      "surreal"
+    ];
+    VOCALS = [
+      "male vocal",
+      "female vocal",
+      "male voice",
+      "female voice",
+      "male singer",
+      "female singer",
+      "deep voice",
+      "booming voice",
+      "gritty voice",
+      "gritty deep vocal",
+      "breathy",
+      "breathy female",
+      "spoken word",
+      "choir",
+      "chorus",
+      "chanting",
+      "chants",
+      "rap",
+      "rapping",
+      "whispered",
+      "whispering",
+      "falsetto",
+      "soprano",
+      "alto",
+      "baritone",
+      "tenor",
+      "mezzo-soprano",
+      "harmonies",
+      "harmony",
+      "a cappella",
+      "acapella",
+      "instrumental",
+      "vocaloid",
+      "utau",
+      "clear vocals",
+      "soft vocal",
+      "layered vocals",
+      "layered voice",
+      "melismatic",
+      "autotune",
+      "autotuned",
+      "duet"
+    ];
+    KEY_RE = /\b[a-g](?:#|♯|b|♭|♮)?\s*(?:major|minor|maj|min|dorian|phrygian|lydian|mixolydian|aeolian|locrian|ionian|pentatonic|blues)\b/i;
+    KEY_PREFIX_RE = /^key\s*[:=]/i;
+    TEMPO_RE = /\b\d{2,3}\s*bpm\b/i;
+    TEMPO_WORDS = [
+      "slow",
+      "fast",
+      "moderate",
+      "mid-tempo",
+      "midtempo",
+      "up-tempo",
+      "uptempo",
+      "ultra-fast",
+      "half-time",
+      "double-time",
+      "andante",
+      "allegro",
+      "largo",
+      "presto"
+    ];
+    ERA_RE = /\b(?:19|20)?\d0s\b/i;
+    ERA_WORDS = [
+      "vintage",
+      "retro",
+      "modern",
+      "contemporary",
+      "old school",
+      "oldschool",
+      "old-school",
+      "classic",
+      "golden age",
+      "futuristic",
+      "futurism",
+      "medieval",
+      "renaissance",
+      "baroque",
+      "victorian",
+      "prehistoric"
+    ];
+    PRODUCTION = [
+      "live",
+      "live audio",
+      "live recording",
+      "studio",
+      "studio recording",
+      "demo",
+      "bootleg",
+      "vhs",
+      "tape",
+      "cassette",
+      "vinyl",
+      "grainy",
+      "concert",
+      "audience",
+      "stadium",
+      "arena",
+      "reverb",
+      "echo",
+      "delay",
+      "dry",
+      "wet",
+      "raw",
+      "polished",
+      "pristine",
+      "clean",
+      "muddy",
+      "acoustic",
+      // unplugged / no effects
+      "unplugged",
+      "wide panorama",
+      "wide stereo",
+      "stereo",
+      "mono",
+      "lo-fi production",
+      "hi-fi",
+      "high quality",
+      "clear sound",
+      "benchmark",
+      "gold standard",
+      "hq",
+      "spatial",
+      "immersive audio",
+      "3d audio",
+      "binaural"
+    ];
+    GENRES = [
+      // Rock family
+      "rock",
+      "pop",
+      "pop punk",
+      "indie",
+      "indie rock",
+      "indie pop",
+      "alternative",
+      "alternative rock",
+      "grunge",
+      "post-rock",
+      "post rock",
+      "post-hardcore",
+      "post hardcore",
+      "hardcore",
+      "emo",
+      "shoegaze",
+      "dream pop",
+      "new wave",
+      "psychedelic rock",
+      "progressive rock",
+      "prog rock",
+      "progressive",
+      // Metal
+      "metal",
+      "heavy metal",
+      "death metal",
+      "black metal",
+      "thrash metal",
+      "doom metal",
+      "power metal",
+      "pagan metal",
+      "folk metal",
+      // Punk
+      "punk",
+      "oi",
+      "oi punk",
+      // Jazz / blues / soul
+      "jazz",
+      "bebop",
+      "swing",
+      "blues",
+      "soul",
+      "neo-soul",
+      "funk",
+      "motown",
+      // Electronic
+      "electronic",
+      "edm",
+      "house",
+      "deep house",
+      "tech house",
+      "progressive house",
+      "techno",
+      "hard-tech",
+      "hardtech",
+      "trance",
+      "psytrance",
+      "dubstep",
+      "drum and bass",
+      "dnb",
+      "liquid dnb",
+      "jungle",
+      "breakcore",
+      "glitch",
+      "glitchcore",
+      "gitchcore",
+      "post-glitch",
+      "chiptune",
+      "chiptune 8-bit",
+      "8-bit",
+      "game music",
+      "synthwave",
+      "vaporwave",
+      "chillwave",
+      "slushwave",
+      "weirdcore",
+      "dreamcore",
+      "cyberpunk",
+      "darkwave",
+      "coldwave",
+      "industrial",
+      "ebm",
+      "idm",
+      "electro",
+      "electro swing",
+      "electro-chanson",
+      "eurobeat",
+      "nrg",
+      "hi-nrg",
+      "noise",
+      "artcore",
+      // Urban / dance
+      "hip hop",
+      "hip-hop",
+      "rap",
+      "trap",
+      "drill",
+      "grime",
+      "r&b",
+      "rnb",
+      "disco",
+      "house music",
+      "dance",
+      "dancehall",
+      "reggae",
+      "reggaeton",
+      "ska",
+      "dub",
+      // Acoustic / folk
+      "folk",
+      "country",
+      "americana",
+      "bluegrass",
+      "singer-songwriter",
+      "songwriter",
+      "cantautorale",
+      "ballad",
+      "chanson",
+      // Ambient / experimental
+      "ambient",
+      "lofi",
+      "lo-fi",
+      "minimalist",
+      "experimental",
+      "avant-garde",
+      "soundscape",
+      "drone",
+      "soundtrack",
+      "orchestral",
+      "classical",
+      "opera",
+      "operatic",
+      "musical",
+      // Regional / world
+      "anime",
+      "j-pop",
+      "k-pop",
+      "c-pop",
+      "mandopop",
+      "latin",
+      "salsa",
+      "bossa nova",
+      "flamenco",
+      "celtic",
+      "african",
+      "afrobeat",
+      "world",
+      "tribal",
+      "mariachi",
+      "tango",
+      "bollywood",
+      // Other / niche
+      "gospel",
+      "christian",
+      "alte"
+    ];
+  }
+});
+
+// ../packages/parser/src/mapping.ts
+function parseStatus(raw) {
+  if (raw === "complete" || raw === "streaming" || raw === "submitted" || raw === "queued" || raw === "error") {
+    return raw;
+  }
+  return "error";
+}
+function hexToCss(hex2) {
+  const cleaned = hex2.replace(/^#/, "").trim();
+  if (cleaned.length === 6) return `#${cleaned}`;
+  if (cleaned.length === 8) {
+    const r = Number.parseInt(cleaned.slice(0, 2), 16);
+    const g = Number.parseInt(cleaned.slice(2, 4), 16);
+    const b = Number.parseInt(cleaned.slice(4, 6), 16);
+    const a = Number.parseInt(cleaned.slice(6, 8), 16) / 255;
+    return `rgba(${r}, ${g}, ${b}, ${a.toFixed(3)})`;
+  }
+  return `#${cleaned}`;
+}
+function mapBadgeSide(side) {
+  return {
+    text: hexToCss(side.text_color),
+    bg: hexToCss(side.background_color),
+    border: hexToCss(side.border_color)
+  };
+}
+function mapClipToSong(clip, source, nowMs = Date.now()) {
+  const tags = splitTags(clip.metadata.tags);
+  const classifiedTags = classifyTags(tags);
+  const createdAtMs = Date.parse(clip.created_at);
+  const isNew = Number.isFinite(createdAtMs) && nowMs - createdAtMs < SEVEN_DAYS_MS;
+  const badges = clip.metadata.model_badges?.songrow;
+  const modelBadgeTheme = badges?.light && badges?.dark ? { light: mapBadgeSide(badges.light), dark: mapBadgeSide(badges.dark) } : null;
+  return {
+    id: clip.id,
+    title: clip.title ?? "",
+    status: parseStatus(clip.status),
+    isPublic: clip.is_public,
+    isPinned: clip.is_pinned ?? false,
+    explicit: clip.explicit ?? false,
+    author: {
+      displayName: clip.display_name ?? "",
+      handle: clip.handle,
+      avatarUrl: clip.avatar_image_url,
+      userId: clip.user_id
+    },
+    coverUrl: clip.image_url,
+    coverLargeUrl: clip.image_large_url,
+    audioUrl: clip.audio_url,
+    videoUrl: clip.video_url ?? null,
+    tags,
+    classifiedTags,
+    lyrics: clip.metadata.prompt ?? null,
+    durationSeconds: clip.metadata.duration ?? 0,
+    playCount: clip.play_count,
+    likeCount: clip.upvote_count,
+    commentCount: clip.comment_count ?? 0,
+    createdAt: clip.created_at,
+    isNew,
+    modelVersion: clip.major_model_version,
+    modelName: clip.model_name,
+    modelBadgeTheme,
+    shareUrl: `${SONG_URL_BASE}${clip.id}`,
+    embedUrl: `${EMBED_URL_BASE}${clip.id}`,
+    source
+  };
+}
+var SONG_URL_BASE, EMBED_URL_BASE, SEVEN_DAYS_MS;
+var init_mapping = __esm({
+  "../packages/parser/src/mapping.ts"() {
+    "use strict";
+    init_tags();
+    SONG_URL_BASE = "https://suno.com/song/";
+    EMBED_URL_BASE = "https://suno.com/embed/";
+    SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1e3;
+  }
+});
+
+// ../packages/parser/src/schema.ts
+var ModelBadgeSideSchema, ModelBadgesSchema, SecondaryBadgeSchema, ConcatHistoryEntrySchema, ClipMetadataSchema, ActionConfigEntrySchema, ActionConfigSchema, ClipSchema, PersonaSchema, ProfileInlinePlaylistSchema, ProfileResponseSchema, OEmbedResponseSchema, PlaylistClipWrapperSchema, PlaylistDetailSchema;
+var init_schema = __esm({
+  "../packages/parser/src/schema.ts"() {
+    "use strict";
+    init_dist();
+    ModelBadgeSideSchema = object({
+      text_color: string(),
+      background_color: string(),
+      border_color: string()
+    });
+    ModelBadgesSchema = object({
+      songrow: optional(
+        object({
+          display_name: optional(string()),
+          light: optional(ModelBadgeSideSchema),
+          dark: optional(ModelBadgeSideSchema)
+        })
+      )
+    });
+    SecondaryBadgeSchema = object({
+      display_name: optional(string()),
+      icon_key: optional(string()),
+      light: optional(ModelBadgeSideSchema),
+      dark: optional(ModelBadgeSideSchema)
+    });
+    ConcatHistoryEntrySchema = object({
+      id: optional(string()),
+      type: optional(string()),
+      source: optional(string()),
+      continue_at: optional(number()),
+      infill: optional(boolean())
+    });
+    ClipMetadataSchema = object({
+      tags: optional(nullable(string())),
+      /**
+       * Full lyrics with `[Verse]`/`[Chorus]` structure markers, but ONLY on the
+       * "full" /api/clip/{uuid} shape. Playlist-wrapped clips have this field
+       * dropped on playlist/trending endpoints.
+       */
+      prompt: optional(nullable(string())),
+      /**
+       * The user's **original natural-language prompt** before Suno's GPT layer
+       * expanded it into `tags`. When present, this is the raw creator intent
+       * (e.g. `"90s R&B, Mando-Pop, Neo-soul, groovy, sophisti-pop, electric
+       * piano"`) that got elaborated into the verbose `tags` string. Only a
+       * minority of clips expose this — probably those created via a specific
+       * Suno workflow that preserves the source prompt.
+       */
+      gpt_description_prompt: optional(nullable(string())),
+      /** Comma-separated short-form tag list (sometimes present alongside `tags`). */
+      display_tags: optional(nullable(string())),
+      /** Generation-time "avoid these traits" tag list. Example: `"Breathing, whispering, middle east, turkish"`. */
+      negative_tags: optional(nullable(string())),
+      duration: optional(nullable(number())),
+      // Generation flags
+      make_instrumental: optional(boolean()),
+      has_vocal: optional(boolean()),
+      can_remix: optional(boolean()),
+      is_remix: optional(boolean()),
+      has_stem: optional(boolean()),
+      uses_latest_model: optional(boolean()),
+      is_mumble: optional(boolean()),
+      can_publish_with_vocal: optional(boolean()),
+      // Generation lifecycle / infra
+      /** Server-side task priority integer (observed: 10). Not user-facing. */
+      priority: optional(number()),
+      /** Whether the generation supports streaming delivery. */
+      stream: optional(boolean()),
+      /** Whether failed generations refunded the creator's credits. */
+      refund_credits: optional(boolean()),
+      /** Whether the generated video preview is stale and needs re-rendering. */
+      video_is_stale: optional(boolean()),
+      /** Quota bucket label for free-tier users (e.g. credit category). */
+      free_quota_category: optional(nullable(string())),
+      /**
+       * Task type for this clip's generation. Observed values:
+       *   - `"cover"` — generated as a cover of another clip
+       *   - `"playlist_condition"` — generated conditioned on a playlist context
+       * More values likely exist. Different from `type` (which covers 10 creation-method values — see above).
+       */
+      task: optional(nullable(string())),
+      // Lineage pointers — may be redacted (zero UUID) depending on endpoint.
+      /** Parent clip for an "edit" operation. Often equal to `cover_clip_id` when both are set. */
+      edited_clip_id: optional(nullable(string())),
+      /** Parent clip for a "cover" operation. */
+      cover_clip_id: optional(nullable(string())),
+      // Upload-clip specific (for `type: "upload"`)
+      is_audio_upload_tos_accepted: optional(boolean()),
+      video_upload_width: optional(nullable(number())),
+      video_upload_height: optional(nullable(number())),
+      // Playlist-scoped fields — seen on persona clips that were generated using
+      // a playlist as the conditioning context
+      /**
+       * `playlist_id` — normally a UUID, but can also be the string literal
+       * `"inspiration"` (a reserved/special playlist identifier).
+       */
+      playlist_id: optional(nullable(string())),
+      playlist_clip_ids: optional(array(string())),
+      /**
+       * Clip creation method. Known values:
+       *   - `"gen"` — standard prompt-to-song generation
+       *   - `"studio_export"` — exported from Suno's Studio DAW
+       *   - `"concat"` — stitched/extended via timeline editor
+       *   - `"edit_v3_export"` — V3 editor pipeline export
+       *   - `"edit_crop"` — audio cropping operation
+       *   - `"edit_speed"` — speed adjustment
+       *   - `"edit_fade"` — fade in/out
+       *   - `"upsample"` — quality upsampling/enhancement
+       *   - `"concat_infilling"` — concat with generative infill
+       *   - `"upload"` — user-uploaded audio
+       */
+      type: optional(string()),
+      concat_history: optional(array(ConcatHistoryEntrySchema)),
+      /**
+       * A less-documented sibling to `concat_history` — appeared on 2 of 49
+       * trending clips. Shape includes an `id` field pointing at another clip.
+       * Structure is similar to concat_history but the semantics are unknown.
+       */
+      history: optional(
+        array(
+          object({
+            id: optional(string())
+          })
+        )
+      ),
+      /**
+       * Top-level `continue_at` (in seconds) and `infill` (boolean) are sometimes
+       * hoisted from the first concat_history entry to the metadata level. Both
+       * appear rarely (~2/49 clips) and only on clips that were extended.
+       */
+      continue_at: optional(number()),
+      infill: optional(boolean()),
+      // Model badge theming (full shape only)
+      model_badges: optional(nullable(ModelBadgesSchema)),
+      secondary_badges: optional(array(SecondaryBadgeSchema))
+    });
+    ActionConfigEntrySchema = object({
+      /**
+       * Action vocabulary (9 values observed across corpus):
+       *   - add_to_playlist / remove_from_playlist — playlist management
+       *   - like_song / dislike_song — voting
+       *   - share_song / report_song — social
+       *   - remix_extend — continue the clip with more audio
+       *   - remix_cover — use this clip as a cover template
+       *   - remix_reuse_style — regenerate using this clip's style tags
+       */
+      action_type: string(),
+      disabled: optional(boolean()),
+      visible: optional(boolean())
+    });
+    ActionConfigSchema = object({
+      actions: array(ActionConfigEntrySchema)
+    });
+    ClipSchema = object({
+      id: pipe(string(), uuid()),
+      status: string(),
+      title: nullable(string()),
+      entity_type: optional(string()),
+      // always "song_schema"
+      is_public: boolean(),
+      // Visibility / state flags (present on all shapes)
+      is_trashed: optional(boolean()),
+      is_hidden: optional(boolean()),
+      is_verified: optional(boolean()),
+      is_handle_updated: optional(boolean()),
+      allow_comments: optional(boolean()),
+      /** Whether the clip is flagged as a contest submission. */
+      is_contest_clip: optional(boolean()),
+      /** Whether the clip has a dedicated "hook" segment. */
+      has_hook: optional(boolean()),
+      // Viewer-relative flags (always false for anonymous requests)
+      is_liked: optional(boolean()),
+      // Asymmetric-by-shape
+      /** Appears only on `/api/profiles/{handle}.clips[]` (the medium shape). */
+      is_pinned: optional(boolean()),
+      /** Appears only on the full shape. */
+      is_following_creator: optional(boolean()),
+      /** Appears only on the full shape. */
+      explicit: optional(boolean()),
+      /** Appears only on the full shape. */
+      comment_count: optional(number()),
+      /** Flag count exposed on every shape. */
+      flag_count: optional(number()),
+      // Counters
+      play_count: number(),
+      upvote_count: number(),
+      /** Integer index within a batch generation (typically 0 unless Suno returned multiple variants). */
+      batch_index: optional(number()),
+      // Author attribution
+      user_id: string(),
+      display_name: nullable(string()),
+      handle: nullable(string()),
+      avatar_image_url: nullable(string()),
+      // Media URLs
+      image_url: string(),
+      image_large_url: string(),
+      audio_url: string(),
+      video_url: optional(string()),
+      // Model
+      /** Short form: `"v3"`, `"v3.5"`, `"v4.5-all"`, `"v5"` etc. */
+      major_model_version: string(),
+      /** Long form: `"chirp-v3"`, `"chirp-auk"`, `"chirp-crow"` (model codename, `chirp-{bird}`). */
+      model_name: string(),
+      created_at: string(),
+      metadata: ClipMetadataSchema,
+      /**
+       * `ownership` — present only on the "full" /api/clip/{uuid} shape. Tells
+       * the anonymous consumer whether the clip's creator is on a paying plan.
+       * Observed values for `ownership_reason`: `"subscribed"`. Other values
+       * probably exist (`"free"`, `"trial"`?) — enumerate as we see them.
+       */
+      ownership: optional(
+        object({
+          ownership_reason: optional(string())
+        })
+      ),
+      /**
+       * `action_config` — present only on the "full" shape. Describes which UI
+       * actions Suno's own web app would render for this clip.
+       */
+      action_config: optional(ActionConfigSchema)
+    });
+    PersonaSchema = object({
+      id: string(),
+      name: string(),
+      description: optional(nullable(string())),
+      /** Image URL (despite the name — not an actual S3 ID). */
+      image_s3_id: optional(nullable(string())),
+      /** UUID of the clip this persona was derived from. */
+      root_clip_id: optional(string()),
+      /** Full embedded clip object. */
+      clip: optional(ClipSchema),
+      // Creator attribution (denormalized from clip.{display_name, handle, avatar_image_url})
+      user_display_name: optional(nullable(string())),
+      user_handle: optional(nullable(string())),
+      user_image_url: optional(nullable(string())),
+      /** Usually empty in anonymous responses. */
+      persona_clips: optional(array(unknown())),
+      /**
+       * Persona category. Observed values: `"vox"` (voice profile). Other values
+       * (e.g. `"inst"`, `"style"`) may exist but have not been observed.
+       */
+      persona_type: optional(string()),
+      /** `true` for Suno-provided editorial personas, `false` for user-created. */
+      is_suno_persona: optional(boolean()),
+      // State flags
+      is_trashed: optional(boolean()),
+      is_hidden: optional(boolean()),
+      is_owned: optional(boolean()),
+      is_public: optional(boolean()),
+      is_public_approved: optional(boolean()),
+      is_loved: optional(boolean()),
+      is_following: optional(boolean()),
+      // Counters
+      upvote_count: optional(number()),
+      clip_count: optional(number()),
+      follower_count: optional(number())
+    });
+    ProfileInlinePlaylistSchema = object({
+      id: string(),
+      name: optional(nullable(string())),
+      image_url: optional(nullable(string())),
+      num_total_results: optional(number()),
+      is_public: optional(boolean()),
+      is_discover_playlist: optional(boolean()),
+      user_display_name: optional(nullable(string())),
+      user_handle: optional(nullable(string())),
+      user_avatar_image_url: optional(nullable(string())),
+      user_is_verified: optional(boolean()),
+      entity_type: optional(string()),
+      description: optional(nullable(string())),
+      upvote_count: optional(number()),
+      dislike_count: optional(number()),
+      flag_count: optional(number()),
+      play_count: optional(number()),
+      song_count: optional(number()),
+      skip_count: optional(number()),
+      total_duration: optional(number()),
+      is_owned: optional(boolean()),
+      is_trashed: optional(boolean()),
+      is_hidden: optional(boolean()),
+      current_page: optional(number()),
+      playlist_clips: optional(array(unknown()))
+    });
+    ProfileResponseSchema = object({
+      // Identity
+      user_id: string(),
+      handle: string(),
+      display_name: nullable(string()),
+      profile_description: optional(nullable(string())),
+      avatar_image_url: nullable(string()),
+      is_verified: optional(boolean()),
+      // Counters + pagination
+      num_total_clips: number(),
+      current_page: optional(number()),
+      /**
+       * Stats sum object. Suno only populates on page 1; on pages 2+ this
+       * comes back as `{}`. Every field is optional so validation succeeds.
+       */
+      stats: object({
+        upvote_count__sum: optional(number()),
+        play_count__sum: optional(number()),
+        followers_count: optional(number()),
+        following_count: optional(number())
+      }),
+      // Content arrays
+      clips: array(ClipSchema),
+      playlists: array(ProfileInlinePlaylistSchema),
+      /** Typically empty for anonymous requests. */
+      favorite_songs: optional(array(ClipSchema)),
+      /** Reusable voice/style profiles. See PersonaSchema. */
+      personas: optional(array(PersonaSchema)),
+      // Viewer-relative flags — always false for anonymous requests but Suno
+      // still sends them. Declared for self-documentation.
+      is_flagged: optional(boolean()),
+      is_following: optional(boolean()),
+      is_contact: optional(boolean()),
+      viewer_is_blocking_profile: optional(boolean()),
+      viewer_is_blocked_by_profile: optional(boolean()),
+      viewer_is_hiding_creator_hook: optional(boolean()),
+      viewer_is_hiding_creator_clip: optional(boolean()),
+      user_comments_blocked: optional(boolean()),
+      // Feature flags (owner-side)
+      /** Whether artist profiles are enabled for this user. */
+      artist_profiles_enabled: optional(boolean()),
+      /** V2 profiles feature flag. */
+      profiles_v2_enabled: optional(boolean())
+    });
+    OEmbedResponseSchema = object({
+      version: optional(string()),
+      type: optional(string()),
+      provider_name: optional(string()),
+      provider_url: optional(string()),
+      title: string(),
+      html: optional(string()),
+      iframe_url: optional(string()),
+      width: optional(number()),
+      height: optional(number()),
+      thumbnail_url: optional(string()),
+      author_name: optional(string())
+    });
+    PlaylistClipWrapperSchema = object({
+      clip: ClipSchema,
+      relative_index: number()
+    });
+    PlaylistDetailSchema = object({
+      id: string(),
+      entity_type: optional(string()),
+      name: nullable(string()),
+      description: optional(nullable(string())),
+      image_url: optional(nullable(string())),
+      is_public: optional(boolean()),
+      is_trashed: optional(boolean()),
+      is_hidden: optional(boolean()),
+      is_discover_playlist: optional(boolean()),
+      num_total_results: number(),
+      current_page: optional(number()),
+      song_count: optional(number()),
+      total_duration: optional(number()),
+      upvote_count: optional(number()),
+      dislike_count: optional(number()),
+      flag_count: optional(number()),
+      play_count: optional(number()),
+      skip_count: optional(number()),
+      playlist_clips: array(PlaylistClipWrapperSchema),
+      // User-owned playlists only:
+      user_display_name: optional(nullable(string())),
+      user_handle: optional(nullable(string())),
+      user_avatar_image_url: optional(nullable(string())),
+      user_is_verified: optional(boolean()),
+      // Cursor for cursor-style pagination (base64-encoded JSON); undefined on
+      // last page. We use `?page=N` instead but keep it in the schema so the
+      // Valibot parse succeeds when it's present.
+      next_cursor: optional(nullable(string()))
+    });
+  }
+});
+
+// ../packages/parser/src/clip.ts
+async function fetchClip(uuid2, opts = {}) {
+  const url = `${STUDIO_API_BASE}/api/clip/${encodeURIComponent(uuid2)}`;
+  const { status, body } = await fetchJson(url, {
+    ...opts,
+    cacheTags: opts.cacheTags ?? [`suno-clip-${uuid2}`],
+    revalidateSeconds: opts.revalidateSeconds ?? 3600
+  });
+  if (status === 404) throw new SunoNotFoundError(uuid2);
+  if (status === 403) throw new SunoPrivateError(uuid2);
+  if (status < 200 || status >= 300) {
+    throw new SunoSchemaError(url, { status }, body);
+  }
+  const result = safeParse(ClipSchema, body);
+  if (!result.success) {
+    throw new SunoSchemaError(url, result.issues, body);
+  }
+  const clip = result.output;
+  if (!opts.includeIncomplete) {
+    if (!clip.is_public) throw new SunoPrivateError(uuid2);
+    if (clip.status !== "complete") throw new SunoNotReadyError(uuid2, clip.status);
+  }
+  return mapClipToSong(clip, "clip");
+}
+var STUDIO_API_BASE;
+var init_clip = __esm({
+  "../packages/parser/src/clip.ts"() {
+    "use strict";
+    init_dist();
+    init_errors();
+    init_fetcher();
+    init_mapping();
+    init_schema();
+    STUDIO_API_BASE = "https://studio-api-prod.suno.com";
+  }
+});
+
+// ../packages/parser/src/playlist.ts
+var init_playlist = __esm({
+  "../packages/parser/src/playlist.ts"() {
+    "use strict";
+    init_clip();
+    init_errors();
+    init_fetcher();
+    init_mapping();
+    init_schema();
+  }
+});
+
 // ../node_modules/.pnpm/yaml@2.6.1/node_modules/yaml/dist/nodes/identity.js
 var require_identity = __commonJS({
   "../node_modules/.pnpm/yaml@2.6.1/node_modules/yaml/dist/nodes/identity.js"(exports) {
@@ -27085,836 +28612,9 @@ var require_dist = __commonJS({
 // src/index.ts
 var core2 = __toESM(require_core(), 1);
 
-// ../node_modules/.pnpm/valibot@0.42.1_typescript@5.6.3/node_modules/valibot/dist/index.js
-var EMOJI_REGEX = (
-  // eslint-disable-next-line redos-detector/no-unsafe-regex, regexp/no-dupe-disjunctions -- false positives
-  new RegExp("^(?:[\\u{1F1E6}-\\u{1F1FF}]{2}|\\u{1F3F4}[\\u{E0061}-\\u{E007A}]{2}[\\u{E0030}-\\u{E0039}\\u{E0061}-\\u{E007A}]{1,3}\\u{E007F}|(?:\\p{Emoji}\\uFE0F\\u20E3?|\\p{Emoji_Modifier_Base}\\p{Emoji_Modifier}?|\\p{Emoji_Presentation})(?:\\u200D(?:\\p{Emoji}\\uFE0F\\u20E3?|\\p{Emoji_Modifier_Base}\\p{Emoji_Modifier}?|\\p{Emoji_Presentation}))*)+$", "u")
-);
-var UUID_REGEX = /^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/iu;
-var store;
-function getGlobalConfig(config2) {
-  return {
-    lang: config2?.lang ?? store?.lang,
-    message: config2?.message,
-    abortEarly: config2?.abortEarly ?? store?.abortEarly,
-    abortPipeEarly: config2?.abortPipeEarly ?? store?.abortPipeEarly
-  };
-}
-var store2;
-function getGlobalMessage(lang) {
-  return store2?.get(lang);
-}
-var store3;
-function getSchemaMessage(lang) {
-  return store3?.get(lang);
-}
-var store4;
-function getSpecificMessage(reference, lang) {
-  return store4?.get(reference)?.get(lang);
-}
-function _stringify(input) {
-  const type = typeof input;
-  if (type === "string") {
-    return `"${input}"`;
-  }
-  if (type === "number" || type === "bigint" || type === "boolean") {
-    return `${input}`;
-  }
-  if (type === "object" || type === "function") {
-    return (input && Object.getPrototypeOf(input)?.constructor?.name) ?? "null";
-  }
-  return type;
-}
-function _addIssue(context, label, dataset, config2, other) {
-  const input = other && "input" in other ? other.input : dataset.value;
-  const expected = other?.expected ?? context.expects ?? null;
-  const received = other?.received ?? _stringify(input);
-  const issue = {
-    kind: context.kind,
-    type: context.type,
-    input,
-    expected,
-    received,
-    message: `Invalid ${label}: ${expected ? `Expected ${expected} but r` : "R"}eceived ${received}`,
-    requirement: context.requirement,
-    path: other?.path,
-    issues: other?.issues,
-    lang: config2.lang,
-    abortEarly: config2.abortEarly,
-    abortPipeEarly: config2.abortPipeEarly
-  };
-  const isSchema = context.kind === "schema";
-  const message = other?.message ?? context.message ?? getSpecificMessage(context.reference, issue.lang) ?? (isSchema ? getSchemaMessage(issue.lang) : null) ?? config2.message ?? getGlobalMessage(issue.lang);
-  if (message) {
-    issue.message = typeof message === "function" ? (
-      // @ts-expect-error
-      message(issue)
-    ) : message;
-  }
-  if (isSchema) {
-    dataset.typed = false;
-  }
-  if (dataset.issues) {
-    dataset.issues.push(issue);
-  } else {
-    dataset.issues = [issue];
-  }
-}
-function uuid(message) {
-  return {
-    kind: "validation",
-    type: "uuid",
-    reference: uuid,
-    async: false,
-    expects: null,
-    requirement: UUID_REGEX,
-    message,
-    _run(dataset, config2) {
-      if (dataset.typed && !this.requirement.test(dataset.value)) {
-        _addIssue(this, "UUID", dataset, config2);
-      }
-      return dataset;
-    }
-  };
-}
-function getDefault(schema, dataset, config2) {
-  return typeof schema.default === "function" ? (
-    // @ts-expect-error
-    schema.default(dataset, config2)
-  ) : (
-    // @ts-expect-error
-    schema.default
-  );
-}
-function array(item, message) {
-  return {
-    kind: "schema",
-    type: "array",
-    reference: array,
-    expects: "Array",
-    async: false,
-    item,
-    message,
-    _run(dataset, config2) {
-      const input = dataset.value;
-      if (Array.isArray(input)) {
-        dataset.typed = true;
-        dataset.value = [];
-        for (let key = 0; key < input.length; key++) {
-          const value2 = input[key];
-          const itemDataset = this.item._run({ typed: false, value: value2 }, config2);
-          if (itemDataset.issues) {
-            const pathItem = {
-              type: "array",
-              origin: "value",
-              input,
-              key,
-              value: value2
-            };
-            for (const issue of itemDataset.issues) {
-              if (issue.path) {
-                issue.path.unshift(pathItem);
-              } else {
-                issue.path = [pathItem];
-              }
-              dataset.issues?.push(issue);
-            }
-            if (!dataset.issues) {
-              dataset.issues = itemDataset.issues;
-            }
-            if (config2.abortEarly) {
-              dataset.typed = false;
-              break;
-            }
-          }
-          if (!itemDataset.typed) {
-            dataset.typed = false;
-          }
-          dataset.value.push(itemDataset.value);
-        }
-      } else {
-        _addIssue(this, "type", dataset, config2);
-      }
-      return dataset;
-    }
-  };
-}
-function boolean(message) {
-  return {
-    kind: "schema",
-    type: "boolean",
-    reference: boolean,
-    expects: "boolean",
-    async: false,
-    message,
-    _run(dataset, config2) {
-      if (typeof dataset.value === "boolean") {
-        dataset.typed = true;
-      } else {
-        _addIssue(this, "type", dataset, config2);
-      }
-      return dataset;
-    }
-  };
-}
-function nullable(wrapped, ...args) {
-  const schema = {
-    kind: "schema",
-    type: "nullable",
-    reference: nullable,
-    expects: `(${wrapped.expects} | null)`,
-    async: false,
-    wrapped,
-    _run(dataset, config2) {
-      if (dataset.value === null) {
-        if ("default" in this) {
-          dataset.value = getDefault(
-            this,
-            dataset,
-            config2
-          );
-        }
-        if (dataset.value === null) {
-          dataset.typed = true;
-          return dataset;
-        }
-      }
-      return this.wrapped._run(dataset, config2);
-    }
-  };
-  if (0 in args) {
-    schema.default = args[0];
-  }
-  return schema;
-}
-function number(message) {
-  return {
-    kind: "schema",
-    type: "number",
-    reference: number,
-    expects: "number",
-    async: false,
-    message,
-    _run(dataset, config2) {
-      if (typeof dataset.value === "number" && !isNaN(dataset.value)) {
-        dataset.typed = true;
-      } else {
-        _addIssue(this, "type", dataset, config2);
-      }
-      return dataset;
-    }
-  };
-}
-function object(entries, message) {
-  return {
-    kind: "schema",
-    type: "object",
-    reference: object,
-    expects: "Object",
-    async: false,
-    entries,
-    message,
-    _run(dataset, config2) {
-      const input = dataset.value;
-      if (input && typeof input === "object") {
-        dataset.typed = true;
-        dataset.value = {};
-        for (const key in this.entries) {
-          const value2 = input[key];
-          const valueDataset = this.entries[key]._run(
-            { typed: false, value: value2 },
-            config2
-          );
-          if (valueDataset.issues) {
-            const pathItem = {
-              type: "object",
-              origin: "value",
-              input,
-              key,
-              value: value2
-            };
-            for (const issue of valueDataset.issues) {
-              if (issue.path) {
-                issue.path.unshift(pathItem);
-              } else {
-                issue.path = [pathItem];
-              }
-              dataset.issues?.push(issue);
-            }
-            if (!dataset.issues) {
-              dataset.issues = valueDataset.issues;
-            }
-            if (config2.abortEarly) {
-              dataset.typed = false;
-              break;
-            }
-          }
-          if (!valueDataset.typed) {
-            dataset.typed = false;
-          }
-          if (valueDataset.value !== void 0 || key in input) {
-            dataset.value[key] = valueDataset.value;
-          }
-        }
-      } else {
-        _addIssue(this, "type", dataset, config2);
-      }
-      return dataset;
-    }
-  };
-}
-function optional(wrapped, ...args) {
-  const schema = {
-    kind: "schema",
-    type: "optional",
-    reference: optional,
-    expects: `(${wrapped.expects} | undefined)`,
-    async: false,
-    wrapped,
-    _run(dataset, config2) {
-      if (dataset.value === void 0) {
-        if ("default" in this) {
-          dataset.value = getDefault(
-            this,
-            dataset,
-            config2
-          );
-        }
-        if (dataset.value === void 0) {
-          dataset.typed = true;
-          return dataset;
-        }
-      }
-      return this.wrapped._run(dataset, config2);
-    }
-  };
-  if (0 in args) {
-    schema.default = args[0];
-  }
-  return schema;
-}
-function string(message) {
-  return {
-    kind: "schema",
-    type: "string",
-    reference: string,
-    expects: "string",
-    async: false,
-    message,
-    _run(dataset, config2) {
-      if (typeof dataset.value === "string") {
-        dataset.typed = true;
-      } else {
-        _addIssue(this, "type", dataset, config2);
-      }
-      return dataset;
-    }
-  };
-}
-function pipe(...pipe2) {
-  return {
-    ...pipe2[0],
-    pipe: pipe2,
-    _run(dataset, config2) {
-      for (const item of pipe2) {
-        if (item.kind !== "metadata") {
-          if (dataset.issues && (item.kind === "schema" || item.kind === "transformation")) {
-            dataset.typed = false;
-            break;
-          }
-          if (!dataset.issues || !config2.abortEarly && !config2.abortPipeEarly) {
-            dataset = item._run(dataset, config2);
-          }
-        }
-      }
-      return dataset;
-    }
-  };
-}
-function safeParse(schema, input, config2) {
-  const dataset = schema._run(
-    { typed: false, value: input },
-    getGlobalConfig(config2)
-  );
-  return {
-    typed: dataset.typed,
-    success: !dataset.issues,
-    output: dataset.value,
-    issues: dataset.issues
-  };
-}
-
-// ../packages/parser/src/errors.ts
-var SunoError = class extends Error {
-  constructor(message) {
-    super(message);
-    this.name = this.constructor.name;
-  }
-};
-var SunoInvalidInputError = class extends SunoError {
-  constructor(input) {
-    super(`Not a recognizable Suno URL, UUID, or handle: ${input}`);
-    this.input = input;
-  }
-};
-var SunoNotFoundError = class extends SunoError {
-  constructor(uuid2) {
-    super(`Song not found: ${uuid2}`);
-    this.uuid = uuid2;
-  }
-};
-var SunoHandleNotFoundError = class extends SunoError {
-  constructor(handle) {
-    super(`Handle not found: @${handle}`);
-    this.handle = handle;
-  }
-};
-var SunoPrivateError = class extends SunoError {
-  constructor(uuid2) {
-    super(`Song is private or unlisted: ${uuid2}`);
-    this.uuid = uuid2;
-  }
-};
-var SunoNotReadyError = class extends SunoError {
-  constructor(uuid2, status) {
-    super(`Song is not ready (status=${status}): ${uuid2}`);
-    this.uuid = uuid2;
-    this.status = status;
-  }
-};
-var SunoSchemaError = class extends SunoError {
-  constructor(endpoint, issues, rawBody) {
-    super(`Suno API response failed schema validation at ${endpoint}`);
-    this.endpoint = endpoint;
-    this.issues = issues;
-    this.rawBody = rawBody;
-  }
-};
-var SunoNetworkError = class extends SunoError {
-  endpoint;
-  cause;
-  constructor(endpoint, cause) {
-    super(`Network error calling ${endpoint}: ${String(cause)}`);
-    this.endpoint = endpoint;
-    this.cause = cause;
-  }
-};
-
-// ../packages/parser/src/fetcher.ts
-var USER_AGENTS = [
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0",
-  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
-];
-function pickUserAgent() {
-  return USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)] ?? USER_AGENTS[0];
-}
-async function fetchJson(url, opts = {}) {
-  const fetchImpl = opts.fetchImpl ?? fetch;
-  const timeoutMs = opts.timeoutMs ?? 1e4;
-  const totalAttempts = 1 + (opts.retries ?? 1);
-  let lastError = null;
-  for (let attempt = 0; attempt < totalAttempts; attempt++) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
-    if (opts.signal) {
-      if (opts.signal.aborted) controller.abort();
-      else opts.signal.addEventListener("abort", () => controller.abort(), { once: true });
-    }
-    try {
-      const init = {
-        method: "GET",
-        signal: controller.signal,
-        headers: {
-          "User-Agent": pickUserAgent(),
-          Accept: "application/json"
-        }
-      };
-      if (opts.revalidateSeconds != null || opts.cacheTags) {
-        init.next = {
-          ...opts.revalidateSeconds != null && { revalidate: opts.revalidateSeconds },
-          ...opts.cacheTags && { tags: opts.cacheTags }
-        };
-      }
-      const res = await fetchImpl(url, init);
-      clearTimeout(timer);
-      if ((res.status >= 500 || res.status === 429) && attempt + 1 < totalAttempts) {
-        lastError = new Error(`HTTP ${res.status}`);
-        continue;
-      }
-      if (res.status < 200 || res.status >= 300) {
-        return { status: res.status, body: null };
-      }
-      const body = await res.json();
-      return { status: res.status, body };
-    } catch (err) {
-      clearTimeout(timer);
-      lastError = err;
-      if (attempt + 1 >= totalAttempts) break;
-    }
-  }
-  throw new SunoNetworkError(url, lastError);
-}
-
-// ../packages/parser/src/tags.ts
-var INSTRUMENTS = [
-  "piano",
-  "guitar",
-  "synth",
-  "synthesizer",
-  "drums",
-  "bass",
-  "violin",
-  "cello",
-  "saxophone",
-  "flute",
-  "harp",
-  "organ",
-  "strings",
-  "brass",
-  "trumpet",
-  "harmonica",
-  "banjo",
-  "ukulele",
-  "sitar",
-  "percussion"
-];
-var MOODS = [
-  "melancholic",
-  "melancholy",
-  "happy",
-  "sad",
-  "upbeat",
-  "chill",
-  "relaxed",
-  "energetic",
-  "dark",
-  "bright",
-  "ethereal",
-  "dreamy",
-  "nostalgic",
-  "romantic",
-  "aggressive",
-  "calm",
-  "peaceful",
-  "epic",
-  "dramatic",
-  "haunting",
-  "philosophical",
-  "introspective",
-  "uplifting",
-  "anthemic",
-  "atmospheric"
-];
-var VOCALS = [
-  "male vocal",
-  "female vocal",
-  "deep voice",
-  "spoken word",
-  "choir",
-  "rap",
-  "whispered",
-  "falsetto",
-  "soprano",
-  "baritone",
-  "harmonies",
-  "a cappella",
-  "instrumental",
-  "vocaloid"
-];
-var TEMPO_RE = /\b\d{2,3}\s*bpm\b/i;
-var TEMPO_WORDS = ["slow", "fast", "moderate", "mid-tempo", "ultra-fast", "half-time"];
-var GENRES = [
-  "rock",
-  "pop",
-  "jazz",
-  "blues",
-  "classical",
-  "electronic",
-  "edm",
-  "house",
-  "techno",
-  "trance",
-  "dubstep",
-  "drum and bass",
-  "hip hop",
-  "hip-hop",
-  "rap",
-  "r&b",
-  "soul",
-  "funk",
-  "disco",
-  "reggae",
-  "ska",
-  "metal",
-  "punk",
-  "indie",
-  "folk",
-  "country",
-  "ambient",
-  "lofi",
-  "lo-fi",
-  "synthwave",
-  "vaporwave",
-  "chillwave",
-  "cyberpunk",
-  "gospel",
-  "opera",
-  "musical",
-  "anime",
-  "j-pop",
-  "k-pop",
-  "latin",
-  "salsa",
-  "bossa nova",
-  "flamenco",
-  "celtic",
-  "african",
-  "world",
-  "minimalist",
-  "experimental",
-  "industrial",
-  "post-rock",
-  "shoegaze",
-  "dream pop"
-];
-var normalize = (t2) => t2.trim().toLowerCase();
-function matchesAny(tagLower, list) {
-  for (const kw of list) {
-    if (tagLower.includes(kw)) return true;
-  }
-  return false;
-}
-function splitTags(raw) {
-  if (!raw) return [];
-  return raw.split(/[,，]/).map((t2) => t2.trim()).filter((t2) => t2.length > 0);
-}
-function classifyTags(tags) {
-  const out = {
-    genre: [],
-    instrument: [],
-    mood: [],
-    vocal: [],
-    tempo: [],
-    other: []
-  };
-  for (const raw of tags) {
-    const lower = normalize(raw);
-    if (TEMPO_RE.test(lower) || matchesAny(lower, TEMPO_WORDS)) {
-      out.tempo.push(raw);
-      continue;
-    }
-    if (matchesAny(lower, VOCALS)) {
-      out.vocal.push(raw);
-      continue;
-    }
-    if (matchesAny(lower, INSTRUMENTS)) {
-      out.instrument.push(raw);
-      continue;
-    }
-    if (matchesAny(lower, GENRES)) {
-      out.genre.push(raw);
-      continue;
-    }
-    if (matchesAny(lower, MOODS)) {
-      out.mood.push(raw);
-      continue;
-    }
-    out.other.push(raw);
-  }
-  return out;
-}
-
-// ../packages/parser/src/mapping.ts
-var SONG_URL_BASE = "https://suno.com/song/";
-var EMBED_URL_BASE = "https://suno.com/embed/";
-var SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1e3;
-function parseStatus(raw) {
-  if (raw === "complete" || raw === "streaming" || raw === "submitted" || raw === "queued" || raw === "error") {
-    return raw;
-  }
-  return "error";
-}
-function hexToCss(hex2) {
-  const cleaned = hex2.replace(/^#/, "").trim();
-  if (cleaned.length === 6) return `#${cleaned}`;
-  if (cleaned.length === 8) {
-    const r = Number.parseInt(cleaned.slice(0, 2), 16);
-    const g = Number.parseInt(cleaned.slice(2, 4), 16);
-    const b = Number.parseInt(cleaned.slice(4, 6), 16);
-    const a = Number.parseInt(cleaned.slice(6, 8), 16) / 255;
-    return `rgba(${r}, ${g}, ${b}, ${a.toFixed(3)})`;
-  }
-  return `#${cleaned}`;
-}
-function mapBadgeSide(side) {
-  return {
-    text: hexToCss(side.text_color),
-    bg: hexToCss(side.background_color),
-    border: hexToCss(side.border_color)
-  };
-}
-function mapClipToSong(clip, source, nowMs = Date.now()) {
-  const tags = splitTags(clip.metadata.tags);
-  const classifiedTags = classifyTags(tags);
-  const createdAtMs = Date.parse(clip.created_at);
-  const isNew = Number.isFinite(createdAtMs) && nowMs - createdAtMs < SEVEN_DAYS_MS;
-  const badges = clip.metadata.model_badges?.songrow;
-  const modelBadgeTheme = badges?.light && badges?.dark ? { light: mapBadgeSide(badges.light), dark: mapBadgeSide(badges.dark) } : null;
-  return {
-    id: clip.id,
-    title: clip.title ?? "",
-    status: parseStatus(clip.status),
-    isPublic: clip.is_public,
-    isPinned: clip.is_pinned ?? false,
-    explicit: clip.explicit ?? false,
-    author: {
-      displayName: clip.display_name ?? "",
-      handle: clip.handle,
-      avatarUrl: clip.avatar_image_url,
-      userId: clip.user_id
-    },
-    coverUrl: clip.image_url,
-    coverLargeUrl: clip.image_large_url,
-    audioUrl: clip.audio_url,
-    videoUrl: clip.video_url ?? null,
-    tags,
-    classifiedTags,
-    lyrics: clip.metadata.prompt ?? null,
-    durationSeconds: clip.metadata.duration ?? 0,
-    playCount: clip.play_count,
-    likeCount: clip.upvote_count,
-    commentCount: clip.comment_count ?? 0,
-    createdAt: clip.created_at,
-    isNew,
-    modelVersion: clip.major_model_version,
-    modelName: clip.model_name,
-    modelBadgeTheme,
-    shareUrl: `${SONG_URL_BASE}${clip.id}`,
-    embedUrl: `${EMBED_URL_BASE}${clip.id}`,
-    source
-  };
-}
-
-// ../packages/parser/src/schema.ts
-var ModelBadgeSideSchema = object({
-  text_color: string(),
-  background_color: string(),
-  border_color: string()
-});
-var ModelBadgesSchema = object({
-  songrow: optional(
-    object({
-      display_name: optional(string()),
-      light: optional(ModelBadgeSideSchema),
-      dark: optional(ModelBadgeSideSchema)
-    })
-  )
-});
-var ClipMetadataSchema = object({
-  tags: optional(nullable(string())),
-  prompt: optional(nullable(string())),
-  duration: optional(nullable(number())),
-  make_instrumental: optional(boolean()),
-  can_remix: optional(boolean()),
-  is_remix: optional(boolean()),
-  has_stem: optional(boolean()),
-  model_badges: optional(nullable(ModelBadgesSchema)),
-  type: optional(string())
-});
-var ClipSchema = object({
-  id: pipe(string(), uuid()),
-  status: string(),
-  title: nullable(string()),
-  is_public: boolean(),
-  is_pinned: optional(boolean()),
-  is_trashed: optional(boolean()),
-  is_hidden: optional(boolean()),
-  explicit: optional(boolean()),
-  play_count: number(),
-  upvote_count: number(),
-  comment_count: optional(number()),
-  user_id: string(),
-  display_name: nullable(string()),
-  handle: nullable(string()),
-  avatar_image_url: nullable(string()),
-  image_url: string(),
-  image_large_url: string(),
-  audio_url: string(),
-  video_url: optional(string()),
-  major_model_version: string(),
-  model_name: string(),
-  created_at: string(),
-  metadata: ClipMetadataSchema
-});
-var ProfileResponseSchema = object({
-  user_id: string(),
-  handle: string(),
-  display_name: nullable(string()),
-  profile_description: optional(nullable(string())),
-  avatar_image_url: nullable(string()),
-  is_verified: optional(boolean()),
-  num_total_clips: number(),
-  current_page: optional(number()),
-  // Suno only populates `stats` on page 1; page ≥2 returns `stats: {}`.
-  stats: object({
-    upvote_count__sum: optional(number()),
-    play_count__sum: optional(number()),
-    followers_count: optional(number()),
-    following_count: optional(number())
-  }),
-  clips: array(ClipSchema),
-  playlists: array(
-    object({
-      id: string(),
-      name: optional(nullable(string())),
-      image_url: optional(nullable(string())),
-      num_total_results: optional(number()),
-      is_public: optional(boolean())
-    })
-  )
-});
-var OEmbedResponseSchema = object({
-  version: optional(string()),
-  type: optional(string()),
-  provider_name: optional(string()),
-  provider_url: optional(string()),
-  title: string(),
-  html: optional(string()),
-  iframe_url: optional(string()),
-  width: optional(number()),
-  height: optional(number()),
-  thumbnail_url: optional(string()),
-  author_name: optional(string())
-});
-
-// ../packages/parser/src/clip.ts
-var STUDIO_API_BASE = "https://studio-api-prod.suno.com";
-async function fetchClip(uuid2, opts = {}) {
-  const url = `${STUDIO_API_BASE}/api/clip/${encodeURIComponent(uuid2)}`;
-  const { status, body } = await fetchJson(url, {
-    ...opts,
-    cacheTags: opts.cacheTags ?? [`suno-clip-${uuid2}`],
-    revalidateSeconds: opts.revalidateSeconds ?? 3600
-  });
-  if (status === 404) throw new SunoNotFoundError(uuid2);
-  if (status === 403) throw new SunoPrivateError(uuid2);
-  if (status < 200 || status >= 300) {
-    throw new SunoSchemaError(url, { status }, body);
-  }
-  const result = safeParse(ClipSchema, body);
-  if (!result.success) {
-    throw new SunoSchemaError(url, result.issues, body);
-  }
-  const clip = result.output;
-  if (!opts.includeIncomplete) {
-    if (!clip.is_public) throw new SunoPrivateError(uuid2);
-    if (clip.status !== "complete") throw new SunoNotReadyError(uuid2, clip.status);
-  }
-  return mapClipToSong(clip, "clip");
-}
+// ../packages/parser/src/index.ts
+init_clip();
+init_errors();
 
 // ../packages/parser/src/filters.ts
 function hasAnyTag(song, needles) {
@@ -27981,6 +28681,7 @@ function filterAndRank(input, opts = {}) {
 }
 
 // ../packages/parser/src/normalize.ts
+init_errors();
 var UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 var UUID_IN_URL_RE = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 var SHORT_CODE_RE = /^[A-Za-z0-9]{6,24}$/;
@@ -28006,6 +28707,11 @@ function normalizeInput(rawInput) {
       const match = candidate.match(UUID_IN_URL_RE);
       if (match) return { kind: "uuid", uuid: match[0].toLowerCase() };
     }
+    if (segments[0] === "playlist") {
+      const candidate = segments[1] ?? "";
+      const match = candidate.match(UUID_IN_URL_RE);
+      if (match) return { kind: "playlistUuid", uuid: match[0].toLowerCase() };
+    }
     if (segments[0] === "s" && segments[1]) {
       return { kind: "shortCode", shortCode: segments[1] };
     }
@@ -28030,6 +28736,11 @@ function normalizeInput(rawInput) {
 }
 
 // ../packages/parser/src/oembed.ts
+init_dist();
+init_errors();
+init_fetcher();
+init_schema();
+init_clip();
 var SONG_URL_BASE2 = "https://suno.com/song/";
 var EMBED_URL_BASE2 = "https://suno.com/embed/";
 async function fetchOEmbed(uuid2, opts = {}) {
@@ -28065,7 +28776,17 @@ async function fetchOEmbed(uuid2, opts = {}) {
     audioUrl: `https://cdn1.suno.ai/${uuid2}.mp3`,
     videoUrl: null,
     tags: [],
-    classifiedTags: { genre: [], instrument: [], mood: [], vocal: [], tempo: [], other: [] },
+    classifiedTags: {
+      genre: [],
+      era: [],
+      instrument: [],
+      mood: [],
+      vocal: [],
+      key: [],
+      production: [],
+      tempo: [],
+      other: []
+    },
     lyrics: null,
     durationSeconds: 0,
     playCount: 0,
@@ -28083,6 +28804,12 @@ async function fetchOEmbed(uuid2, opts = {}) {
 }
 
 // ../packages/parser/src/profile.ts
+init_dist();
+init_errors();
+init_fetcher();
+init_mapping();
+init_schema();
+init_clip();
 var HANDLE_URL_BASE = "https://suno.com/@";
 async function fetchProfilePage(handle, opts = {}) {
   const clipsSortBy = opts.clipsSortBy ?? "created_at";
@@ -28175,6 +28902,7 @@ async function fetchAllClips(handle, opts = {}) {
 }
 
 // ../packages/parser/src/resolver.ts
+init_errors();
 var UUID_IN_URL_RE2 = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 var SHORT_URL_BASE = "https://suno.com/s/";
 var shortCodeCache = /* @__PURE__ */ new Map();
@@ -28205,6 +28933,17 @@ async function resolveShortCode(shortCode, opts = {}) {
 }
 
 // ../packages/parser/src/index.ts
+init_errors();
+init_schema();
+init_tags();
+init_mapping();
+init_playlist();
+
+// ../packages/parser/src/trending.ts
+init_clip();
+init_playlist();
+
+// ../packages/parser/src/index.ts
 async function fetchSong(input, opts = {}) {
   const normalized = normalizeInput(input);
   let uuid2;
@@ -28216,6 +28955,7 @@ async function fetchSong(input, opts = {}) {
       uuid2 = await resolveShortCode(normalized.shortCode, { fetchImpl: opts.fetchImpl });
       break;
     case "handle":
+    case "playlistUuid":
       throw new SunoInvalidInputError(input);
   }
   try {
@@ -28747,9 +29487,12 @@ function renderNewBadge(x, y, lang) {
 // ../packages/render/src/tagChips.ts
 var DEFAULT_PRIORITY = [
   "genre",
+  "era",
   "mood",
   "vocal",
   "instrument",
+  "production",
+  "key",
   "other",
   "tempo"
 ];
