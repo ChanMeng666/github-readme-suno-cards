@@ -13,6 +13,7 @@
     "typecheck": "pnpm -r run typecheck",
     "check": "biome check .",
     "format": "biome format --write .",
+    "dev": "pnpm --filter @suno-cards/web dev",
     "build": "pnpm --filter @suno-cards/web build"
   },
   "devDependencies": {

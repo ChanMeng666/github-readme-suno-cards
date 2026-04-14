@@ -24,6 +24,16 @@ export const CARD_CSS = `
     stroke: var(--c-border);
     stroke-width: 1;
   }
+  /* When theme=auto, two gradients are emitted; switch via media query
+     so the card background stays in sync with the text colors. */
+  .theme-auto .card-bg {
+    fill: url(#card-gradient-light);
+  }
+  @media (prefers-color-scheme: dark) {
+    .theme-auto .card-bg {
+      fill: url(#card-gradient-dark);
+    }
+  }
   .cover-clip rect { fill: #000; }
   .cover-overlay {
     fill: url(#cover-shadow);

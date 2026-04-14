@@ -34,15 +34,15 @@ export const DEFAULT_THEME: Theme = {
     cardBg: '#12121a',
     cardBgGradientStart: '#1a1a26',
     cardBgGradientEnd: '#0f0f17',
-    text: '#f5f5f7',
-    subtext: '#b4b4bd', // 8.8:1 on card bg — WCAG AAA
-    accent: '#a78bfa', // 6.7:1 — WCAG AA for all text sizes
-    accentGlow: 'rgba(167, 139, 250, 0.45)',
-    border: 'rgba(255, 255, 255, 0.08)',
-    chipBg: 'rgba(167, 139, 250, 0.14)',
-    chipText: '#ddd0fe', // 12.5:1 — WCAG AAA even at 10px
-    chipBorder: 'rgba(167, 139, 250, 0.3)',
-    barColor: '#a78bfa',
+    text: '#f5f5f7', // primary text — near-white
+    subtext: '#c8c8d0', // secondary text — bright gray, always legible
+    accent: '#c4b5fd', // accent text — bright lavender
+    accentGlow: 'rgba(196, 181, 253, 0.45)',
+    border: 'rgba(255, 255, 255, 0.10)',
+    chipBg: 'rgba(196, 181, 253, 0.16)',
+    chipText: '#e9e0ff', // chip label — very bright lavender
+    chipBorder: 'rgba(196, 181, 253, 0.35)',
+    barColor: '#c4b5fd',
     progressTrack: '#3a3a4f',
     scrubber: '#ffffff',
   },
@@ -72,14 +72,14 @@ export const SUNO_PRESET: Theme = {
     cardBg: '#1d264b',
     cardBgGradientStart: '#1e295e',
     cardBgGradientEnd: '#1d264b',
-    text: '#ffffff',
-    subtext: '#b0b0d0', // 6.9:1 on card bg — WCAG AA
-    accent: '#fbd38d', // 10.2:1 — WCAG AAA
+    text: '#ffffff', // primary — pure white
+    subtext: '#c8c8e0', // secondary — bright blue-gray
+    accent: '#fbd38d', // gold — naturally high contrast
     accentGlow: 'rgba(251, 211, 141, 0.35)',
-    border: 'rgba(255, 255, 255, 0.06)',
-    chipBg: 'rgba(251, 211, 141, 0.12)',
-    chipText: '#fbd38d', // 10.2:1 — WCAG AAA
-    chipBorder: 'rgba(251, 211, 141, 0.25)',
+    border: 'rgba(255, 255, 255, 0.08)',
+    chipBg: 'rgba(251, 211, 141, 0.14)',
+    chipText: '#fde6b4', // chip label — brighter gold
+    chipBorder: 'rgba(251, 211, 141, 0.30)',
     barColor: '#fbd38d',
     progressTrack: '#3a3a5c',
     scrubber: '#ffffff',

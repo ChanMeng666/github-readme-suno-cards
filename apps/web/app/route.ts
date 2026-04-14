@@ -37,65 +37,67 @@ type CardDemo = {
   width: number;
 };
 
+// All gallery demos pin theme=dark since the landing page has a dark background.
+// The Light variant is the only exception to showcase the light mode.
 const CARD_DEMOS: CardDemo[] = [
   {
-    title: 'Classic + Default',
+    title: 'Classic + Default (Dark)',
     description: 'Info-dense layout with purple accent — the original style.',
-    params: `id=${DEMO_UUID}`,
+    params: `id=${DEMO_UUID}&theme=dark`,
     width: 480,
   },
   {
-    title: 'Classic + Suno Preset',
+    title: 'Classic + Suno Preset (Dark)',
     description: 'Info-dense layout with Suno official navy + gold palette.',
-    params: `id=${DEMO_UUID}&preset=suno`,
+    params: `id=${DEMO_UUID}&preset=suno&theme=dark`,
     width: 480,
   },
   {
-    title: 'Player + Default',
+    title: 'Player + Default (Dark)',
     description: 'Suno-style player with progress bar, using default purple theme.',
-    params: `id=${DEMO_UUID}&layout=player`,
+    params: `id=${DEMO_UUID}&layout=player&theme=dark`,
     width: 640,
   },
   {
-    title: 'Player + Suno Preset',
+    title: 'Player + Suno Preset (Dark)',
     description: 'Full Suno official look — player layout with navy + gold palette.',
-    params: `id=${DEMO_UUID}&layout=player&preset=suno`,
-    width: 640,
-  },
-  {
-    title: 'Player + Suno (Dark)',
-    description: 'Suno player pinned to dark theme.',
     params: `id=${DEMO_UUID}&layout=player&preset=suno&theme=dark`,
     width: 640,
   },
   {
     title: 'Classic + Default (Light)',
-    description: 'Classic card pinned to light theme.',
+    description: 'Classic card in light theme — for light-background READMEs.',
     params: `id=${DEMO_UUID}&theme=light`,
+    width: 480,
+  },
+  {
+    title: 'Classic + Suno Preset (Light)',
+    description: 'Suno navy + gold in light mode.',
+    params: `id=${DEMO_UUID}&preset=suno&theme=light`,
     width: 480,
   },
   {
     title: 'Player — No Equalizer',
     description: 'Player layout with equalizer bars hidden.',
-    params: `id=${DEMO_UUID}&layout=player&preset=suno&show_equalizer=false`,
+    params: `id=${DEMO_UUID}&layout=player&preset=suno&theme=dark&show_equalizer=false`,
     width: 640,
   },
   {
     title: 'Player — With Tags & Author',
     description: 'Player layout with tags and author info enabled.',
-    params: `id=${DEMO_UUID}&layout=player&preset=suno&show_tags=true&show_author=true`,
+    params: `id=${DEMO_UUID}&layout=player&preset=suno&theme=dark&show_tags=true&show_author=true`,
     width: 640,
   },
   {
     title: 'Classic — Minimal',
     description: 'Classic layout stripped to title + cover only.',
-    params: `id=${DEMO_UUID}&show_tags=false&show_plays=false&show_likes=false&show_model_badge=false&show_equalizer=false`,
+    params: `id=${DEMO_UUID}&theme=dark&show_tags=false&show_plays=false&show_likes=false&show_model_badge=false&show_equalizer=false`,
     width: 480,
   },
   {
     title: 'Player — Custom Accent',
     description: 'Player layout with a custom red accent color override.',
-    params: `id=${DEMO_UUID}&layout=player&preset=suno&accent_color=ff6b6b`,
+    params: `id=${DEMO_UUID}&layout=player&preset=suno&theme=dark&accent_color=ff6b6b`,
     width: 640,
   },
 ];
@@ -166,9 +168,9 @@ function renderHomePage(): string {
             </label>
             <label class="cfg-label">Theme
               <select id="cfg-theme" class="cfg-select">
-                <option value="auto">Auto</option>
                 <option value="dark">Dark</option>
                 <option value="light">Light</option>
+                <option value="auto">Auto</option>
               </select>
             </label>
           </div>
@@ -217,7 +219,7 @@ function renderHomePage(): string {
         <!-- Live preview -->
         <div class="cfg-preview">
           <div class="cfg-preview-frame">
-            <img id="cfg-preview-img" src="/api/card?id=${DEMO_UUID}" alt="Card preview" />
+            <img id="cfg-preview-img" src="/api/card?id=${DEMO_UUID}&theme=dark" alt="Card preview" />
           </div>
 
           <!-- Generated code -->

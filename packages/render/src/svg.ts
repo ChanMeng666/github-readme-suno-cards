@@ -30,7 +30,8 @@ export function renderRootSvg(innerContent: string, opts: SvgRootOptions): strin
   const css = `${themeCss(theme)}${CARD_CSS}${ANIMATION_CSS}`;
   const titleTag = opts.title ? `<title>${escapeForTitle(opts.title)}</title>` : '';
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${opts.width}" height="${opts.height}" viewBox="0 0 ${opts.width} ${opts.height}" role="img" class="card-root">
+  const rootClass = theme.mode === 'auto' ? 'card-root theme-auto' : 'card-root';
+  return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${opts.width}" height="${opts.height}" viewBox="0 0 ${opts.width} ${opts.height}" role="img" class="${rootClass}">
   ${titleTag}
   <defs>
     ${cardGradient(theme)}
@@ -48,14 +49,23 @@ function escapeForTitle(s: string): string {
 }
 
 function cardGradient(theme: ResolvedTheme): string {
-  // A subtle diagonal gradient that shifts through the card bg colors.
-  // We use light-mode colors in the gradient defs; the CSS var overrides the
-  // fill via `.card-bg { fill: url(#card-gradient) }` → darkness is applied
-  // via a separate overlay layer, handled by the theme CSS vars on `.card-bg`.
-  // For simplicity v0.1, emit a single gradient that reads --c-card-grad-*.
+  // Emit gradient(s) that stay in sync with the CSS text-color mode.
+  // When mode is 'auto' we need TWO gradients + a CSS media-query switch
+  // so the card background flips together with the text colors.
+  if (theme.mode === 'auto') {
+    return `<linearGradient id="card-gradient-light" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%"   stop-color="${theme.light.cardBgGradientStart}" />
+        <stop offset="100%" stop-color="${theme.light.cardBgGradientEnd}" />
+      </linearGradient>
+      <linearGradient id="card-gradient-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%"   stop-color="${theme.dark.cardBgGradientStart}" />
+        <stop offset="100%" stop-color="${theme.dark.cardBgGradientEnd}" />
+      </linearGradient>`;
+  }
+  const colors = theme.mode === 'dark' ? theme.dark : theme.light;
   return `<linearGradient id="card-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="${theme.dark.cardBgGradientStart}" />
-      <stop offset="100%" stop-color="${theme.dark.cardBgGradientEnd}" />
+      <stop offset="0%"   stop-color="${colors.cardBgGradientStart}" />
+      <stop offset="100%" stop-color="${colors.cardBgGradientEnd}" />
     </linearGradient>`;
 }
 

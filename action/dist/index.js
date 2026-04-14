@@ -29134,6 +29134,16 @@ var CARD_CSS = `
     stroke: var(--c-border);
     stroke-width: 1;
   }
+  /* When theme=auto, two gradients are emitted; switch via media query
+     so the card background stays in sync with the text colors. */
+  .theme-auto .card-bg {
+    fill: url(#card-gradient-light);
+  }
+  @media (prefers-color-scheme: dark) {
+    .theme-auto .card-bg {
+      fill: url(#card-gradient-dark);
+    }
+  }
   .cover-clip rect { fill: #000; }
   .cover-overlay {
     fill: url(#cover-shadow);
@@ -29769,17 +29779,18 @@ var DEFAULT_THEME = {
     cardBgGradientStart: "#1a1a26",
     cardBgGradientEnd: "#0f0f17",
     text: "#f5f5f7",
-    subtext: "#b4b4bd",
-    // 8.8:1 on card bg — WCAG AAA
-    accent: "#a78bfa",
-    // 6.7:1 — WCAG AA for all text sizes
-    accentGlow: "rgba(167, 139, 250, 0.45)",
-    border: "rgba(255, 255, 255, 0.08)",
-    chipBg: "rgba(167, 139, 250, 0.14)",
-    chipText: "#ddd0fe",
-    // 12.5:1 — WCAG AAA even at 10px
-    chipBorder: "rgba(167, 139, 250, 0.3)",
-    barColor: "#a78bfa",
+    // primary text — near-white
+    subtext: "#c8c8d0",
+    // secondary text — bright gray, always legible
+    accent: "#c4b5fd",
+    // accent text — bright lavender
+    accentGlow: "rgba(196, 181, 253, 0.45)",
+    border: "rgba(255, 255, 255, 0.10)",
+    chipBg: "rgba(196, 181, 253, 0.16)",
+    chipText: "#e9e0ff",
+    // chip label — very bright lavender
+    chipBorder: "rgba(196, 181, 253, 0.35)",
+    barColor: "#c4b5fd",
     progressTrack: "#3a3a4f",
     scrubber: "#ffffff"
   },
@@ -29812,16 +29823,17 @@ var SUNO_PRESET = {
     cardBgGradientStart: "#1e295e",
     cardBgGradientEnd: "#1d264b",
     text: "#ffffff",
-    subtext: "#b0b0d0",
-    // 6.9:1 on card bg — WCAG AA
+    // primary — pure white
+    subtext: "#c8c8e0",
+    // secondary — bright blue-gray
     accent: "#fbd38d",
-    // 10.2:1 — WCAG AAA
+    // gold — naturally high contrast
     accentGlow: "rgba(251, 211, 141, 0.35)",
-    border: "rgba(255, 255, 255, 0.06)",
-    chipBg: "rgba(251, 211, 141, 0.12)",
-    chipText: "#fbd38d",
-    // 10.2:1 — WCAG AAA
-    chipBorder: "rgba(251, 211, 141, 0.25)",
+    border: "rgba(255, 255, 255, 0.08)",
+    chipBg: "rgba(251, 211, 141, 0.14)",
+    chipText: "#fde6b4",
+    // chip label — brighter gold
+    chipBorder: "rgba(251, 211, 141, 0.30)",
     barColor: "#fbd38d",
     progressTrack: "#3a3a5c",
     scrubber: "#ffffff"
@@ -29912,7 +29924,8 @@ function renderRootSvg(innerContent, opts) {
   const theme = resolveTheme(opts.theme ?? "auto", opts.colorOverrides ?? {}, baseTheme);
   const css = `${themeCss(theme)}${CARD_CSS}${ANIMATION_CSS}`;
   const titleTag = opts.title ? `<title>${escapeForTitle(opts.title)}</title>` : "";
-  return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${opts.width}" height="${opts.height}" viewBox="0 0 ${opts.width} ${opts.height}" role="img" class="card-root">
+  const rootClass = theme.mode === "auto" ? "card-root theme-auto" : "card-root";
+  return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${opts.width}" height="${opts.height}" viewBox="0 0 ${opts.width} ${opts.height}" role="img" class="${rootClass}">
   ${titleTag}
   <defs>
     ${cardGradient(theme)}
@@ -29928,9 +29941,20 @@ function escapeForTitle(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 function cardGradient(theme) {
+  if (theme.mode === "auto") {
+    return `<linearGradient id="card-gradient-light" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%"   stop-color="${theme.light.cardBgGradientStart}" />
+        <stop offset="100%" stop-color="${theme.light.cardBgGradientEnd}" />
+      </linearGradient>
+      <linearGradient id="card-gradient-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%"   stop-color="${theme.dark.cardBgGradientStart}" />
+        <stop offset="100%" stop-color="${theme.dark.cardBgGradientEnd}" />
+      </linearGradient>`;
+  }
+  const colors = theme.mode === "dark" ? theme.dark : theme.light;
   return `<linearGradient id="card-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="${theme.dark.cardBgGradientStart}" />
-      <stop offset="100%" stop-color="${theme.dark.cardBgGradientEnd}" />
+      <stop offset="0%"   stop-color="${colors.cardBgGradientStart}" />
+      <stop offset="100%" stop-color="${colors.cardBgGradientEnd}" />
     </linearGradient>`;
 }
 function coverShadow() {

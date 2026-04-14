@@ -91,7 +91,9 @@ describe('renderSingleSongSvg', () => {
     expect(svg).toContain('xmlns="http://www.w3.org/2000/svg"');
     expect(svg).toContain('<defs>');
     expect(svg).toContain('<style>');
-    expect(svg).toContain('id="card-gradient"');
+    // Auto theme emits paired gradients for light/dark switching
+    expect(svg).toContain('id="card-gradient-light"');
+    expect(svg).toContain('id="card-gradient-dark"');
     expect(svg).toContain('id="cover-shadow"');
     expect(svg).toContain('@keyframes bar-bounce');
   });
