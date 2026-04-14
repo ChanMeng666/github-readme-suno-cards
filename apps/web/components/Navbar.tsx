@@ -18,8 +18,8 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2 text-sm font-semibold text-foreground hover:text-accent transition-colors">
-          <img src="/logo.svg" alt="suno-cards logo" className="h-6 w-6" />
-          suno-cards
+          <img src="/logo.svg" alt="Suno Cards" className="h-6 w-6" />
+          Suno Cards
         </Link>
 
         <div className="flex items-center gap-1">

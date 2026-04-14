@@ -59,10 +59,10 @@ export default function HomePage() {
       {/* Hero */}
       <section className="pt-20 pb-16 text-center">
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-purple-600 dark:text-purple-400">
-          github-readme-suno-cards
+          Suno Cards
         </h1>
         <p className="mt-4 text-lg text-muted max-w-2xl mx-auto">
-          Display your Suno AI-generated music as dynamic, animated SVG cards in your GitHub README.
+          Turn your Suno AI music into dynamic, animated SVG cards — embed them anywhere on GitHub.
         </p>
 
         {/* Floating card previews */}

@@ -12,7 +12,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>github-readme-suno-cards</title>
+        <title>Suno Cards — Dynamic Music Cards for GitHub README</title>
         <meta
           name="description"
           content="Display your Suno AI-generated music as dynamic cards in your GitHub README."
