@@ -8,11 +8,11 @@
 
 [![CI](https://github.com/ChanMeng666/github-readme-suno-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/ChanMeng666/github-readme-suno-cards/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
-[![Vercel](https://img.shields.io/badge/deployed%20on-Vercel-000)](https://sunocards.vercel.app)
+[![Vercel](https://img.shields.io/badge/deployed%20on-Vercel-000)](https://github-readme-suno-cards.vercel.app)
 
 > **Give us your Suno handle and do nothing else.** Your GitHub README stays in sync with your music — new songs, play counts, and likes appear automatically.
 
-**[Live Demo](https://sunocards.vercel.app)** · **[Browse Gallery](https://sunocards.vercel.app/gallery)** · **[Build Your Card](https://sunocards.vercel.app/builder)**
+**[Live Demo](https://github-readme-suno-cards.vercel.app)** · **[Browse Gallery](https://github-readme-suno-cards.vercel.app/gallery)** · **[Build Your Card](https://github-readme-suno-cards.vercel.app/builder)**
 
 <br/>
 
@@ -28,11 +28,11 @@
 <tr>
 <td align="center">
 <strong>Classic Layout</strong><br/><br/>
-<img src="https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark" alt="Classic card demo" width="400"/>
+<img src="https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark" alt="Classic card demo" width="400"/>
 </td>
 <td align="center">
 <strong>Player Layout</strong><br/><br/>
-<img src="https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark" alt="Player card demo" width="400"/>
+<img src="https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark" alt="Player card demo" width="400"/>
 </td>
 </tr>
 </table>
@@ -95,7 +95,7 @@ There are two usage modes:
 No GitHub Action needed — paste a URL directly into your README:
 
 ```markdown
-[![My Song](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID)](https://suno.com/song/YOUR_SONG_UUID)
+[![My Song](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 The `id` parameter accepts:
@@ -103,7 +103,7 @@ The `id` parameter accepts:
 - A Suno URL: `https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066`
 - A short code: `https://suno.com/s/YourShortCode`
 
-> **Tip:** Use the **[interactive builder](https://sunocards.vercel.app/builder)** to customize the card visually, then copy the generated embed code.
+> **Tip:** Use the **[interactive builder](https://github-readme-suno-cards.vercel.app/builder)** to customize the card visually, then copy the generated embed code.
 
 ---
 
@@ -157,7 +157,7 @@ Every 6 hours (or on manual trigger), the Action fetches your public songs, sort
 
 All examples below use a real demo song. **Replace `a885e43c-6918-456f-a5f0-0e8e29e61066` with your own song UUID** and copy the code to your README.
 
-> **Tip:** Use the **[interactive card builder](https://sunocards.vercel.app/builder)** to customize any style visually, then copy the generated embed code.
+> **Tip:** Use the **[interactive card builder](https://github-readme-suno-cards.vercel.app/builder)** to customize any style visually, then copy the generated embed code.
 
 ### Layouts + Presets
 
@@ -169,13 +169,13 @@ There are **2 layouts** x **2 color presets** = 4 base combinations.
 
 Info-dense layout with purple accent — title, author, tags, stats, model badge, animated equalizer.
 
-[![Classic Default Dark](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Classic Default Dark](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 <details>
 <summary>Copy embed code</summary>
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 </details>
@@ -186,13 +186,13 @@ Info-dense layout with purple accent — title, author, tags, stats, model badge
 
 Info-dense layout with Suno's official navy + gold palette.
 
-[![Classic Suno Dark](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&preset=suno&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Classic Suno Dark](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&preset=suno&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 <details>
 <summary>Copy embed code</summary>
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&preset=suno)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&preset=suno)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 </details>
@@ -203,13 +203,13 @@ Info-dense layout with Suno's official navy + gold palette.
 
 Suno-style music player with progress bar, play button, and SUNO logo — using the default purple theme.
 
-[![Player Default Dark](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Player Default Dark](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 <details>
 <summary>Copy embed code</summary>
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 </details>
@@ -220,13 +220,13 @@ Suno-style music player with progress bar, play button, and SUNO logo — using 
 
 The full Suno official look — player layout with navy + gold palette.
 
-[![Player Suno Dark](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Player Suno Dark](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 <details>
 <summary>Copy embed code</summary>
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 </details>
@@ -245,52 +245,52 @@ Each card supports three theme modes:
 
 #### Classic — Light
 
-[![Classic Light](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Classic Light](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 <details>
 <summary>Copy embed code</summary>
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 </details>
 
 #### Player + Suno — Light
 
-[![Player Suno Light](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Player Suno Light](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 <details>
 <summary>Copy embed code</summary>
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 </details>
 
 #### Classic + Suno — Light
 
-[![Classic Suno Light](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&preset=suno&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Classic Suno Light](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&preset=suno&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 <details>
 <summary>Copy embed code</summary>
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&preset=suno&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&preset=suno&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 </details>
 
 #### Player + Default — Light
 
-[![Player Default Light](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Player Default Light](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 <details>
 <summary>Copy embed code</summary>
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 </details>
@@ -308,42 +308,42 @@ All toggles accept `true` or `false`.
 
 #### Minimal Classic — Title and cover only
 
-[![Minimal Classic](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark&show_tags=false&show_plays=false&show_likes=false&show_model_badge=false&show_equalizer=false&show_new_badge=false&show_author=false)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Minimal Classic](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark&show_tags=false&show_plays=false&show_likes=false&show_model_badge=false&show_equalizer=false&show_new_badge=false&show_author=false)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&show_tags=false&show_plays=false&show_likes=false&show_model_badge=false&show_equalizer=false&show_new_badge=false&show_author=false)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&show_tags=false&show_plays=false&show_likes=false&show_model_badge=false&show_equalizer=false&show_new_badge=false&show_author=false)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 #### Full Info Classic — Every element visible
 
-[![Full Info Classic](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark&show_progress=true&show_logo=true&show_link_icon=true)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Full Info Classic](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark&show_progress=true&show_logo=true&show_link_icon=true)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&show_progress=true&show_logo=true&show_link_icon=true)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&show_progress=true&show_logo=true&show_link_icon=true)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 #### Full Info Player — Player with tags, author, and stats
 
-[![Full Info Player](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark&show_tags=true&show_author=true&show_plays=true&show_likes=true)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Full Info Player](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark&show_tags=true&show_author=true&show_plays=true&show_likes=true)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&show_tags=true&show_author=true&show_plays=true&show_likes=true)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&show_tags=true&show_author=true&show_plays=true&show_likes=true)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 #### Player — No Equalizer
 
-[![Player No EQ](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark&show_equalizer=false)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Player No EQ](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark&show_equalizer=false)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&show_equalizer=false)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&show_equalizer=false)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 #### Player — With Stats
 
-[![Player Stats](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&theme=dark&show_plays=true&show_likes=true)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Player Stats](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&theme=dark&show_plays=true&show_likes=true)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&show_plays=true&show_likes=true)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&show_plays=true&show_likes=true)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 </details>
@@ -361,50 +361,50 @@ Use the `accent_color` parameter with any hex value (without the `#`).
 
 #### Red Accent (`ff6b6b`)
 
-[![Red Accent](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark&accent_color=ff6b6b)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Red Accent](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark&accent_color=ff6b6b)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&accent_color=ff6b6b)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&accent_color=ff6b6b)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 #### Teal Accent (`2dd4bf`)
 
-[![Teal Accent](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark&accent_color=2dd4bf)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Teal Accent](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark&accent_color=2dd4bf)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&accent_color=2dd4bf)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&accent_color=2dd4bf)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 #### Orange Accent (`fb923c`)
 
-[![Orange Accent](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&theme=dark&accent_color=fb923c)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Orange Accent](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&theme=dark&accent_color=fb923c)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&accent_color=fb923c)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&accent_color=fb923c)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 #### Pink Accent (`f472b6`)
 
-[![Pink Accent](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark&accent_color=f472b6)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Pink Accent](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark&accent_color=f472b6)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&accent_color=f472b6)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&accent_color=f472b6)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 #### Green Accent (`22c55e`)
 
-[![Green Accent](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&theme=dark&accent_color=22c55e)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Green Accent](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&theme=dark&accent_color=22c55e)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&accent_color=22c55e)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&accent_color=22c55e)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 #### Blue Accent (`38bdf8`)
 
-[![Blue Accent](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark&accent_color=38bdf8)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+[![Blue Accent](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark&accent_color=38bdf8)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&accent_color=38bdf8)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&accent_color=38bdf8)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 </details>
@@ -417,13 +417,13 @@ Use the `accent_color` parameter with any hex value (without the `#`).
 
 Show your Suno profile stats at a glance — avatar, handle, total plays, likes, followers.
 
-[![My Suno Profile](https://sunocards.vercel.app/api/profile?handle=chanmeng)](https://suno.com/@chanmeng)
+[![My Suno Profile](https://github-readme-suno-cards.vercel.app/api/profile?handle=chanmeng)](https://suno.com/@chanmeng)
 
 <details>
 <summary>Copy embed code</summary>
 
 ```markdown
-[![](https://sunocards.vercel.app/api/profile?handle=YOUR_HANDLE)](https://suno.com/@YOUR_HANDLE)
+[![](https://github-readme-suno-cards.vercel.app/api/profile?handle=YOUR_HANDLE)](https://suno.com/@YOUR_HANDLE)
 ```
 
 </details>
@@ -432,13 +432,13 @@ Show your Suno profile stats at a glance — avatar, handle, total plays, likes,
 
 Your top songs, sorted and stacked together. Use the `max` parameter to control how many.
 
-[![Card Stack](https://sunocards.vercel.app/api/cards?handle=chanmeng&sort=play_count&max=3)](https://suno.com/@chanmeng)
+[![Card Stack](https://github-readme-suno-cards.vercel.app/api/cards?handle=chanmeng&sort=play_count&max=3)](https://suno.com/@chanmeng)
 
 <details>
 <summary>Copy embed code</summary>
 
 ```markdown
-[![](https://sunocards.vercel.app/api/cards?handle=YOUR_HANDLE&sort=play_count&max=3)](https://suno.com/@YOUR_HANDLE)
+[![](https://github-readme-suno-cards.vercel.app/api/cards?handle=YOUR_HANDLE&sort=play_count&max=3)](https://suno.com/@YOUR_HANDLE)
 ```
 
 </details>
@@ -459,7 +459,7 @@ flowchart TB
     style F fill:#7c3aed,color:#fff
 ```
 
-Or use the **[interactive builder](https://sunocards.vercel.app/builder)** for a visual drag-and-drop experience.
+Or use the **[interactive builder](https://github-readme-suno-cards.vercel.app/builder)** for a visual drag-and-drop experience.
 
 <details>
 <summary><strong>Layout options</strong></summary>
@@ -529,7 +529,7 @@ Fine-tune any color with hex values (with or without `#`):
 **Example — Full custom colors:**
 
 ```markdown
-[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&bg_color=1a1a2e&text_color=eaeaea&accent_color=e94560)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://github-readme-suno-cards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&bg_color=1a1a2e&text_color=eaeaea&accent_color=e94560)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 </details>
@@ -550,7 +550,7 @@ Fine-tune any color with hex values (with or without `#`):
 | `GET /api/cards?handle=<handle>` | Stacked multi-card auto-discovery (SVG) |
 | `GET /song/<uuid>` | Pretty URL alias for `/api/card?id=<uuid>` |
 
-Base URL: `https://sunocards.vercel.app`
+Base URL: `https://github-readme-suno-cards.vercel.app`
 
 ### `/api/card` Parameters
 
@@ -674,7 +674,7 @@ Includes all `/api/card` visual parameters, plus:
 | `comment_tag_name` | `SUNO-CARDS` | Marker name (allows multiple instances) |
 | `output_type` | `markdown` | `markdown` or `html` (with `<picture>` theme switching) |
 | `output_only` | `false` | Skip README write, emit via outputs only |
-| `base_url` | `https://sunocards.vercel.app` | Self-hosted service override |
+| `base_url` | `https://github-readme-suno-cards.vercel.app` | Self-hosted service override |
 
 ### Action Outputs
 
@@ -697,7 +697,7 @@ Includes all `/api/card` visual parameters, plus:
 ```mermaid
 flowchart LR
     subgraph service["Service Mode (default)"]
-        S1["README links to<br/>sunocards.vercel.app"] --> S2["SVG rendered on-the-fly"]
+        S1["README links to<br/>github-readme-suno-cards.vercel.app"] --> S2["SVG rendered on-the-fly"]
         S2 --> S3["Always up-to-date<br/>play counts, badges"]
     end
 
@@ -832,13 +832,13 @@ graph TB
 
 ### Web App
 
-The project includes a full 3-page React frontend at **[sunocards.vercel.app](https://sunocards.vercel.app)**:
+The project includes a full 3-page React frontend at **[github-readme-suno-cards.vercel.app](https://github-readme-suno-cards.vercel.app)**:
 
 | Page | URL | Description |
 |---|---|---|
-| **Home** | [sunocards.vercel.app](https://sunocards.vercel.app) | Hero showcase, feature highlights, featured card styles |
-| **Gallery** | [sunocards.vercel.app/gallery](https://sunocards.vercel.app/gallery) | Browse 20+ curated presets with layout/preset/theme filters |
-| **Builder** | [sunocards.vercel.app/builder](https://sunocards.vercel.app/builder) | Interactive card builder with live preview, toggles, color pickers, and embed code generator |
+| **Home** | [github-readme-suno-cards.vercel.app](https://github-readme-suno-cards.vercel.app) | Hero showcase, feature highlights, featured card styles |
+| **Gallery** | [github-readme-suno-cards.vercel.app/gallery](https://github-readme-suno-cards.vercel.app/gallery) | Browse 20+ curated presets with layout/preset/theme filters |
+| **Builder** | [github-readme-suno-cards.vercel.app/builder](https://github-readme-suno-cards.vercel.app/builder) | Interactive card builder with live preview, toggles, color pickers, and embed code generator |
 
 ### Data Source Compliance
 

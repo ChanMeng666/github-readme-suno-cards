@@ -29060,7 +29060,7 @@ function readInputs() {
     bgColor: hex("bg_color"),
     textColor: hex("text_color"),
     accentColor: hex("accent_color"),
-    baseUrl: str("base_url", "https://sunocards.vercel.app"),
+    baseUrl: str("base_url", "https://github-readme-suno-cards.vercel.app"),
     outputOnly: bool("output_only", false),
     commitMessage: str("commit_message", "chore(suno-cards): update README"),
     committerUsername: str("committer_username", "github-actions[bot]"),

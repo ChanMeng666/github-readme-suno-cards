@@ -66,18 +66,18 @@ function makeProfile(): SunoProfile {
 describe('renderServiceSongLine', () => {
   it('emits a markdown image → link with auto theme', () => {
     const line = renderServiceSongLine(makeSong(), {
-      baseUrl: 'https://sunocards.vercel.app',
+      baseUrl: 'https://github-readme-suno-cards.vercel.app',
       theme: 'auto',
       outputType: 'markdown',
     });
     expect(line).toBe(
-      '[![冷酷史官的注脚](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=auto)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)',
+      '[![冷酷史官的注脚](https://github-readme-suno-cards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=auto)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)',
     );
   });
 
   it('pins theme when not auto in markdown mode', () => {
     const line = renderServiceSongLine(makeSong(), {
-      baseUrl: 'https://sunocards.vercel.app',
+      baseUrl: 'https://github-readme-suno-cards.vercel.app',
       theme: 'dark',
       outputType: 'markdown',
     });
@@ -86,7 +86,7 @@ describe('renderServiceSongLine', () => {
 
   it('emits <picture> block in html output mode', () => {
     const line = renderServiceSongLine(makeSong(), {
-      baseUrl: 'https://sunocards.vercel.app',
+      baseUrl: 'https://github-readme-suno-cards.vercel.app',
       theme: 'auto',
       outputType: 'html',
     });
@@ -98,7 +98,7 @@ describe('renderServiceSongLine', () => {
 
   it('escapes brackets in titles for markdown safety', () => {
     const line = renderServiceSongLine(makeSong({ title: 'Song [remix]' }), {
-      baseUrl: 'https://sunocards.vercel.app',
+      baseUrl: 'https://github-readme-suno-cards.vercel.app',
       theme: 'auto',
       outputType: 'markdown',
     });
@@ -108,7 +108,7 @@ describe('renderServiceSongLine', () => {
 
   it('includes optional color params in the URL', () => {
     const line = renderServiceSongLine(makeSong(), {
-      baseUrl: 'https://sunocards.vercel.app',
+      baseUrl: 'https://github-readme-suno-cards.vercel.app',
       theme: 'auto',
       outputType: 'markdown',
       bgColor: '#0a0a0f',
@@ -122,7 +122,7 @@ describe('renderServiceSongLine', () => {
 describe('renderServiceProfileLine', () => {
   it('emits a profile URL as markdown', () => {
     const line = renderServiceProfileLine(makeProfile(), {
-      baseUrl: 'https://sunocards.vercel.app',
+      baseUrl: 'https://github-readme-suno-cards.vercel.app',
       theme: 'auto',
       outputType: 'markdown',
     });
@@ -136,7 +136,7 @@ describe('renderServiceBlock', () => {
     const block = renderServiceBlock(
       makeProfile(),
       [makeSong(), makeSong({ id: 'other-id', title: 'Other' })],
-      { baseUrl: 'https://sunocards.vercel.app', theme: 'auto', outputType: 'markdown' },
+      { baseUrl: 'https://github-readme-suno-cards.vercel.app', theme: 'auto', outputType: 'markdown' },
     );
     const lines = block.split('\n\n');
     expect(lines).toHaveLength(3); // profile + 2 songs
@@ -147,7 +147,7 @@ describe('renderServiceBlock', () => {
 
   it('omits profile line when profile is null', () => {
     const block = renderServiceBlock(null, [makeSong()], {
-      baseUrl: 'https://sunocards.vercel.app',
+      baseUrl: 'https://github-readme-suno-cards.vercel.app',
       theme: 'auto',
       outputType: 'markdown',
     });

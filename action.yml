@@ -124,7 +124,7 @@ inputs:
   base_url:
     description: 'Base URL of the hosted card service.'
     required: false
-    default: 'https://sunocards.vercel.app'
+    default: 'https://github-readme-suno-cards.vercel.app'
 
   # ──── Commit behavior ──────────────────────────────────────────────────────
   output_only:
