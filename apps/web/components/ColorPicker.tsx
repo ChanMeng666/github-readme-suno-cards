@@ -35,28 +35,26 @@ export function ColorPicker({ label, value, onChange, defaultColor = '#888888' }
   }, [onChange]);
 
   return (
-    <div>
-      <label className="text-xs font-medium text-muted block mb-1.5">{label}</label>
-      <div className="flex items-center gap-2">
-        <input
-          type="color"
-          value={value ? `#${value}` : defaultColor}
-          onChange={handlePickerChange}
-          className="w-8 h-8 rounded-md border border-border cursor-pointer bg-transparent p-0.5"
-        />
-        <input
-          type="text"
-          value={hexInput}
-          onChange={handleHexInput}
-          placeholder="auto"
-          maxLength={7}
-          className={cn(
-            'flex-1 bg-surface border border-border rounded-lg px-2.5 py-1.5',
-            'text-xs font-mono text-foreground placeholder:text-muted/50',
-            'focus:border-accent/50 focus:outline-none transition-colors',
-          )}
-        />
-      </div>
+    <div className="flex items-center gap-3">
+      <label className="text-xs font-medium text-muted w-20 shrink-0">{label}</label>
+      <input
+        type="color"
+        value={value ? `#${value}` : defaultColor}
+        onChange={handlePickerChange}
+        className="w-8 h-8 rounded-md border border-border cursor-pointer bg-transparent p-0.5 shrink-0"
+      />
+      <input
+        type="text"
+        value={hexInput}
+        onChange={handleHexInput}
+        placeholder="auto"
+        maxLength={7}
+        className={cn(
+          'flex-1 bg-surface border border-border rounded-lg px-2.5 py-1.5',
+          'text-xs font-mono text-foreground placeholder:text-muted/50',
+          'focus:border-accent/50 focus:outline-none transition-colors',
+        )}
+      />
     </div>
   );
 }

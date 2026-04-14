@@ -217,7 +217,7 @@ function BuilderInner() {
           {/* Colors */}
           <Section title="Colors">
             <div className="space-y-3">
-              <div className="grid grid-cols-3 gap-3">
+              <div className="space-y-2.5">
                 <ColorPicker
                   label="Background"
                   value={config.bgColor}
@@ -240,7 +240,7 @@ function BuilderInner() {
               <button
                 type="button"
                 onClick={() => dispatch({ type: 'RESET_COLORS' })}
-                className="text-xs text-muted hover:text-accent transition-colors"
+                className="mt-2 text-xs text-muted hover:text-accent transition-colors ml-auto block"
               >
                 Reset to preset defaults
               </button>
