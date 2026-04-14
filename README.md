@@ -1,10 +1,10 @@
-<p align="center">
-  <img src="docs/logo.svg" alt="suno-cards logo" width="120" />
-</p>
+<div align="center">
 
-<h1 align="center">github-readme-suno-cards</h1>
+<img src="docs/logo.svg" alt="Suno Cards logo" width="120" />
 
-<p align="center">Display your <a href="https://suno.com/">Suno AI</a>-generated music as dynamic, animated SVG cards in your GitHub profile README.</p>
+# Suno Cards
+
+### Display your Suno AI music as dynamic, animated SVG cards in your GitHub README.
 
 [![CI](https://github.com/ChanMeng666/github-readme-suno-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/ChanMeng666/github-readme-suno-cards/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
@@ -12,15 +12,40 @@
 
 > **Give us your Suno handle and do nothing else.** Your GitHub README stays in sync with your music — new songs, play counts, and likes appear automatically.
 
-**[Live Demo & Builder](https://sunocards.vercel.app)** | **[Browse Gallery](https://sunocards.vercel.app/gallery)** | **[Build Your Card](https://sunocards.vercel.app/builder)**
+**[Live Demo](https://sunocards.vercel.app)** · **[Browse Gallery](https://sunocards.vercel.app/gallery)** · **[Build Your Card](https://sunocards.vercel.app/builder)**
+
+<br/>
+
+<p>
+  <a href="https://github.com/ChanMeng666/github-readme-suno-cards/stargazers">
+    <img src="https://img.shields.io/badge/Star_This_Repo-FFD700?style=for-the-badge&logo=github&logoColor=black" alt="Star this repo"/>
+  </a>
+</p>
 
 ---
 
-## Table of Contents
+<table>
+<tr>
+<td align="center">
+<strong>Classic Layout</strong><br/><br/>
+<img src="https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark" alt="Classic card demo" width="400"/>
+</td>
+<td align="center">
+<strong>Player Layout</strong><br/><br/>
+<img src="https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark" alt="Player card demo" width="400"/>
+</td>
+</tr>
+</table>
+
+</div>
+
+<details>
+<summary><strong>Table of Contents</strong></summary>
 
 - [How It Works](#how-it-works)
-- [Quick Start (2 minutes)](#quick-start)
-- [Embed a Single Card (no setup)](#embed-a-single-card)
+- [Getting Started](#getting-started)
+  - [Embed a Single Card (zero setup)](#embed-a-single-card-zero-setup)
+  - [Auto-Sync with GitHub Action](#auto-sync-with-github-action)
 - [Style Gallery](#style-gallery)
   - [Layouts + Presets](#layouts--presets)
   - [Theme Variants](#theme-variants)
@@ -31,11 +56,14 @@
 - [API Reference](#api-reference)
 - [GitHub Action Reference](#github-action-reference)
 - [Render Modes](#render-modes)
-- [Architecture](#architecture)
-- [Web App](#web-app)
+- [Example Workflows](#example-workflows)
 - [Roadmap](#roadmap)
+- [Architecture & Internals](#architecture--internals)
 - [Acknowledgements](#acknowledgements)
+- [Author](#author)
 - [License](#license)
+
+</details>
 
 ---
 
@@ -53,26 +81,35 @@ flowchart LR
     style F fill:#7c3aed,color:#fff
 ```
 
-The project has two usage modes:
+There are two usage modes:
 
-```mermaid
-flowchart TB
-    subgraph mode1["Mode 1: Direct Embed (Zero Setup)"]
-        M1A["Paste card URL in README"] --> M1B["GitHub renders SVG via Vercel Edge"]
-    end
-
-    subgraph mode2["Mode 2: GitHub Action (Auto-Sync)"]
-        M2A["Add workflow + markers"] --> M2B["Action runs on schedule"]
-        M2B --> M2C["Fetches songs from Suno"]
-        M2C --> M2D["Updates README automatically"]
-    end
-```
+- **Direct Embed (Zero Setup)** — Paste a card URL in your README. GitHub renders the SVG live via Vercel Edge.
+- **GitHub Action (Auto-Sync)** — Add a workflow that runs on a schedule. It fetches your songs from Suno and updates your README automatically.
 
 ---
 
-## Quick Start
+## Getting Started
 
-### Step 1 — Add markers to your README
+### Embed a Single Card (zero setup)
+
+No GitHub Action needed — paste a URL directly into your README:
+
+```markdown
+[![My Song](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID)](https://suno.com/song/YOUR_SONG_UUID)
+```
+
+The `id` parameter accepts:
+- A full UUID: `a885e43c-6918-456f-a5f0-0e8e29e61066`
+- A Suno URL: `https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066`
+- A short code: `https://suno.com/s/YourShortCode`
+
+> **Tip:** Use the **[interactive builder](https://sunocards.vercel.app/builder)** to customize the card visually, then copy the generated embed code.
+
+---
+
+### Auto-Sync with GitHub Action
+
+#### Step 1 — Add markers to your README
 
 ```markdown
 ## My Suno Music
@@ -81,7 +118,7 @@ flowchart TB
 <!-- SUNO-CARDS:END -->
 ```
 
-### Step 2 — Create `.github/workflows/suno-cards.yml`
+#### Step 2 — Create `.github/workflows/suno-cards.yml`
 
 ```yaml
 name: Update Suno cards
@@ -110,24 +147,9 @@ jobs:
           add: './README.md'
 ```
 
-### Step 3 — Done!
+#### Step 3 — Done!
 
 Every 6 hours (or on manual trigger), the Action fetches your public songs, sorts them, and writes the cards between your markers.
-
----
-
-## Embed a Single Card
-
-No GitHub Action needed — paste a URL directly into your README:
-
-```markdown
-[![My Song](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID)](https://suno.com/song/YOUR_SONG_UUID)
-```
-
-The `id` parameter accepts:
-- A full UUID: `a885e43c-6918-456f-a5f0-0e8e29e61066`
-- A Suno URL: `https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066`
-- A short code: `https://suno.com/s/YourShortCode`
 
 ---
 
@@ -135,27 +157,11 @@ The `id` parameter accepts:
 
 All examples below use a real demo song. **Replace `a885e43c-6918-456f-a5f0-0e8e29e61066` with your own song UUID** and copy the code to your README.
 
-> **Tip**: Use the [interactive card builder](https://sunocards.vercel.app/builder) to customize any style visually, then copy the generated embed code.
+> **Tip:** Use the **[interactive card builder](https://sunocards.vercel.app/builder)** to customize any style visually, then copy the generated embed code.
 
 ### Layouts + Presets
 
 There are **2 layouts** x **2 color presets** = 4 base combinations.
-
-```mermaid
-graph LR
-    subgraph Layouts
-        CL[Classic<br/>info-dense]
-        PL[Player<br/>music player style]
-    end
-    subgraph Presets
-        DF[Default<br/>purple accent]
-        SN[Suno<br/>navy + gold]
-    end
-    CL --- DF
-    CL --- SN
-    PL --- DF
-    PL --- SN
-```
 
 ---
 
@@ -165,9 +171,14 @@ Info-dense layout with purple accent — title, author, tags, stats, model badge
 
 [![Classic Default Dark](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
+<details>
+<summary>Copy embed code</summary>
+
 ```markdown
 [![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID)](https://suno.com/song/YOUR_SONG_UUID)
 ```
+
+</details>
 
 ---
 
@@ -177,9 +188,14 @@ Info-dense layout with Suno's official navy + gold palette.
 
 [![Classic Suno Dark](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&preset=suno&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
+<details>
+<summary>Copy embed code</summary>
+
 ```markdown
 [![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&preset=suno)](https://suno.com/song/YOUR_SONG_UUID)
 ```
+
+</details>
 
 ---
 
@@ -189,9 +205,14 @@ Suno-style music player with progress bar, play button, and SUNO logo — using 
 
 [![Player Default Dark](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
+<details>
+<summary>Copy embed code</summary>
+
 ```markdown
 [![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player)](https://suno.com/song/YOUR_SONG_UUID)
 ```
+
+</details>
 
 ---
 
@@ -201,9 +222,14 @@ The full Suno official look — player layout with navy + gold palette.
 
 [![Player Suno Dark](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
+<details>
+<summary>Copy embed code</summary>
+
 ```markdown
 [![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno)](https://suno.com/song/YOUR_SONG_UUID)
 ```
+
+</details>
 
 ---
 
@@ -221,39 +247,64 @@ Each card supports three theme modes:
 
 [![Classic Light](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
+<details>
+<summary>Copy embed code</summary>
+
 ```markdown
 [![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
 ```
+
+</details>
 
 #### Player + Suno — Light
 
 [![Player Suno Light](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
+<details>
+<summary>Copy embed code</summary>
+
 ```markdown
 [![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
 ```
+
+</details>
 
 #### Classic + Suno — Light
 
 [![Classic Suno Light](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&preset=suno&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
+<details>
+<summary>Copy embed code</summary>
+
 ```markdown
 [![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&preset=suno&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
 ```
+
+</details>
 
 #### Player + Default — Light
 
 [![Player Default Light](https://sunocards.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
 
+<details>
+<summary>Copy embed code</summary>
+
 ```markdown
 [![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
 ```
+
+</details>
 
 ---
 
 ### Toggle Showcases
 
-Fine-tune which elements appear on your card. All toggles accept `true` or `false`.
+<details>
+<summary><strong>View toggle variations</strong> — fine-tune which elements appear on your card</summary>
+
+<br/>
+
+All toggles accept `true` or `false`.
 
 #### Minimal Classic — Title and cover only
 
@@ -295,11 +346,18 @@ Fine-tune which elements appear on your card. All toggles accept `true` or `fals
 [![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&show_plays=true&show_likes=true)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
+</details>
+
 ---
 
 ### Custom Accent Colors
 
-Override the accent color with any hex value using the `accent_color` parameter (without the `#`).
+<details>
+<summary><strong>View custom accent color examples</strong> — override the accent with any hex value using <code>accent_color</code></summary>
+
+<br/>
+
+Use the `accent_color` parameter with any hex value (without the `#`).
 
 #### Red Accent (`ff6b6b`)
 
@@ -349,6 +407,8 @@ Override the accent color with any hex value using the `accent_color` parameter 
 [![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&accent_color=38bdf8)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
+</details>
+
 ---
 
 ### Profile & Card Stack
@@ -359,9 +419,14 @@ Show your Suno profile stats at a glance — avatar, handle, total plays, likes,
 
 [![My Suno Profile](https://sunocards.vercel.app/api/profile?handle=chanmeng)](https://suno.com/@chanmeng)
 
+<details>
+<summary>Copy embed code</summary>
+
 ```markdown
 [![](https://sunocards.vercel.app/api/profile?handle=YOUR_HANDLE)](https://suno.com/@YOUR_HANDLE)
 ```
+
+</details>
 
 #### Auto-Discovered Card Stack
 
@@ -369,15 +434,18 @@ Your top songs, sorted and stacked together. Use the `max` parameter to control 
 
 [![Card Stack](https://sunocards.vercel.app/api/cards?handle=chanmeng&sort=play_count&max=3)](https://suno.com/@chanmeng)
 
+<details>
+<summary>Copy embed code</summary>
+
 ```markdown
 [![](https://sunocards.vercel.app/api/cards?handle=YOUR_HANDLE&sort=play_count&max=3)](https://suno.com/@YOUR_HANDLE)
 ```
 
+</details>
+
 ---
 
 ## Customization Guide
-
-### How to customize step-by-step
 
 ```mermaid
 flowchart TB
@@ -393,21 +461,28 @@ flowchart TB
 
 Or use the **[interactive builder](https://sunocards.vercel.app/builder)** for a visual drag-and-drop experience.
 
-### Layout options
+<details>
+<summary><strong>Layout options</strong></summary>
 
 | Layout | Description | Best for |
 |---|---|---|
 | `classic` | Info-dense Spotify-style card with tags, stats, badges | Detailed song info |
 | `player` | Suno-style music player with progress bar and play button | Clean, visual look |
 
-### Color presets
+</details>
+
+<details>
+<summary><strong>Color presets</strong></summary>
 
 | Preset | Colors | Vibe |
 |---|---|---|
 | `default` | Purple accent on dark/light background | Modern, neutral |
 | `suno` | Navy + gold palette matching Suno's brand | Official look |
 
-### Theme modes
+</details>
+
+<details>
+<summary><strong>Theme modes</strong></summary>
 
 | Theme | Behavior |
 |---|---|
@@ -415,7 +490,10 @@ Or use the **[interactive builder](https://sunocards.vercel.app/builder)** for a
 | `dark` | Always dark background |
 | `light` | Always light background |
 
-### Element toggles
+</details>
+
+<details>
+<summary><strong>Element toggles (11 options)</strong></summary>
 
 Each element can be shown or hidden independently. Defaults vary by layout.
 
@@ -433,7 +511,10 @@ Each element can be shown or hidden independently. Defaults vary by layout.
 | `show_logo` | `false` | `true` | SUNO logo in bottom-right |
 | `show_link_icon` | `false` | `true` | Link icon in top-right |
 
-### Color overrides
+</details>
+
+<details>
+<summary><strong>Color overrides</strong></summary>
 
 Fine-tune any color with hex values (with or without `#`):
 
@@ -451,9 +532,14 @@ Fine-tune any color with hex values (with or without `#`):
 [![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&bg_color=1a1a2e&text_color=eaeaea&accent_color=e94560)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
+</details>
+
 ---
 
 ## API Reference
+
+<details>
+<summary><strong>API Reference</strong> — 3 endpoints, all parameters</summary>
 
 ### Endpoints
 
@@ -530,9 +616,14 @@ Includes all `/api/card` visual parameters, plus:
 - **Downstream** (HTTP response): `Cache-Control: s-maxage=3600, stale-while-revalidate=86400`
 - GitHub's Camo proxy caches SVGs — changes may take up to an hour to appear
 
+</details>
+
 ---
 
 ## GitHub Action Reference
+
+<details>
+<summary><strong>GitHub Action Reference</strong> — all inputs & outputs</summary>
 
 ### Data Source (pick one)
 
@@ -594,9 +685,14 @@ Includes all `/api/card` visual parameters, plus:
 | `cards_block` | The markdown/HTML block written to README |
 | `rendered_files` | JSON array of SVG paths (local mode only) |
 
+</details>
+
 ---
 
 ## Render Modes
+
+<details>
+<summary><strong>Render Modes</strong> — Service vs Local</summary>
 
 ```mermaid
 flowchart LR
@@ -634,9 +730,62 @@ The Action pre-renders SVGs with embedded base64 cover images into `.suno-cards/
     local_cards_dir: '.suno-cards'
 ```
 
+</details>
+
 ---
 
-## Architecture
+## Example Workflows
+
+<details>
+<summary><strong>Example Workflows</strong> — ready-to-copy workflow files</summary>
+
+See [`examples/`](./examples) for ready-to-copy workflow files:
+
+| File | Mode | Description |
+|---|---|---|
+| [`auto-discovery.yml`](./examples/auto-discovery.yml) | Service | Zero-config auto-discovery — just your handle |
+| [`manifest-mode.yml`](./examples/manifest-mode.yml) | Service | Explicit song list via YAML manifest |
+| [`local-mode.yml`](./examples/local-mode.yml) | Local | Pre-render SVGs to your repo |
+| [`suno-songs.yml`](./examples/suno-songs.yml) | — | Sample manifest file |
+
+</details>
+
+---
+
+## Roadmap
+
+<details>
+<summary><strong>Roadmap</strong></summary>
+
+### v0.2
+
+- [ ] **Waveform card variant** (Action local mode only) — download MP3, compute amplitude samples, render SVG `<path>`
+- [ ] **Lyrics excerpt card** — parse `[Chorus]` from structured prompt, render as card subtitle
+- [ ] **Playlist card** — render Suno playlists
+- [ ] **JSON API** — `/api/song.json` and `/api/profile.json` for third-party tools
+- [ ] **PNG export** — `/api/card.png` via `@resvg/resvg`
+
+### v0.3
+
+- [ ] **Vercel KV play-count history** — trending arrows (`+15 this week`), weekly summaries
+- [ ] **RSS/Atom feed per handle** — `/api/feed/{handle}.xml`
+
+### v0.4+
+
+- [ ] Cover-art color extraction for per-song gradient backgrounds
+- [ ] Song-DNA radar chart card
+- [ ] Year-in-review card
+
+</details>
+
+---
+
+## Architecture & Internals
+
+<details>
+<summary><strong>Architecture & Internals</strong> — monorepo structure, rendering technique, web app</summary>
+
+### Monorepo Architecture
 
 ```mermaid
 graph TB
@@ -665,7 +814,7 @@ graph TB
     Action --> GH["GitHub Actions<br/>Scheduled / Manual"]
 ```
 
-### Package breakdown
+### Package Breakdown
 
 | Package | Role |
 |---|---|
@@ -674,20 +823,14 @@ graph TB
 | `apps/web` | Next.js 15 on Vercel Edge Runtime. 3 API routes + 3-page React frontend with Tailwind CSS. |
 | `action` | Node 20 GitHub Action. Bundled with esbuild, committed `dist/index.js`. |
 
-### Rendering technique
+### Rendering Technique
 
 - **SVG with `<foreignObject>`** for CJK-friendly rich text layout
 - **CSS `@media (prefers-color-scheme)`** for auto dark/light theming
 - **CSS `@keyframes` on HTML `<span>`s** inside foreignObject for the animated equalizer bars
 - **Dual-layer caching**: Vercel Data Cache for upstream Suno calls + HTTP `Cache-Control` for downstream GitHub Camo proxy
 
-### Data source compliance
-
-Uses only the public `https://studio-api-prod.suno.com` endpoints that Suno publishes as their oEmbed provider. No cookies, no session tokens, no reverse-engineered auth.
-
----
-
-## Web App
+### Web App
 
 The project includes a full 3-page React frontend at **[sunocards.vercel.app](https://sunocards.vercel.app)**:
 
@@ -697,64 +840,11 @@ The project includes a full 3-page React frontend at **[sunocards.vercel.app](ht
 | **Gallery** | [sunocards.vercel.app/gallery](https://sunocards.vercel.app/gallery) | Browse 20+ curated presets with layout/preset/theme filters |
 | **Builder** | [sunocards.vercel.app/builder](https://sunocards.vercel.app/builder) | Interactive card builder with live preview, toggles, color pickers, and embed code generator |
 
-Built with Next.js 15, React 18, Tailwind CSS, and `next-themes` for dark/light mode.
+### Data Source Compliance
 
----
+Uses only the public `https://studio-api-prod.suno.com` endpoints that Suno publishes as their oEmbed provider. No cookies, no session tokens, no reverse-engineered auth.
 
-## Features
-
-- **Two layouts** — `classic` (info-dense Spotify-style) and `player` (Suno-style music player with progress bar)
-- **Two color presets** — `default` (purple) and `suno` (official navy + gold), freely combinable with any layout
-- **Fine-grained element toggles** — show/hide equalizer, progress bar, tags, stats, logo, link icon, and more
-- **Custom color overrides** — `bg_color`, `text_color`, `subtext_color`, `accent_color`, `border_color` on top of any preset
-- **Spotify-style animated equalizer bars** — 4 CSS-animated bars overlay your cover art
-- **Handle-based auto-discovery** — set your handle once, new songs appear automatically
-- **Dark/light theme** — auto-switches with GitHub's UI theme via CSS `prefers-color-scheme`
-- **Smart tag classification** — genres, instruments, moods, vocal types, and tempo rendered as distinct chips
-- **Suno-native model badges** — `v4.5` / `v5` badges use exact theme tokens from Suno's own UI
-- **"NEW" ribbon** on songs published in the last 7 days
-- **Profile summary card** — avatar, handle, total plays, likes, followers
-- **Multi-language** — English, Simplified Chinese, Japanese out of the box
-- **Vercel Edge Runtime** — cold start 30-80ms, warm requests ~20ms from edge cache
-- **Interactive card builder** — visual configurator at [sunocards.vercel.app/builder](https://sunocards.vercel.app/builder)
-- **20+ gallery presets** — curated card styles browsable at [sunocards.vercel.app/gallery](https://sunocards.vercel.app/gallery)
-- **Compliance-first** — uses only the public Suno oEmbed endpoints; no cookies, no reverse-engineered auth
-
----
-
-## Examples
-
-See [`examples/`](./examples) for ready-to-copy workflow files:
-
-| File | Mode | Description |
-|---|---|---|
-| [`auto-discovery.yml`](./examples/auto-discovery.yml) | Service | Zero-config auto-discovery — just your handle |
-| [`manifest-mode.yml`](./examples/manifest-mode.yml) | Service | Explicit song list via YAML manifest |
-| [`local-mode.yml`](./examples/local-mode.yml) | Local | Pre-render SVGs to your repo |
-| [`suno-songs.yml`](./examples/suno-songs.yml) | — | Sample manifest file |
-
----
-
-## Roadmap
-
-### v0.2
-
-- [ ] **Waveform card variant** (Action local mode only) — download MP3, compute amplitude samples, render SVG `<path>`
-- [ ] **Lyrics excerpt card** — parse `[Chorus]` from structured prompt, render as card subtitle
-- [ ] **Playlist card** — render Suno playlists
-- [ ] **JSON API** — `/api/song.json` and `/api/profile.json` for third-party tools
-- [ ] **PNG export** — `/api/card.png` via `@resvg/resvg`
-
-### v0.3
-
-- [ ] **Vercel KV play-count history** — trending arrows (`+15 this week`), weekly summaries
-- [ ] **RSS/Atom feed per handle** — `/api/feed/{handle}.xml`
-
-### v0.4+
-
-- [ ] Cover-art color extraction for per-song gradient backgrounds
-- [ ] Song-DNA radar chart card
-- [ ] Year-in-review card
+</details>
 
 ---
 
@@ -769,10 +859,27 @@ The card primitives borrow ideas from several excellent projects:
 
 ---
 
+## Author
+
+**Chan Meng**
+
+<p>
+  <a href="https://www.linkedin.com/in/chanmeng666/">
+    <img src="https://img.shields.io/badge/LinkedIn-chanmeng666-0A66C2?style=flat&logo=linkedin&logoColor=white" alt="LinkedIn"/>
+  </a>
+  <a href="https://github.com/ChanMeng666">
+    <img src="https://img.shields.io/badge/GitHub-ChanMeng666-181717?style=flat&logo=github&logoColor=white" alt="GitHub"/>
+  </a>
+</p>
+
+---
+
 ## License
 
 [MIT](./LICENSE)
 
 ---
 
-Made with music by [Suno](https://suno.com/)
+<div align="center">
+Made with music by <a href="https://suno.com/">Suno</a>
+</div>
