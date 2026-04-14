@@ -35,13 +35,13 @@ export const DEFAULT_THEME: Theme = {
     cardBgGradientStart: '#1a1a26',
     cardBgGradientEnd: '#0f0f17',
     text: '#f5f5f7',
-    subtext: '#a1a1aa',
-    accent: '#8b5cf6',
-    accentGlow: 'rgba(139, 92, 246, 0.45)',
+    subtext: '#b4b4bd', // 8.8:1 on card bg — WCAG AAA
+    accent: '#a78bfa', // 6.7:1 — WCAG AA for all text sizes
+    accentGlow: 'rgba(167, 139, 250, 0.45)',
     border: 'rgba(255, 255, 255, 0.08)',
-    chipBg: 'rgba(139, 92, 246, 0.14)',
-    chipText: '#c4b5fd',
-    chipBorder: 'rgba(139, 92, 246, 0.3)',
+    chipBg: 'rgba(167, 139, 250, 0.14)',
+    chipText: '#ddd0fe', // 12.5:1 — WCAG AAA even at 10px
+    chipBorder: 'rgba(167, 139, 250, 0.3)',
     barColor: '#a78bfa',
     progressTrack: '#3a3a4f',
     scrubber: '#ffffff',
@@ -52,12 +52,12 @@ export const DEFAULT_THEME: Theme = {
     cardBgGradientStart: '#fafafa',
     cardBgGradientEnd: '#f4f4f5',
     text: '#18181b',
-    subtext: '#71717a',
-    accent: '#7c3aed',
+    subtext: '#52525b', // 7.1:1 on white — WCAG AAA
+    accent: '#7c3aed', // 5.4:1 — WCAG AA
     accentGlow: 'rgba(124, 58, 237, 0.3)',
     border: 'rgba(0, 0, 0, 0.08)',
     chipBg: 'rgba(124, 58, 237, 0.08)',
-    chipText: '#6d28d9',
+    chipText: '#5b21b6', // 8.3:1 — WCAG AAA
     chipBorder: 'rgba(124, 58, 237, 0.2)',
     barColor: '#7c3aed',
     progressTrack: '#d0d0e0',
@@ -73,12 +73,12 @@ export const SUNO_PRESET: Theme = {
     cardBgGradientStart: '#1e295e',
     cardBgGradientEnd: '#1d264b',
     text: '#ffffff',
-    subtext: '#8888aa',
-    accent: '#fbd38d',
+    subtext: '#b0b0d0', // 6.9:1 on card bg — WCAG AA
+    accent: '#fbd38d', // 10.2:1 — WCAG AAA
     accentGlow: 'rgba(251, 211, 141, 0.35)',
     border: 'rgba(255, 255, 255, 0.06)',
     chipBg: 'rgba(251, 211, 141, 0.12)',
-    chipText: '#fbd38d',
+    chipText: '#fbd38d', // 10.2:1 — WCAG AAA
     chipBorder: 'rgba(251, 211, 141, 0.25)',
     barColor: '#fbd38d',
     progressTrack: '#3a3a5c',
@@ -90,14 +90,14 @@ export const SUNO_PRESET: Theme = {
     cardBgGradientStart: '#f0f0f8',
     cardBgGradientEnd: '#e8e8f0',
     text: '#1a1a3e',
-    subtext: '#666688',
-    accent: '#b8912e',
-    accentGlow: 'rgba(184, 145, 46, 0.25)',
+    subtext: '#4a4a6a', // 7.0:1 on white — WCAG AAA
+    accent: '#7a5f18', // 5.5:1 — WCAG AA
+    accentGlow: 'rgba(122, 95, 24, 0.25)',
     border: 'rgba(0, 0, 0, 0.08)',
-    chipBg: 'rgba(184, 145, 46, 0.1)',
-    chipText: '#8a6d1f',
-    chipBorder: 'rgba(184, 145, 46, 0.2)',
-    barColor: '#b8912e',
+    chipBg: 'rgba(122, 95, 24, 0.1)',
+    chipText: '#6b5418', // 6.6:1 — WCAG AA
+    chipBorder: 'rgba(122, 95, 24, 0.2)',
+    barColor: '#7a5f18',
     progressTrack: '#d0d0e0',
     scrubber: '#1a1a3e',
   },

@@ -38,7 +38,6 @@ type CardDemo = {
 };
 
 const CARD_DEMOS: CardDemo[] = [
-  // Layout + Preset combinations
   {
     title: 'Classic + Default',
     description: 'Info-dense layout with purple accent — the original style.',
@@ -63,7 +62,6 @@ const CARD_DEMOS: CardDemo[] = [
     params: `id=${DEMO_UUID}&layout=player&preset=suno`,
     width: 640,
   },
-  // Theme variants
   {
     title: 'Player + Suno (Dark)',
     description: 'Suno player pinned to dark theme.',
@@ -76,7 +74,6 @@ const CARD_DEMOS: CardDemo[] = [
     params: `id=${DEMO_UUID}&theme=light`,
     width: 480,
   },
-  // Toggle showcases
   {
     title: 'Player — No Equalizer',
     description: 'Player layout with equalizer bars hidden.',
@@ -140,6 +137,107 @@ function renderHomePage(): string {
       <h1>github-readme-suno-cards</h1>
       <p class="tagline">Display your Suno AI-generated music as dynamic cards in your GitHub README.</p>
     </header>
+
+    <!-- ── Card Configurator ──────────────────────────────── -->
+    <section id="configurator">
+      <h2>Card Configurator</h2>
+      <p class="dim">Customize your card, preview it live, then copy the embed code.</p>
+
+      <div class="cfg-layout">
+        <div class="cfg-panel">
+          <!-- Song ID -->
+          <label class="cfg-label">Song ID or URL
+            <input id="cfg-id" type="text" class="cfg-input" value="${DEMO_UUID}" placeholder="Song UUID, short code, or full URL" />
+          </label>
+
+          <!-- Layout & Preset -->
+          <div class="cfg-row">
+            <label class="cfg-label">Layout
+              <select id="cfg-layout" class="cfg-select">
+                <option value="classic">Classic</option>
+                <option value="player">Player</option>
+              </select>
+            </label>
+            <label class="cfg-label">Preset
+              <select id="cfg-preset" class="cfg-select">
+                <option value="default">Default (purple)</option>
+                <option value="suno">Suno (navy + gold)</option>
+              </select>
+            </label>
+            <label class="cfg-label">Theme
+              <select id="cfg-theme" class="cfg-select">
+                <option value="auto">Auto</option>
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+              </select>
+            </label>
+          </div>
+
+          <!-- Color overrides -->
+          <div class="cfg-row">
+            <label class="cfg-label">Background
+              <div class="cfg-color-wrap">
+                <input id="cfg-bg" type="color" class="cfg-color" value="#12121a" />
+                <input id="cfg-bg-hex" type="text" class="cfg-hex" placeholder="auto" maxlength="7" />
+              </div>
+            </label>
+            <label class="cfg-label">Text
+              <div class="cfg-color-wrap">
+                <input id="cfg-text" type="color" class="cfg-color" value="#f5f5f7" />
+                <input id="cfg-text-hex" type="text" class="cfg-hex" placeholder="auto" maxlength="7" />
+              </div>
+            </label>
+            <label class="cfg-label">Accent
+              <div class="cfg-color-wrap">
+                <input id="cfg-accent" type="color" class="cfg-color" value="#a78bfa" />
+                <input id="cfg-accent-hex" type="text" class="cfg-hex" placeholder="auto" maxlength="7" />
+              </div>
+            </label>
+          </div>
+
+          <!-- Toggles -->
+          <p class="cfg-section-title">Element toggles</p>
+          <div class="cfg-toggles">
+            <label class="cfg-toggle"><input type="checkbox" id="cfg-equalizer" checked /> Equalizer</label>
+            <label class="cfg-toggle"><input type="checkbox" id="cfg-tags" /> Tags</label>
+            <label class="cfg-toggle"><input type="checkbox" id="cfg-plays" /> Plays</label>
+            <label class="cfg-toggle"><input type="checkbox" id="cfg-likes" /> Likes</label>
+            <label class="cfg-toggle"><input type="checkbox" id="cfg-author" /> Author</label>
+            <label class="cfg-toggle"><input type="checkbox" id="cfg-duration" /> Duration</label>
+            <label class="cfg-toggle"><input type="checkbox" id="cfg-model-badge" /> Model badge</label>
+            <label class="cfg-toggle"><input type="checkbox" id="cfg-new-badge" /> NEW badge</label>
+            <label class="cfg-toggle"><input type="checkbox" id="cfg-progress" /> Progress bar</label>
+            <label class="cfg-toggle"><input type="checkbox" id="cfg-logo" /> SUNO logo</label>
+            <label class="cfg-toggle"><input type="checkbox" id="cfg-link-icon" /> Link icon</label>
+          </div>
+
+          <button id="cfg-apply" class="cfg-btn" onclick="updatePreview()">Update preview</button>
+        </div>
+
+        <!-- Live preview -->
+        <div class="cfg-preview">
+          <div class="cfg-preview-frame">
+            <img id="cfg-preview-img" src="/api/card?id=${DEMO_UUID}" alt="Card preview" />
+          </div>
+
+          <!-- Generated code -->
+          <p class="cfg-section-title" style="margin-top:16px">Embed code</p>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)" title="Copy to clipboard">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+            <pre><code id="cfg-code">[![](${ORIGIN_HINT}/api/card?id=${DEMO_UUID})](https://suno.com/song/${DEMO_UUID})</code></pre>
+          </div>
+          <p class="dim" style="margin-top:8px">URL only:</p>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)" title="Copy to clipboard">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+            <pre><code id="cfg-url">${ORIGIN_HINT}/api/card?id=${DEMO_UUID}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- ── Style Gallery ──────────────────────────────────── -->
     <section>
@@ -207,7 +305,7 @@ function renderHomePage(): string {
       <a href="https://github.com/ChanMeng666/github-readme-suno-cards">GitHub</a>
     </footer>
   </main>
-  <script>${COPY_SCRIPT}</script>
+  <script>${CONFIGURATOR_SCRIPT}</script>
 </body>
 </html>`;
 }
@@ -220,15 +318,107 @@ function escapeHtml(s: string): string {
     .replace(/"/g, '&quot;');
 }
 
-const COPY_SCRIPT = `
+// ---------------------------------------------------------------------------
+// Client-side configurator logic
+// ---------------------------------------------------------------------------
+
+const CONFIGURATOR_SCRIPT = `
+var ORIGIN = '${ORIGIN_HINT}';
+
+// Layout-aware default states for toggles
+var CLASSIC_DEFAULTS = {
+  equalizer:true, tags:true, plays:true, likes:true, author:true,
+  duration:true, 'model-badge':true, 'new-badge':true,
+  progress:false, logo:false, 'link-icon':false
+};
+var PLAYER_DEFAULTS = {
+  equalizer:true, tags:false, plays:false, likes:false, author:false,
+  duration:false, 'model-badge':false, 'new-badge':false,
+  progress:true, logo:true, 'link-icon':true
+};
+
+// Sync color picker ↔ hex text input
+document.querySelectorAll('.cfg-color').forEach(function(picker) {
+  var hex = picker.parentElement.querySelector('.cfg-hex');
+  picker.addEventListener('input', function() { hex.value = picker.value; });
+  hex.addEventListener('input', function() {
+    if (/^#[0-9a-fA-F]{6}$/.test(hex.value)) picker.value = hex.value;
+  });
+});
+
+// When layout changes, apply default toggle states
+document.getElementById('cfg-layout').addEventListener('change', function() {
+  var defs = this.value === 'player' ? PLAYER_DEFAULTS : CLASSIC_DEFAULTS;
+  Object.keys(defs).forEach(function(k) {
+    var cb = document.getElementById('cfg-' + k);
+    if (cb) cb.checked = defs[k];
+  });
+});
+
 function copyCode(btn) {
-  const code = btn.parentElement.querySelector('code');
-  const text = code.textContent;
-  navigator.clipboard.writeText(text).then(function() {
+  var code = btn.parentElement.querySelector('code');
+  navigator.clipboard.writeText(code.textContent).then(function() {
     btn.classList.add('copied');
     setTimeout(function() { btn.classList.remove('copied'); }, 1500);
   });
-}`;
+}
+
+function updatePreview() {
+  var id = document.getElementById('cfg-id').value.trim();
+  if (!id) return;
+
+  var layout = document.getElementById('cfg-layout').value;
+  var preset = document.getElementById('cfg-preset').value;
+  var theme = document.getElementById('cfg-theme').value;
+  var defs = layout === 'player' ? PLAYER_DEFAULTS : CLASSIC_DEFAULTS;
+
+  var params = ['id=' + encodeURIComponent(id)];
+
+  if (layout !== 'classic') params.push('layout=' + layout);
+  if (preset !== 'default') params.push('preset=' + preset);
+  if (theme !== 'auto') params.push('theme=' + theme);
+
+  // Color overrides (only if user typed a value)
+  var bgHex = document.getElementById('cfg-bg-hex').value.trim();
+  var textHex = document.getElementById('cfg-text-hex').value.trim();
+  var accentHex = document.getElementById('cfg-accent-hex').value.trim();
+  if (bgHex) params.push('bg_color=' + encodeURIComponent(bgHex.replace('#','')));
+  if (textHex) params.push('text_color=' + encodeURIComponent(textHex.replace('#','')));
+  if (accentHex) params.push('accent_color=' + encodeURIComponent(accentHex.replace('#','')));
+
+  // Toggles — only emit if different from layout default
+  var toggleMap = {
+    'equalizer':'show_equalizer', 'tags':'show_tags', 'plays':'show_plays',
+    'likes':'show_likes', 'author':'show_author', 'duration':'show_duration',
+    'model-badge':'show_model_badge', 'new-badge':'show_new_badge',
+    'progress':'show_progress', 'logo':'show_logo', 'link-icon':'show_link_icon'
+  };
+  Object.keys(toggleMap).forEach(function(k) {
+    var cb = document.getElementById('cfg-' + k);
+    if (cb && cb.checked !== defs[k]) {
+      params.push(toggleMap[k] + '=' + cb.checked);
+    }
+  });
+
+  var qs = params.join('&');
+  var localUrl = '/api/card?' + qs;
+  var fullUrl = ORIGIN + '/api/card?' + qs;
+
+  // Extract a clean song id for the suno link (strip full URLs)
+  var songId = id;
+  var m = id.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
+  if (m) songId = m[0];
+
+  document.getElementById('cfg-preview-img').src = localUrl;
+  document.getElementById('cfg-url').textContent = fullUrl;
+  document.getElementById('cfg-code').textContent =
+    '[![](' + fullUrl + ')](https://suno.com/song/' + songId + ')';
+}
+`;
+
+// ---------------------------------------------------------------------------
+// CSS
+// ---------------------------------------------------------------------------
 
 const GLOBAL_CSS = `
   * { box-sizing: border-box; }
@@ -242,7 +432,7 @@ const GLOBAL_CSS = `
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
-  .page { max-width: 860px; margin: 0 auto; padding: 60px 24px 80px; line-height: 1.6; }
+  .page { max-width: 900px; margin: 0 auto; padding: 60px 24px 80px; line-height: 1.6; }
   h1 {
     font-size: 38px;
     margin: 0 0 8px;
@@ -251,98 +441,164 @@ const GLOBAL_CSS = `
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .tagline { color: #a1a1aa; margin: 0; font-size: 16px; }
+  .tagline { color: #b4b4bd; margin: 0; font-size: 16px; }
   section { margin-top: 48px; }
   h2 { font-size: 22px; margin: 0 0 12px; }
   h3 { font-size: 16px; margin: 0 0 4px; color: #e4e4e7; }
   .card { display: block; border-radius: 14px; max-width: 100%; height: auto; }
-  .dim { color: #a1a1aa; margin: 4px 0 8px; font-size: 14px; }
+  .dim { color: #b4b4bd; margin: 4px 0 8px; font-size: 14px; }
 
-  /* Gallery grid */
+  /* Gallery */
   .gallery { display: flex; flex-direction: column; gap: 32px; }
   .demo-card {
     background: #12121a;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255,255,255,0.06);
     border-radius: 16px;
     padding: 20px;
   }
   .demo-header { margin-bottom: 14px; }
 
-  /* Code block with copy button */
-  .code-block {
-    position: relative;
-    margin-top: 12px;
-  }
+  /* Code blocks */
+  .code-block { position: relative; margin-top: 12px; }
   .copy-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    position: absolute; top: 10px; right: 10px;
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 6px;
-    color: #a1a1aa;
-    padding: 5px 7px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: all 0.15s;
-    z-index: 1;
+    border-radius: 6px; color: #b4b4bd;
+    padding: 5px 7px; cursor: pointer;
+    display: flex; align-items: center;
+    transition: all 0.15s; z-index: 1;
   }
   .copy-btn:hover { background: rgba(255,255,255,0.14); color: #f5f5f7; }
-  .copy-btn.copied { background: rgba(139,92,246,0.3); color: #c4b5fd; }
-
+  .copy-btn.copied { background: rgba(167,139,250,0.3); color: #ddd0fe; }
   pre {
     background: #0a0a0f;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255,255,255,0.08);
     border-radius: 10px;
-    padding: 14px 16px;
-    padding-right: 48px;
+    padding: 14px 16px; padding-right: 48px;
     overflow-x: auto;
     font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
-    font-size: 12px;
-    margin: 0;
-    line-height: 1.5;
+    font-size: 12px; margin: 0; line-height: 1.5;
   }
-  pre code { color: #a1a1aa; background: transparent; padding: 0; }
+  pre code { color: #b4b4bd; background: transparent; padding: 0; word-break: break-all; white-space: pre-wrap; }
   code {
-    background: rgba(139, 92, 246, 0.14);
-    color: #c4b5fd;
-    padding: 2px 6px;
-    border-radius: 4px;
+    background: rgba(167,139,250,0.14); color: #ddd0fe;
+    padding: 2px 6px; border-radius: 4px;
     font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
     font-size: 13px;
   }
 
   /* Table */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    margin-top: 12px;
-  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
   thead th {
-    text-align: left;
-    color: #a1a1aa;
-    font-weight: 600;
-    padding: 8px 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    text-align: left; color: #b4b4bd; font-weight: 600;
+    padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.1);
   }
   tbody td {
     padding: 8px 12px;
     border-bottom: 1px solid rgba(255,255,255,0.04);
     color: #d4d4d8;
   }
-  tbody td code {
-    font-size: 12px;
-  }
-
-  ul { color: #d4d4d8; padding-left: 20px; }
+  tbody td code { font-size: 12px; }
   a { color: #a78bfa; }
   footer {
-    margin-top: 60px;
-    padding-top: 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    color: #71717a;
-    font-size: 13px;
+    margin-top: 60px; padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    color: #71717a; font-size: 13px;
+  }
+
+  /* ── Configurator ─────────────────────────────────── */
+  .cfg-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 16px;
+  }
+  @media (max-width: 760px) {
+    .cfg-layout { grid-template-columns: 1fr; }
+  }
+  .cfg-panel {
+    background: #12121a;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .cfg-label {
+    display: flex; flex-direction: column; gap: 4px;
+    font-size: 12px; font-weight: 600; color: #b4b4bd;
+  }
+  .cfg-row {
+    display: flex; gap: 12px; margin-top: 12px;
+  }
+  .cfg-row .cfg-label { flex: 1; }
+  .cfg-input, .cfg-select {
+    background: #0a0a0f;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: #f5f5f7; font-size: 13px;
+    padding: 8px 10px;
+    outline: none;
+    width: 100%;
+  }
+  .cfg-select { cursor: pointer; }
+  .cfg-input:focus, .cfg-select:focus {
+    border-color: rgba(167,139,250,0.5);
+  }
+  .cfg-color-wrap {
+    display: flex; gap: 6px; align-items: center;
+  }
+  .cfg-color {
+    width: 32px; height: 32px; border: none; border-radius: 6px;
+    cursor: pointer; background: none; padding: 0;
+  }
+  .cfg-hex {
+    background: #0a0a0f;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: #f5f5f7; font-size: 12px;
+    padding: 6px 8px; width: 80px;
+    font-family: "SF Mono", Menlo, monospace;
+  }
+  .cfg-hex:focus { border-color: rgba(167,139,250,0.5); outline: none; }
+
+  .cfg-section-title {
+    font-size: 12px; font-weight: 700; color: #b4b4bd;
+    margin: 16px 0 8px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .cfg-toggles {
+    display: flex; flex-wrap: wrap; gap: 6px 12px;
+  }
+  .cfg-toggle {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 12px; color: #d4d4d8; cursor: pointer;
+    user-select: none;
+  }
+  .cfg-toggle input[type="checkbox"] {
+    accent-color: #a78bfa;
+    width: 14px; height: 14px; cursor: pointer;
+  }
+  .cfg-btn {
+    margin-top: 16px; width: 100%;
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    color: #fff; border: none; border-radius: 10px;
+    padding: 10px; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: opacity 0.15s;
+  }
+  .cfg-btn:hover { opacity: 0.9; }
+  .cfg-btn:active { opacity: 0.8; }
+
+  .cfg-preview {
+    display: flex; flex-direction: column;
+  }
+  .cfg-preview-frame {
+    background: #0a0a0f;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 180px;
+  }
+  .cfg-preview-frame img {
+    max-width: 100%; height: auto; border-radius: 14px;
   }
 `;
