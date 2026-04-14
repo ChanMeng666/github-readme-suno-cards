@@ -2,10 +2,7 @@ import type { Config } from 'tailwindcss';
 
 const config: Config = {
   darkMode: 'class',
-  content: [
-    './app/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-  ],
+  content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -19,9 +16,16 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
-          '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto',
-          '"Helvetica Neue"', '"PingFang SC"', '"Hiragino Sans GB"',
-          '"Microsoft YaHei"', '"Noto Sans CJK SC"', 'sans-serif',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          '"PingFang SC"',
+          '"Hiragino Sans GB"',
+          '"Microsoft YaHei"',
+          '"Noto Sans CJK SC"',
+          'sans-serif',
         ],
         mono: ['"SF Mono"', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
       },
@@ -30,14 +34,14 @@ const config: Config = {
           '0%': { opacity: '0', transform: 'translateY(16px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        'float': {
+        float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-8px)' },
         },
       },
       animation: {
         'fade-in-up': 'fade-in-up 0.5s ease-out forwards',
-        'float': 'float 4s ease-in-out infinite',
+        float: 'float 4s ease-in-out infinite',
         'float-delayed': 'float 4s ease-in-out 2s infinite',
       },
     },

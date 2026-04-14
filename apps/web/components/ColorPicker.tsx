@@ -10,33 +10,44 @@ type ColorPickerProps = {
   defaultColor?: string; // for the color input default
 };
 
-export function ColorPicker({ label, value, onChange, defaultColor = '#888888' }: ColorPickerProps) {
+export function ColorPicker({
+  label,
+  value,
+  onChange,
+  defaultColor = '#888888',
+}: ColorPickerProps) {
   const [hexInput, setHexInput] = useState(value ? `#${value}` : '');
 
   useEffect(() => {
     setHexInput(value ? `#${value}` : '');
   }, [value]);
 
-  const handlePickerChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const hex = e.target.value;
-    setHexInput(hex);
-    onChange(hex.replace('#', ''));
-  }, [onChange]);
+  const handlePickerChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const hex = e.target.value;
+      setHexInput(hex);
+      onChange(hex.replace('#', ''));
+    },
+    [onChange],
+  );
 
-  const handleHexInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
-    setHexInput(raw);
-    const cleaned = raw.replace('#', '');
-    if (/^[0-9a-fA-F]{6}$/.test(cleaned)) {
-      onChange(cleaned);
-    } else if (raw === '') {
-      onChange('');
-    }
-  }, [onChange]);
+  const handleHexInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const raw = e.target.value;
+      setHexInput(raw);
+      const cleaned = raw.replace('#', '');
+      if (/^[0-9a-fA-F]{6}$/.test(cleaned)) {
+        onChange(cleaned);
+      } else if (raw === '') {
+        onChange('');
+      }
+    },
+    [onChange],
+  );
 
   return (
     <div className="flex items-center gap-3">
-      <label className="text-xs font-medium text-muted w-20 shrink-0">{label}</label>
+      <span className="text-xs font-medium text-muted w-20 shrink-0">{label}</span>
       <input
         type="color"
         value={value ? `#${value}` : defaultColor}

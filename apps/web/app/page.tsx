@@ -6,15 +6,32 @@ import { DEMO_HANDLE, DEMO_UUID } from '../lib/constants.js';
 
 const FEATURED_CARDS = [
   { title: 'Classic Dark', params: `id=${DEMO_UUID}&theme=dark`, width: 480 },
-  { title: 'Player Suno', params: `id=${DEMO_UUID}&layout=player&preset=suno&theme=dark`, width: 640 },
+  {
+    title: 'Player Suno',
+    params: `id=${DEMO_UUID}&layout=player&preset=suno&theme=dark`,
+    width: 640,
+  },
   { title: 'Classic Light', params: `id=${DEMO_UUID}&theme=light`, width: 480 },
-  { title: 'Player Custom', params: `id=${DEMO_UUID}&layout=player&theme=dark&accent_color=ff6b6b`, width: 640 },
+  {
+    title: 'Player Custom',
+    params: `id=${DEMO_UUID}&layout=player&theme=dark&accent_color=ff6b6b`,
+    width: 640,
+  },
 ];
 
 const FEATURES = [
   {
     icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        aria-hidden="true"
+        role="img"
+      >
+        <title>Two layouts icon</title>
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <path d="M3 9h18M9 3v18" />
       </svg>
@@ -24,7 +41,16 @@ const FEATURES = [
   },
   {
     icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        aria-hidden="true"
+        role="img"
+      >
+        <title>Color presets icon</title>
         <circle cx="12" cy="12" r="9" />
         <path d="M12 3a4.5 4.5 0 000 9 4.5 4.5 0 010 9" />
       </svg>
@@ -34,7 +60,16 @@ const FEATURES = [
   },
   {
     icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        aria-hidden="true"
+        role="img"
+      >
+        <title>Customization icon</title>
         <path d="M12 3v18M3 12h18M5.636 5.636l12.728 12.728M18.364 5.636L5.636 18.364" />
       </svg>
     ),
@@ -43,7 +78,16 @@ const FEATURES = [
   },
   {
     icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <svg
+        className="w-5 h-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        aria-hidden="true"
+        role="img"
+      >
+        <title>Auto-sync icon</title>
         <path d="M4 4v16h16" />
         <polyline points="4 14 8 10 12 14 20 6" />
       </svg>
@@ -123,9 +167,7 @@ export default function HomePage() {
 
       {/* Featured cards */}
       <section className="py-16 border-t border-border">
-        <h2 className="text-xl font-semibold text-foreground mb-2">
-          Featured Styles
-        </h2>
+        <h2 className="text-xl font-semibold text-foreground mb-2">Featured Styles</h2>
         <p className="text-sm text-muted mb-8">
           A taste of what's possible. Browse the full gallery or build your own.
         </p>
@@ -163,8 +205,12 @@ export default function HomePage() {
             />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-foreground mb-1">Auto-Discovered Card Stack</h3>
-            <p className="text-sm text-muted mb-4">Your top songs, stacked together automatically.</p>
+            <h3 className="text-sm font-semibold text-foreground mb-1">
+              Auto-Discovered Card Stack
+            </h3>
+            <p className="text-sm text-muted mb-4">
+              Your top songs, stacked together automatically.
+            </p>
             <img
               src={`/api/cards?handle=${DEMO_HANDLE}&sort=play_count&max=3`}
               alt="Card stack"

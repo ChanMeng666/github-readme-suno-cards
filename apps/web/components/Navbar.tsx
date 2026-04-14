@@ -17,16 +17,17 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2 text-sm font-semibold text-foreground hover:text-accent transition-colors">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-sm font-semibold text-foreground hover:text-accent transition-colors"
+        >
           <img src="/logo.svg" alt="Suno Cards" className="h-6 w-6" />
           Suno Cards
         </Link>
 
         <div className="flex items-center gap-1">
           {NAV_LINKS.map((link) => {
-            const isActive = link.href === '/'
-              ? pathname === '/'
-              : pathname.startsWith(link.href);
+            const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
 
             return (
               <Link
@@ -34,9 +35,7 @@ export function Navbar() {
                 href={link.href}
                 className={cn(
                   'relative px-3 py-1.5 text-sm rounded-md transition-colors duration-200',
-                  isActive
-                    ? 'text-foreground font-medium'
-                    : 'text-muted hover:text-foreground',
+                  isActive ? 'text-foreground font-medium' : 'text-muted hover:text-foreground',
                 )}
               >
                 {link.label}

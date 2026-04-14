@@ -89,7 +89,10 @@ function Section({
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={2}
+          aria-hidden="true"
+          role="img"
         >
+          <title>Toggle section</title>
           <path d="M19 9l-7 7-7-7" />
         </svg>
       </button>
@@ -137,18 +140,18 @@ function BuilderInner() {
 
   const embedCode = useMemo(() => {
     switch (activeTab) {
-      case 'markdown': return buildMarkdownEmbed(config, ORIGIN_HINT);
-      case 'url': return buildCardUrl(config, ORIGIN_HINT);
-      case 'html': return buildHtmlEmbed(config, ORIGIN_HINT);
+      case 'markdown':
+        return buildMarkdownEmbed(config, ORIGIN_HINT);
+      case 'url':
+        return buildCardUrl(config, ORIGIN_HINT);
+      case 'html':
+        return buildHtmlEmbed(config, ORIGIN_HINT);
     }
   }, [config, activeTab]);
 
-  const setField = useCallback(
-    (field: keyof CardConfig, value: string | boolean) => {
-      dispatch({ type: 'SET_FIELD', field, value });
-    },
-    [],
-  );
+  const setField = useCallback((field: keyof CardConfig, value: string | boolean) => {
+    dispatch({ type: 'SET_FIELD', field, value });
+  }, []);
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
@@ -163,10 +166,14 @@ function BuilderInner() {
           {/* Song Input */}
           <Section title="Song Input">
             <div>
-              <label className="text-xs font-medium text-muted block mb-1.5">
+              <label
+                htmlFor="song-id-input"
+                className="text-xs font-medium text-muted block mb-1.5"
+              >
                 Song ID or URL
               </label>
               <input
+                id="song-id-input"
                 type="text"
                 value={config.id}
                 onChange={(e) => setField('id', e.target.value.trim())}
@@ -300,16 +307,18 @@ function BuilderInner() {
 
 export default function BuilderPage() {
   return (
-    <Suspense fallback={
-      <div className="mx-auto max-w-5xl px-6 py-12">
-        <div className="skeleton h-8 w-48 rounded-lg mb-4" />
-        <div className="skeleton h-4 w-96 rounded mb-8" />
-        <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-8">
-          <div className="skeleton h-[600px] rounded-xl" />
-          <div className="skeleton h-[300px] rounded-xl" />
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-5xl px-6 py-12">
+          <div className="skeleton h-8 w-48 rounded-lg mb-4" />
+          <div className="skeleton h-4 w-96 rounded mb-8" />
+          <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-8">
+            <div className="skeleton h-[600px] rounded-xl" />
+            <div className="skeleton h-[300px] rounded-xl" />
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <BuilderInner />
     </Suspense>
   );

@@ -46,7 +46,11 @@ export function CardPreview({ config, className, debounceMs = 300 }: CardPreview
       {!loaded && src && (
         <div
           className="skeleton rounded-xl"
-          style={{ width: '100%', maxWidth: width, aspectRatio: config.layout === 'player' ? '640/160' : '480/140' }}
+          style={{
+            width: '100%',
+            maxWidth: width,
+            aspectRatio: config.layout === 'player' ? '640/160' : '480/140',
+          }}
         />
       )}
       {src && (

@@ -51,14 +51,24 @@
   transform: translateY(0);
 }
 
-.reveal-item.delay-100 { transition-delay: 100ms; }
-.reveal-item.delay-200 { transition-delay: 200ms; }
-.reveal-item.delay-300 { transition-delay: 300ms; }
+.reveal-item.delay-100 {
+  transition-delay: 100ms;
+}
+.reveal-item.delay-200 {
+  transition-delay: 200ms;
+}
+.reveal-item.delay-300 {
+  transition-delay: 300ms;
+}
 
 /* Skeleton loading animation */
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .skeleton {

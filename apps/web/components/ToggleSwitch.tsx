@@ -10,7 +10,7 @@ type ToggleSwitchProps = {
 
 export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
   return (
-    <label className="flex items-center gap-2.5 cursor-pointer select-none group">
+    <span className="flex items-center gap-2.5 cursor-pointer select-none group">
       <button
         type="button"
         role="switch"
@@ -31,6 +31,6 @@ export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
       <span className="text-xs text-foreground group-hover:text-accent transition-colors">
         {label}
       </span>
-    </label>
+    </span>
   );
 }
