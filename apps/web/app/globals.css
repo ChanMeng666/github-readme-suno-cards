@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 255 255 255;
+    --foreground: 24 24 27;
+    --muted: 113 113 122;
+    --surface: 250 250 250;
+    --border-color: 228 228 231;
+    --accent: 124 58 237;
+    --accent-hover: 109 40 217;
+  }
+
+  .dark {
+    --background: 9 9 11;
+    --foreground: 244 244 245;
+    --muted: 161 161 170;
+    --surface: 24 24 27;
+    --border-color: 39 39 42;
+    --accent: 167 139 250;
+    --accent-hover: 139 92 246;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Scroll reveal animation */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.reveal-item.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-item.delay-100 { transition-delay: 100ms; }
+.reveal-item.delay-200 { transition-delay: 200ms; }
+.reveal-item.delay-300 { transition-delay: 300ms; }
+
+/* Skeleton loading animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--surface)) 25%,
+    rgb(var(--border-color)) 50%,
+    rgb(var(--surface)) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
