@@ -136,7 +136,11 @@ describe('renderServiceBlock', () => {
     const block = renderServiceBlock(
       makeProfile(),
       [makeSong(), makeSong({ id: 'other-id', title: 'Other' })],
-      { baseUrl: 'https://github-readme-suno-cards.vercel.app', theme: 'auto', outputType: 'markdown' },
+      {
+        baseUrl: 'https://github-readme-suno-cards.vercel.app',
+        theme: 'auto',
+        outputType: 'markdown',
+      },
     );
     const lines = block.split('\n\n');
     expect(lines).toHaveLength(3); // profile + 2 songs
