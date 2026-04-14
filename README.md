@@ -11,15 +11,129 @@ Display your [Suno AI](https://suno.com/)-generated music as dynamic, animated S
 
 ---
 
-## Live preview
+## Style Gallery
 
-[![My top song](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+Mix and match **layouts**, **color presets**, and **element toggles** to build the card that fits your README.
+
+### Layouts + Presets
+
+#### Classic + Default (original)
+
+Info-dense layout with purple accent — title, author, tags, stats, model badge.
+
+[![Classic Default](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+
+```markdown
+[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID)](https://suno.com/song/YOUR_SONG_UUID)
+```
+
+#### Classic + Suno Preset
+
+Info-dense layout with Suno's official navy + gold palette.
+
+[![Classic Suno](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&preset=suno)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+
+```markdown
+[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&preset=suno)](https://suno.com/song/YOUR_SONG_UUID)
+```
+
+#### Player + Default
+
+Suno-style music player with progress bar, play button, and SUNO logo — using the default purple theme.
+
+[![Player Default](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+
+```markdown
+[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player)](https://suno.com/song/YOUR_SONG_UUID)
+```
+
+#### Player + Suno Preset
+
+The full Suno official look — player layout with navy + gold palette.
+
+[![Player Suno](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+
+```markdown
+[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno)](https://suno.com/song/YOUR_SONG_UUID)
+```
+
+### Theme Variants
+
+#### Player + Suno (Dark)
+
+[![Player Suno Dark](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&theme=dark)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+
+```markdown
+[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&theme=dark)](https://suno.com/song/YOUR_SONG_UUID)
+```
+
+#### Classic + Default (Light)
+
+[![Classic Light](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&theme=light)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+
+```markdown
+[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&theme=light)](https://suno.com/song/YOUR_SONG_UUID)
+```
+
+### Toggle Showcases
+
+#### Player — No Equalizer
+
+Player layout with equalizer bars hidden.
+
+[![Player No EQ](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&show_equalizer=false)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+
+```markdown
+[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&show_equalizer=false)](https://suno.com/song/YOUR_SONG_UUID)
+```
+
+#### Player — With Tags & Author
+
+Player layout with extra metadata enabled.
+
+[![Player Tags](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&show_tags=true&show_author=true)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+
+```markdown
+[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&show_tags=true&show_author=true)](https://suno.com/song/YOUR_SONG_UUID)
+```
+
+#### Classic — Minimal
+
+Classic layout stripped down to cover + title only.
+
+[![Classic Minimal](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&show_tags=false&show_plays=false&show_likes=false&show_model_badge=false&show_equalizer=false)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+
+```markdown
+[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&show_tags=false&show_plays=false&show_likes=false&show_model_badge=false&show_equalizer=false)](https://suno.com/song/YOUR_SONG_UUID)
+```
+
+#### Player — Custom Accent Color
+
+Player layout with a custom red accent override.
+
+[![Player Custom](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/card?id=a885e43c-6918-456f-a5f0-0e8e29e61066&layout=player&preset=suno&accent_color=ff6b6b)](https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066)
+
+```markdown
+[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno&accent_color=ff6b6b)](https://suno.com/song/YOUR_SONG_UUID)
+```
+
+### Profile & Card Stack
 
 [![My Suno profile](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/profile?handle=chanmeng)](https://suno.com/@chanmeng)
 
+```markdown
+[![](https://sunocards.vercel.app/api/profile?handle=YOUR_HANDLE)](https://suno.com/@YOUR_HANDLE)
+```
+
+---
+
 ## Features
 
-- 🎨 **Spotify-style animated equalizer bars** — 4 CSS-animated bars overlay your cover art
+- 🎨 **Two layouts** — `classic` (info-dense Spotify-style) and `player` (Suno-style music player with progress bar)
+- 🎨 **Two color presets** — `default` (purple) and `suno` (official navy + gold), freely combinable with any layout
+- 🎛️ **Fine-grained element toggles** — show/hide equalizer, progress bar, tags, stats, logo, link icon, and more
+- 🎨 **Custom color overrides** — `bg_color`, `text_color`, `accent_color` on top of any preset
+- 🎵 **Spotify-style animated equalizer bars** — 4 CSS-animated bars overlay your cover art
 - 🎯 **Handle-based auto-discovery** — set your handle once, new songs appear automatically
 - 🌓 **Dark/light theme** auto-switches with GitHub's UI theme
 - 🏷️ **Smart tag classification** — genres, instruments, moods, vocal types, and tempo rendered as distinct chips
@@ -79,7 +193,13 @@ Every 6 hours (or whenever you click "Run workflow"), the Action fetches your pu
 If you don't want to run a GitHub Action, you can embed a single card URL straight in your README — no setup required:
 
 ```markdown
-[![](https://github-readme-suno-cards-lrpl2jknu-chan-mengs-projects.vercel.app/api/card?id=YOUR_SONG_UUID)](https://suno.com/song/YOUR_SONG_UUID)
+[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID)](https://suno.com/song/YOUR_SONG_UUID)
+```
+
+Use the player layout with Suno's official colors:
+
+```markdown
+[![](https://sunocards.vercel.app/api/card?id=YOUR_SONG_UUID&layout=player&preset=suno)](https://suno.com/song/YOUR_SONG_UUID)
 ```
 
 ## Render modes
@@ -128,6 +248,16 @@ All endpoints accept the same query parameters as the Action inputs below.
 | `allow_explicit` | `true` | Include explicit-tagged songs |
 | `show_profile_card` | `true` | Emit profile summary card above the song cards |
 
+### Visual style
+
+| Input | Default | Description |
+|---|---|---|
+| `layout` | `classic` | `classic` (info-dense) or `player` (Suno-style with progress bar) |
+| `preset` | `default` | `default` (purple) or `suno` (navy + gold) |
+| `show_progress` | layout-dependent | Show progress bar + play button (default: `true` for player, `false` for classic) |
+| `show_logo` | layout-dependent | Show SUNO logo in bottom-right (default: `true` for player) |
+| `show_link_icon` | layout-dependent | Show link icon in top-right (default: `true` for player) |
+
 ### Output & styling
 
 | Input | Default | Description |
@@ -142,9 +272,24 @@ All endpoints accept the same query parameters as the Action inputs below.
 | `width` | — | Card width in px (200–1200) |
 | `bg_color` | — | Card background hex (with or without `#`) |
 | `text_color` | — | Title / primary text color |
-| `accent_color` | — | Accent color (equalizer bars, chips) |
+| `accent_color` | — | Accent color (equalizer bars, chips, progress bar) |
 | `base_url` | `https://sunocards.vercel.app` | Self-hosted service override |
 | `output_only` | `false` | Skip README write, emit via action outputs only |
+
+### Element toggles
+
+All toggles default to layout-appropriate values. You can override any of them regardless of layout.
+
+| Input | Classic default | Player default | Description |
+|---|---|---|---|
+| `show_equalizer` | `true` | `true` | Animated equalizer bars on cover |
+| `show_tags` | `true` | `false` | Genre/mood tag chips |
+| `show_plays` | `true` | `false` | Play count stat |
+| `show_likes` | `true` | `false` | Like count stat |
+| `show_author` | `true` | `false` | Author byline |
+| `show_duration` | `true` | `false` | Duration pill on cover |
+| `show_model_badge` | `true` | `false` | Suno model badge |
+| `show_new_badge` | `true` | `false` | NEW ribbon on recent songs |
 
 ### Outputs (for chained workflow steps)
 
