@@ -211,7 +211,7 @@ function renderHomePage(): string {
             <label class="cfg-toggle"><input type="checkbox" id="cfg-link-icon" /> Link icon</label>
           </div>
 
-          <button id="cfg-apply" class="cfg-btn" onclick="updatePreview()">Update preview</button>
+          <p class="cfg-hint">Preview updates automatically as you change settings.</p>
         </div>
 
         <!-- Live preview -->
@@ -337,22 +337,49 @@ var PLAYER_DEFAULTS = {
   progress:true, logo:true, 'link-icon':true
 };
 
-// Sync color picker ↔ hex text input
+// Debounce helper — waits for user to stop typing before firing
+var _debounceTimer;
+function debounce(fn, ms) {
+  clearTimeout(_debounceTimer);
+  _debounceTimer = setTimeout(fn, ms || 400);
+}
+
+// Sync color picker ↔ hex text input, and auto-update preview
 document.querySelectorAll('.cfg-color').forEach(function(picker) {
   var hex = picker.parentElement.querySelector('.cfg-hex');
-  picker.addEventListener('input', function() { hex.value = picker.value; });
+  picker.addEventListener('input', function() {
+    hex.value = picker.value;
+    updatePreview();
+  });
   hex.addEventListener('input', function() {
     if (/^#[0-9a-fA-F]{6}$/.test(hex.value)) picker.value = hex.value;
+    debounce(updatePreview, 500);
   });
 });
 
-// When layout changes, apply default toggle states
+// When layout changes, apply default toggle states then update
 document.getElementById('cfg-layout').addEventListener('change', function() {
   var defs = this.value === 'player' ? PLAYER_DEFAULTS : CLASSIC_DEFAULTS;
   Object.keys(defs).forEach(function(k) {
     var cb = document.getElementById('cfg-' + k);
     if (cb) cb.checked = defs[k];
   });
+  updatePreview();
+});
+
+// Auto-update on any select change
+['cfg-preset', 'cfg-theme'].forEach(function(id) {
+  document.getElementById(id).addEventListener('change', function() { updatePreview(); });
+});
+
+// Auto-update on any toggle change
+document.querySelectorAll('.cfg-toggles input[type="checkbox"]').forEach(function(cb) {
+  cb.addEventListener('change', function() { updatePreview(); });
+});
+
+// Auto-update when song ID changes (debounced)
+document.getElementById('cfg-id').addEventListener('input', function() {
+  debounce(updatePreview, 600);
 });
 
 function copyCode(btn) {
@@ -401,7 +428,8 @@ function updatePreview() {
   });
 
   var qs = params.join('&');
-  var localUrl = '/api/card?' + qs;
+  // Cache-bust so browser always fetches fresh SVG
+  var localUrl = '/api/card?' + qs + '&_t=' + Date.now();
   var fullUrl = ORIGIN + '/api/card?' + qs;
 
   // Extract a clean song id for the suno link (strip full URLs)
@@ -577,15 +605,10 @@ const GLOBAL_CSS = `
     accent-color: #a78bfa;
     width: 14px; height: 14px; cursor: pointer;
   }
-  .cfg-btn {
-    margin-top: 16px; width: 100%;
-    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
-    color: #fff; border: none; border-radius: 10px;
-    padding: 10px; font-size: 14px; font-weight: 600;
-    cursor: pointer; transition: opacity 0.15s;
+  .cfg-hint {
+    margin-top: 16px; font-size: 12px; color: #71717a;
+    text-align: center; font-style: italic;
   }
-  .cfg-btn:hover { opacity: 0.9; }
-  .cfg-btn:active { opacity: 0.8; }
 
   .cfg-preview {
     display: flex; flex-direction: column;
