@@ -1,8 +1,11 @@
 import { fetchAllClips } from '@suno-cards/parser';
 import {
   type CardStackItem,
+  PLAYER_CARD_DEFAULT_HEIGHT,
+  PLAYER_CARD_DEFAULT_WIDTH,
   PROFILE_CARD_DEFAULT_HEIGHT,
   SONG_CARD_DEFAULT_HEIGHT,
+  SONG_CARD_DEFAULT_WIDTH,
   renderCardStack,
 } from '@suno-cards/render';
 import type { NextRequest } from 'next/server';
@@ -72,11 +75,25 @@ export async function GET(req: NextRequest): Promise<Response> {
       lang,
       width: q.width,
       colorOverrides: q.colors,
+      preset: q.preset,
+      songOptions: {
+        layout: q.layout,
+        preset: q.preset,
+        showProgress: q.showProgress,
+        showLogo: q.showLogo,
+        showLinkIcon: q.showLinkIcon,
+      },
     });
     return svgResponse(svg, 600);
   } catch (err) {
-    const approxHeight =
-      (showProfileCard ? PROFILE_CARD_DEFAULT_HEIGHT + 10 : 0) + SONG_CARD_DEFAULT_HEIGHT;
-    return svgResponse(errorToSvg(err, { lang, theme, width: q.width, height: approxHeight }), 300);
+    const isPlayer = (q.layout ?? 'classic') === 'player';
+    const songH = isPlayer ? PLAYER_CARD_DEFAULT_HEIGHT : SONG_CARD_DEFAULT_HEIGHT;
+    const approxHeight = (showProfileCard ? PROFILE_CARD_DEFAULT_HEIGHT + 10 : 0) + songH;
+    const fallbackWidth =
+      q.width ?? (isPlayer ? PLAYER_CARD_DEFAULT_WIDTH : SONG_CARD_DEFAULT_WIDTH);
+    return svgResponse(
+      errorToSvg(err, { lang, theme, width: fallbackWidth, height: approxHeight }),
+      300,
+    );
   }
 }

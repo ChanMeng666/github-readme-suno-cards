@@ -2,8 +2,10 @@ import { ANIMATION_CSS } from './animations.js';
 import { CARD_CSS } from './cardCss.js';
 import {
   type ColorOverrides,
+  type PresetName,
   type ResolvedTheme,
   type ThemeMode,
+  resolvePreset,
   resolveTheme,
   themeCss,
 } from './themes.js';
@@ -13,6 +15,7 @@ export type SvgRootOptions = {
   height: number;
   theme?: ThemeMode;
   colorOverrides?: ColorOverrides;
+  preset?: PresetName;
   title?: string;
 };
 
@@ -22,7 +25,8 @@ export type SvgRootOptions = {
  * class or id is defined here — call this exactly once per emitted card.
  */
 export function renderRootSvg(innerContent: string, opts: SvgRootOptions): string {
-  const theme = resolveTheme(opts.theme ?? 'auto', opts.colorOverrides ?? {});
+  const baseTheme = resolvePreset(opts.preset ?? 'default');
+  const theme = resolveTheme(opts.theme ?? 'auto', opts.colorOverrides ?? {}, baseTheme);
   const css = `${themeCss(theme)}${CARD_CSS}${ANIMATION_CSS}`;
   const titleTag = opts.title ? `<title>${escapeForTitle(opts.title)}</title>` : '';
 
@@ -32,6 +36,7 @@ export function renderRootSvg(innerContent: string, opts: SvgRootOptions): strin
     ${cardGradient(theme)}
     ${coverShadow()}
     ${coverPlaceholder()}
+    ${coverGlow()}
   </defs>
   <style>${css}</style>
   ${innerContent}
@@ -68,4 +73,10 @@ function coverPlaceholder(): string {
       <stop offset="0%"   stop-color="#8b5cf6" />
       <stop offset="100%" stop-color="#3b82f6" />
     </linearGradient>`;
+}
+
+function coverGlow(): string {
+  return `<filter id="cover-glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="rgba(0,0,0,0.4)" flood-opacity="1" />
+    </filter>`;
 }

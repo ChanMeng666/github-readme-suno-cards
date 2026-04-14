@@ -1,7 +1,13 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import type { SunoProfile, SunoSong } from '@suno-cards/parser';
-import { type ThemeMode, renderSingleProfileSvg, renderSingleSongSvg } from '@suno-cards/render';
+import {
+  type CardLayout,
+  type PresetName,
+  type ThemeMode,
+  renderSingleProfileSvg,
+  renderSingleSongSvg,
+} from '@suno-cards/render';
 
 /**
  * Pre-render SVGs to the consumer's repository in `render_mode: local`.
@@ -23,6 +29,11 @@ export type LocalRenderOptions = {
   theme: ThemeMode;
   lang?: 'en' | 'zh' | 'ja';
   width?: number;
+  layout?: CardLayout;
+  preset?: PresetName;
+  showProgress?: boolean | null;
+  showLogo?: boolean | null;
+  showLinkIcon?: boolean | null;
   colorOverrides?: {
     bg?: string;
     text?: string;
@@ -72,21 +83,21 @@ async function writeSongSvgs(
   const coverDataUri = await fetchAsDataUri(song.coverUrl);
   const baseName = `song-${safeFileId(song.id)}`;
 
+  const songOpts = {
+    coverDataUri,
+    lang: opts.lang,
+    width: opts.width,
+    colorOverrides: opts.colorOverrides,
+    layout: opts.layout,
+    preset: opts.preset,
+    ...(opts.showProgress != null && { showProgress: opts.showProgress }),
+    ...(opts.showLogo != null && { showLogo: opts.showLogo }),
+    ...(opts.showLinkIcon != null && { showLinkIcon: opts.showLinkIcon }),
+  };
+
   if (opts.theme === 'auto') {
-    const dark = renderSingleSongSvg(song, {
-      coverDataUri,
-      theme: 'dark',
-      lang: opts.lang,
-      width: opts.width,
-      colorOverrides: opts.colorOverrides,
-    });
-    const light = renderSingleSongSvg(song, {
-      coverDataUri,
-      theme: 'light',
-      lang: opts.lang,
-      width: opts.width,
-      colorOverrides: opts.colorOverrides,
-    });
+    const dark = renderSingleSongSvg(song, { ...songOpts, theme: 'dark' });
+    const light = renderSingleSongSvg(song, { ...songOpts, theme: 'light' });
     const darkPath = join(absCardsDir, `${baseName}-dark.svg`);
     const lightPath = join(absCardsDir, `${baseName}-light.svg`);
     mkdirSync(dirname(darkPath), { recursive: true });
@@ -95,13 +106,7 @@ async function writeSongSvgs(
     return { dark: darkPath, light: lightPath };
   }
 
-  const svg = renderSingleSongSvg(song, {
-    coverDataUri,
-    theme: opts.theme,
-    lang: opts.lang,
-    width: opts.width,
-    colorOverrides: opts.colorOverrides,
-  });
+  const svg = renderSingleSongSvg(song, { ...songOpts, theme: opts.theme });
   const outPath = join(absCardsDir, `${baseName}.svg`);
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, svg, 'utf-8');

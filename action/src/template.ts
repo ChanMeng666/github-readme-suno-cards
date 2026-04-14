@@ -21,6 +21,11 @@ export type ServiceTemplateOptions = {
   bgColor?: string;
   textColor?: string;
   accentColor?: string;
+  layout?: string;
+  preset?: string;
+  showProgress?: boolean | null;
+  showLogo?: boolean | null;
+  showLinkIcon?: boolean | null;
 };
 
 /** URL-encode a single query parameter value. */
@@ -38,6 +43,11 @@ function buildCardUrl(
   if (opts.bgColor) params.push(`bg_color=${enc(opts.bgColor.replace(/^#/, ''))}`);
   if (opts.textColor) params.push(`text_color=${enc(opts.textColor.replace(/^#/, ''))}`);
   if (opts.accentColor) params.push(`accent_color=${enc(opts.accentColor.replace(/^#/, ''))}`);
+  if (opts.layout && opts.layout !== 'classic') params.push(`layout=${enc(opts.layout)}`);
+  if (opts.preset && opts.preset !== 'default') params.push(`preset=${enc(opts.preset)}`);
+  if (opts.showProgress != null) params.push(`show_progress=${opts.showProgress}`);
+  if (opts.showLogo != null) params.push(`show_logo=${opts.showLogo}`);
+  if (opts.showLinkIcon != null) params.push(`show_link_icon=${opts.showLinkIcon}`);
   return `${base.replace(/\/$/, '')}/api/card?${params.join('&')}`;
 }
 

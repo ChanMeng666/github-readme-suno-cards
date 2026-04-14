@@ -118,6 +118,11 @@ async function run(): Promise<void> {
         theme: inputs.theme,
         lang: inputs.lang,
         ...(inputs.width != null && { width: inputs.width }),
+        layout: inputs.layout,
+        preset: inputs.preset,
+        showProgress: inputs.showProgress,
+        showLogo: inputs.showLogo,
+        showLinkIcon: inputs.showLinkIcon,
         colorOverrides: {
           ...(inputs.bgColor && { bg: inputs.bgColor }),
           ...(inputs.textColor && { text: inputs.textColor }),
@@ -137,6 +142,11 @@ async function run(): Promise<void> {
         ...(inputs.bgColor && { bgColor: inputs.bgColor }),
         ...(inputs.textColor && { textColor: inputs.textColor }),
         ...(inputs.accentColor && { accentColor: inputs.accentColor }),
+        layout: inputs.layout,
+        preset: inputs.preset,
+        showProgress: inputs.showProgress,
+        showLogo: inputs.showLogo,
+        showLinkIcon: inputs.showLinkIcon,
       });
     }
 

@@ -1,5 +1,6 @@
 import type { SortKey } from '@suno-cards/parser';
-import type { ColorOverrides, Lang, ThemeMode } from '@suno-cards/render';
+import type { CardLayout } from '@suno-cards/render';
+import type { ColorOverrides, Lang, PresetName, ThemeMode } from '@suno-cards/render';
 
 /**
  * Query-parameter reader for the three route handlers.
@@ -78,6 +79,18 @@ function readLang(params: URLSearchParams): Lang | undefined {
   return undefined;
 }
 
+function readLayout(params: URLSearchParams): CardLayout | undefined {
+  const v = readString(params, 'layout');
+  if (v === 'classic' || v === 'player') return v;
+  return undefined;
+}
+
+function readPreset(params: URLSearchParams): PresetName | undefined {
+  const v = readString(params, 'preset');
+  if (v === 'default' || v === 'suno') return v;
+  return undefined;
+}
+
 function readSort(params: URLSearchParams): SortKey | undefined {
   const v = readString(params, 'sort');
   if (v === 'created_at' || v === 'upvote_count' || v === 'play_count' || v === 'name') {
@@ -117,6 +130,8 @@ function readColors(params: URLSearchParams): ColorOverrides {
 
 export type CardQuery = {
   id: string;
+  layout: CardLayout | undefined;
+  preset: PresetName | undefined;
   theme: ThemeMode | undefined;
   lang: Lang | undefined;
   width: number | undefined;
@@ -129,12 +144,17 @@ export type CardQuery = {
   showModelBadge: boolean | undefined;
   showNewBadge: boolean | undefined;
   showTags: boolean | undefined;
+  showProgress: boolean | undefined;
+  showLogo: boolean | undefined;
+  showLinkIcon: boolean | undefined;
   maxTags: number | undefined;
 };
 
 export function readCardQuery(params: URLSearchParams): CardQuery {
   return {
     id: readRequired(params, 'id'),
+    layout: readLayout(params),
+    preset: readPreset(params),
     theme: readTheme(params),
     lang: readLang(params),
     width: readInt(params, 'width', 200, 1200),
@@ -147,6 +167,9 @@ export function readCardQuery(params: URLSearchParams): CardQuery {
     showModelBadge: readBool(params, 'show_model_badge'),
     showNewBadge: readBool(params, 'show_new_badge'),
     showTags: readBool(params, 'show_tags'),
+    showProgress: readBool(params, 'show_progress'),
+    showLogo: readBool(params, 'show_logo'),
+    showLinkIcon: readBool(params, 'show_link_icon'),
     maxTags: readInt(params, 'max_tags', 0, 20),
   };
 }
@@ -179,6 +202,8 @@ export function readProfileQuery(params: URLSearchParams): ProfileQuery {
 
 export type CardsQuery = {
   handle: string;
+  layout: CardLayout | undefined;
+  preset: PresetName | undefined;
   sort: SortKey | undefined;
   max: number | undefined;
   includeTags: string[] | undefined;
@@ -191,6 +216,9 @@ export type CardsQuery = {
   featured: string[] | undefined;
   allowExplicit: boolean | undefined;
   showProfileCard: boolean | undefined;
+  showProgress: boolean | undefined;
+  showLogo: boolean | undefined;
+  showLinkIcon: boolean | undefined;
   theme: ThemeMode | undefined;
   lang: Lang | undefined;
   width: number | undefined;
@@ -200,6 +228,8 @@ export type CardsQuery = {
 export function readCardsQuery(params: URLSearchParams): CardsQuery {
   return {
     handle: readRequired(params, 'handle'),
+    layout: readLayout(params),
+    preset: readPreset(params),
     sort: readSort(params),
     max: readInt(params, 'max', 1, 20),
     includeTags: readCsv(params, 'include_tags'),
@@ -212,6 +242,9 @@ export function readCardsQuery(params: URLSearchParams): CardsQuery {
     featured: readCsv(params, 'featured'),
     allowExplicit: readBool(params, 'allow_explicit'),
     showProfileCard: readBool(params, 'show_profile_card'),
+    showProgress: readBool(params, 'show_progress'),
+    showLogo: readBool(params, 'show_logo'),
+    showLinkIcon: readBool(params, 'show_link_icon'),
     theme: readTheme(params),
     lang: readLang(params),
     width: readInt(params, 'width', 200, 1200),

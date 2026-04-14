@@ -29044,6 +29044,11 @@ function readInputs() {
     featured: csv("featured"),
     allowExplicit: bool("allow_explicit", true),
     showProfileCard: bool("show_profile_card", true),
+    layout: enumIn("layout", ["classic", "player"], "classic"),
+    preset: enumIn("preset", ["default", "suno"], "default"),
+    showProgress: maybeStr("show_progress") != null ? bool("show_progress", false) : null,
+    showLogo: maybeStr("show_logo") != null ? bool("show_logo", false) : null,
+    showLinkIcon: maybeStr("show_link_icon") != null ? bool("show_link_icon", false) : null,
     renderMode: enumIn("render_mode", ["service", "local"], "service"),
     localCardsDir: str("local_cards_dir", ".suno-cards"),
     readmePath: str("readme_path", "./README.md"),
@@ -29258,6 +29263,53 @@ var CARD_CSS = `
   }
   .error-title { font-size: 14px; font-weight: 700; color: var(--c-text); margin: 0; }
   .error-subtitle { font-size: 11px; color: var(--c-subtext); margin-top: 4px; }
+
+  /* Player layout elements */
+  .player-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--c-text);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .play-btn-circle {
+    fill: var(--c-accent);
+  }
+  .play-btn-icon {
+    fill: #ffffff;
+  }
+  .progress-track {
+    fill: var(--c-progress-track);
+  }
+  .progress-played {
+    fill: var(--c-accent);
+  }
+  .progress-scrubber {
+    fill: var(--c-scrubber);
+  }
+  .time-label {
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    fill: var(--c-subtext);
+  }
+  .suno-logo {
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    fill: var(--c-text);
+    opacity: 0.9;
+    letter-spacing: 2px;
+  }
+  .link-icon {
+    stroke: var(--c-subtext);
+    stroke-width: 1.5;
+    fill: none;
+    opacity: 0.5;
+  }
 `;
 
 // ../packages/render/src/escape.ts
@@ -29455,6 +29507,14 @@ function renderEqualizer(opts) {
   </foreignObject>`;
 }
 
+// ../packages/render/src/linkIcon.ts
+function renderLinkIcon(x, y, size = 14) {
+  return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 24 24" class="link-icon" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+  </svg>`;
+}
+
 // ../packages/render/src/modelBadge.ts
 function renderModelBadgeHtml(song) {
   const version = song.modelVersion || song.modelName || "";
@@ -29482,6 +29542,47 @@ function renderNewBadge(x, y, lang) {
     <rect x="0" y="0" width="38" height="18" rx="9" fill="#ef4444" />
     <text x="19" y="13" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#ffffff" letter-spacing="0.5">${label}</text>
   </g>`;
+}
+
+// ../packages/render/src/progressBar.ts
+var PLAY_RADIUS = 18;
+var SCRUBBER_RADIUS = 6;
+var TRACK_HEIGHT = 4;
+function renderProgressBar(opts) {
+  const { x, y, width, durationSeconds } = opts;
+  const fraction = Math.max(0, Math.min(1, opts.progressFraction ?? 0.39));
+  const totalLabel = formatDuration(durationSeconds);
+  const elapsedSeconds = Math.round(fraction * durationSeconds);
+  const elapsedLabel = formatDuration(elapsedSeconds);
+  const playCx = x + PLAY_RADIUS;
+  const playCy = y;
+  const elapsedX = playCx + PLAY_RADIUS + 10;
+  const trackX = elapsedX + 38;
+  const totalRightX = x + width;
+  const totalTextX = totalRightX;
+  const trackWidth = totalRightX - trackX - 40;
+  const playedWidth = trackWidth * fraction;
+  const scrubberCx = trackX + playedWidth;
+  const trackY = y - TRACK_HEIGHT / 2;
+  const triSize = 11;
+  const triX = playCx - triSize * 0.4;
+  const triY1 = playCy - triSize;
+  const triY2 = playCy + triSize;
+  const triX2 = playCx + triSize * 0.7;
+  return `<g class="progress-bar">
+    <circle class="play-btn-circle" cx="${playCx}" cy="${playCy}" r="${PLAY_RADIUS}" />
+    <polygon class="play-btn-icon" points="${triX},${triY1} ${triX},${triY2} ${triX2},${playCy}" />
+    <text class="time-label" x="${elapsedX}" y="${y + 4}" text-anchor="start">${escapeXml(elapsedLabel)}</text>
+    <rect class="progress-track" x="${trackX}" y="${trackY}" width="${trackWidth}" height="${TRACK_HEIGHT}" rx="2" />
+    <rect class="progress-played" x="${trackX}" y="${trackY}" width="${Math.max(0, playedWidth)}" height="${TRACK_HEIGHT}" rx="2" />
+    <circle class="progress-scrubber" cx="${scrubberCx}" cy="${y}" r="${SCRUBBER_RADIUS}" />
+    <text class="time-label" x="${totalTextX}" y="${y + 4}" text-anchor="end">${escapeXml(totalLabel)}</text>
+  </g>`;
+}
+
+// ../packages/render/src/sunoLogo.ts
+function renderSunoLogo(x, y) {
+  return `<text class="suno-logo" x="${x}" y="${y}" text-anchor="end">SUNO</text>`;
 }
 
 // ../packages/render/src/tagChips.ts
@@ -29520,7 +29621,14 @@ var SONG_CARD_DEFAULT_WIDTH = 480;
 var SONG_CARD_DEFAULT_HEIGHT = 140;
 var COVER_SIZE = 120;
 var COVER_PADDING = 10;
+var PLAYER_CARD_DEFAULT_WIDTH = 640;
+var PLAYER_CARD_DEFAULT_HEIGHT = 160;
+var PLAYER_COVER_SIZE = 130;
+var PLAYER_COVER_PADDING = 15;
+var PLAYER_COVER_RADIUS = 12;
 function renderSongCard(song, opts = {}) {
+  const layout = opts.layout ?? "classic";
+  if (layout === "player") return renderPlayerCard(song, opts);
   const width = opts.width ?? SONG_CARD_DEFAULT_WIDTH;
   const height = opts.height ?? SONG_CARD_DEFAULT_HEIGHT;
   const lang = opts.lang ?? "en";
@@ -29594,6 +29702,63 @@ function renderSongCard(song, opts = {}) {
     ${foreignObject}
   </g>`;
 }
+function renderPlayerCard(song, opts) {
+  const width = opts.width ?? PLAYER_CARD_DEFAULT_WIDTH;
+  const height = opts.height ?? PLAYER_CARD_DEFAULT_HEIGHT;
+  const lang = opts.lang ?? "en";
+  const x = opts.x ?? 0;
+  const y = opts.y ?? 0;
+  const showEqualizer = opts.showEqualizer ?? true;
+  const showProgress = opts.showProgress ?? true;
+  const showLogo = opts.showLogo ?? true;
+  const showLinkIconFlag = opts.showLinkIcon ?? true;
+  const showNewBadge = opts.showNewBadge ?? false;
+  const showDuration = opts.showDuration ?? false;
+  const coverX = PLAYER_COVER_PADDING;
+  const coverY = (height - PLAYER_COVER_SIZE) / 2;
+  const coverClipId = `cover-clip-${song.id}`;
+  const coverImage = opts.coverDataUri ? `<image xlink:href="${escapeAttr(opts.coverDataUri)}" href="${escapeAttr(opts.coverDataUri)}" x="${coverX}" y="${coverY}" width="${PLAYER_COVER_SIZE}" height="${PLAYER_COVER_SIZE}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${coverClipId})" filter="url(#cover-glow)" />` : `<rect x="${coverX}" y="${coverY}" width="${PLAYER_COVER_SIZE}" height="${PLAYER_COVER_SIZE}" rx="${PLAYER_COVER_RADIUS}" fill="url(#cover-placeholder)" filter="url(#cover-glow)" />
+       <text x="${coverX + PLAYER_COVER_SIZE / 2}" y="${coverY + PLAYER_COVER_SIZE / 2 + 8}" text-anchor="middle" font-size="36" fill="rgba(255,255,255,0.6)">\u266A</text>`;
+  const durationPill = showDuration && song.durationSeconds > 0 ? (() => {
+    const label = formatDuration(song.durationSeconds);
+    const pillWidth = label.length * 7 + 10;
+    const pillX = coverX + PLAYER_COVER_SIZE - pillWidth - 6;
+    const pillY = coverY + PLAYER_COVER_SIZE - 22;
+    return `<g class="duration-badge"><rect class="duration-pill" x="${pillX}" y="${pillY}" width="${pillWidth}" height="16" rx="8" /><text class="duration-text" x="${pillX + pillWidth / 2}" y="${pillY + 11}" text-anchor="middle">${escapeXml(label)}</text></g>`;
+  })() : "";
+  const equalizer = showEqualizer ? renderEqualizer({ x: coverX + 8, y: coverY + 8, width: 36, height: 32 }) : "";
+  const newBadge = showNewBadge && song.isNew ? renderNewBadge(coverX + PLAYER_COVER_SIZE - 44, coverY + 8, lang) : "";
+  const contentX = coverX + PLAYER_COVER_SIZE + 16;
+  const contentWidth = width - contentX - 16;
+  const title = song.title.trim() || "(untitled)";
+  const titleY = coverY + 4;
+  const titleHeight = 26;
+  const titleFO = `<foreignObject x="${contentX}" y="${titleY}" width="${contentWidth - (showLinkIconFlag ? 24 : 0)}" height="${titleHeight}">
+    <p xmlns="http://www.w3.org/1999/xhtml" class="player-title">${escapeXml(title)}</p>
+  </foreignObject>`;
+  const progressY = coverY + PLAYER_COVER_SIZE / 2 + 8;
+  const progressBar = showProgress && song.durationSeconds > 0 ? renderProgressBar({
+    x: contentX,
+    y: progressY,
+    width: contentWidth,
+    durationSeconds: song.durationSeconds
+  }) : "";
+  const logo = showLogo ? renderSunoLogo(width - 16, height - 16) : "";
+  const linkIcon = showLinkIconFlag ? renderLinkIcon(width - 30, coverY + 4, 14) : "";
+  return `<g class="song-card" transform="translate(${x}, ${y})">
+    <clipPath id="${coverClipId}"><rect x="${coverX}" y="${coverY}" width="${PLAYER_COVER_SIZE}" height="${PLAYER_COVER_SIZE}" rx="${PLAYER_COVER_RADIUS}" /></clipPath>
+    <rect class="card-bg" x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="14" />
+    ${coverImage}
+    <rect class="cover-overlay" x="${coverX}" y="${coverY}" width="${PLAYER_COVER_SIZE}" height="${PLAYER_COVER_SIZE}" rx="${PLAYER_COVER_RADIUS}" />
+    ${durationPill}
+    ${equalizer}
+    ${newBadge}
+    ${titleFO}
+    ${progressBar}
+    ${logo}
+    ${linkIcon}
+  </g>`;
+}
 
 // ../packages/render/src/themes.ts
 var DEFAULT_THEME = {
@@ -29611,7 +29776,9 @@ var DEFAULT_THEME = {
     chipBg: "rgba(139, 92, 246, 0.14)",
     chipText: "#c4b5fd",
     chipBorder: "rgba(139, 92, 246, 0.3)",
-    barColor: "#a78bfa"
+    barColor: "#a78bfa",
+    progressTrack: "#3a3a4f",
+    scrubber: "#ffffff"
   },
   light: {
     bg: "#ffffff",
@@ -29626,9 +29793,52 @@ var DEFAULT_THEME = {
     chipBg: "rgba(124, 58, 237, 0.08)",
     chipText: "#6d28d9",
     chipBorder: "rgba(124, 58, 237, 0.2)",
-    barColor: "#7c3aed"
+    barColor: "#7c3aed",
+    progressTrack: "#d0d0e0",
+    scrubber: "#18181b"
   }
 };
+var SUNO_PRESET = {
+  name: "suno",
+  dark: {
+    bg: "#1c202c",
+    cardBg: "#1d264b",
+    cardBgGradientStart: "#1e295e",
+    cardBgGradientEnd: "#1d264b",
+    text: "#ffffff",
+    subtext: "#8888aa",
+    accent: "#fbd38d",
+    accentGlow: "rgba(251, 211, 141, 0.35)",
+    border: "rgba(255, 255, 255, 0.06)",
+    chipBg: "rgba(251, 211, 141, 0.12)",
+    chipText: "#fbd38d",
+    chipBorder: "rgba(251, 211, 141, 0.25)",
+    barColor: "#fbd38d",
+    progressTrack: "#3a3a5c",
+    scrubber: "#ffffff"
+  },
+  light: {
+    bg: "#f5f5fa",
+    cardBg: "#ffffff",
+    cardBgGradientStart: "#f0f0f8",
+    cardBgGradientEnd: "#e8e8f0",
+    text: "#1a1a3e",
+    subtext: "#666688",
+    accent: "#b8912e",
+    accentGlow: "rgba(184, 145, 46, 0.25)",
+    border: "rgba(0, 0, 0, 0.08)",
+    chipBg: "rgba(184, 145, 46, 0.1)",
+    chipText: "#8a6d1f",
+    chipBorder: "rgba(184, 145, 46, 0.2)",
+    barColor: "#b8912e",
+    progressTrack: "#d0d0e0",
+    scrubber: "#1a1a3e"
+  }
+};
+function resolvePreset(name = "default") {
+  if (name === "suno") return SUNO_PRESET;
+  return DEFAULT_THEME;
+}
 function resolveTheme(mode = "auto", overrides = {}, base = DEFAULT_THEME) {
   const applyOverrides = (colors) => ({
     ...colors,
@@ -29662,7 +29872,9 @@ function themeCss(theme) {
       --c-chip-bg: ${c.chipBg};
       --c-chip-text: ${c.chipText};
       --c-chip-border: ${c.chipBorder};
-      --c-bar: ${c.barColor};`;
+      --c-bar: ${c.barColor};
+      --c-progress-track: ${c.progressTrack};
+      --c-scrubber: ${c.scrubber};`;
   if (theme.mode === "dark") {
     return `
     :root {${asVars(theme.dark)}
@@ -29684,7 +29896,8 @@ function themeCss(theme) {
 
 // ../packages/render/src/svg.ts
 function renderRootSvg(innerContent, opts) {
-  const theme = resolveTheme(opts.theme ?? "auto", opts.colorOverrides ?? {});
+  const baseTheme = resolvePreset(opts.preset ?? "default");
+  const theme = resolveTheme(opts.theme ?? "auto", opts.colorOverrides ?? {}, baseTheme);
   const css = `${themeCss(theme)}${CARD_CSS}${ANIMATION_CSS}`;
   const titleTag = opts.title ? `<title>${escapeForTitle(opts.title)}</title>` : "";
   return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${opts.width}" height="${opts.height}" viewBox="0 0 ${opts.width} ${opts.height}" role="img" class="card-root">
@@ -29693,6 +29906,7 @@ function renderRootSvg(innerContent, opts) {
     ${cardGradient(theme)}
     ${coverShadow()}
     ${coverPlaceholder()}
+    ${coverGlow()}
   </defs>
   <style>${css}</style>
   ${innerContent}
@@ -29720,17 +29934,24 @@ function coverPlaceholder() {
       <stop offset="100%" stop-color="#3b82f6" />
     </linearGradient>`;
 }
+function coverGlow() {
+  return `<filter id="cover-glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="rgba(0,0,0,0.4)" flood-opacity="1" />
+    </filter>`;
+}
 
 // ../packages/render/src/cardStack.ts
 function renderSingleSongSvg(song, opts = {}) {
-  const width = opts.width ?? SONG_CARD_DEFAULT_WIDTH;
-  const height = opts.height ?? SONG_CARD_DEFAULT_HEIGHT;
+  const isPlayer = (opts.layout ?? "classic") === "player";
+  const width = opts.width ?? (isPlayer ? PLAYER_CARD_DEFAULT_WIDTH : SONG_CARD_DEFAULT_WIDTH);
+  const height = opts.height ?? (isPlayer ? PLAYER_CARD_DEFAULT_HEIGHT : SONG_CARD_DEFAULT_HEIGHT);
   const inner = renderSongCard(song, { ...opts, x: 0, y: 0, width, height });
   return renderRootSvg(inner, {
     width,
     height,
     theme: opts.theme,
-    colorOverrides: opts.colorOverrides
+    colorOverrides: opts.colorOverrides,
+    preset: opts.preset
   });
 }
 function renderSingleProfileSvg(profile, opts = {}) {
@@ -29776,21 +29997,20 @@ function safeFileId(id) {
 async function writeSongSvgs(song, absCardsDir, opts) {
   const coverDataUri = await fetchAsDataUri(song.coverUrl);
   const baseName = `song-${safeFileId(song.id)}`;
+  const songOpts = {
+    coverDataUri,
+    lang: opts.lang,
+    width: opts.width,
+    colorOverrides: opts.colorOverrides,
+    layout: opts.layout,
+    preset: opts.preset,
+    ...opts.showProgress != null && { showProgress: opts.showProgress },
+    ...opts.showLogo != null && { showLogo: opts.showLogo },
+    ...opts.showLinkIcon != null && { showLinkIcon: opts.showLinkIcon }
+  };
   if (opts.theme === "auto") {
-    const dark = renderSingleSongSvg(song, {
-      coverDataUri,
-      theme: "dark",
-      lang: opts.lang,
-      width: opts.width,
-      colorOverrides: opts.colorOverrides
-    });
-    const light = renderSingleSongSvg(song, {
-      coverDataUri,
-      theme: "light",
-      lang: opts.lang,
-      width: opts.width,
-      colorOverrides: opts.colorOverrides
-    });
+    const dark = renderSingleSongSvg(song, { ...songOpts, theme: "dark" });
+    const light = renderSingleSongSvg(song, { ...songOpts, theme: "light" });
     const darkPath = join(absCardsDir, `${baseName}-dark.svg`);
     const lightPath = join(absCardsDir, `${baseName}-light.svg`);
     mkdirSync(dirname(darkPath), { recursive: true });
@@ -29798,13 +30018,7 @@ async function writeSongSvgs(song, absCardsDir, opts) {
     writeFileSync(lightPath, light, "utf-8");
     return { dark: darkPath, light: lightPath };
   }
-  const svg = renderSingleSongSvg(song, {
-    coverDataUri,
-    theme: opts.theme,
-    lang: opts.lang,
-    width: opts.width,
-    colorOverrides: opts.colorOverrides
-  });
+  const svg = renderSingleSongSvg(song, { ...songOpts, theme: opts.theme });
   const outPath = join(absCardsDir, `${baseName}.svg`);
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, svg, "utf-8");
@@ -29969,6 +30183,11 @@ function buildCardUrl(base, songId, theme, opts) {
   if (opts.bgColor) params.push(`bg_color=${enc(opts.bgColor.replace(/^#/, ""))}`);
   if (opts.textColor) params.push(`text_color=${enc(opts.textColor.replace(/^#/, ""))}`);
   if (opts.accentColor) params.push(`accent_color=${enc(opts.accentColor.replace(/^#/, ""))}`);
+  if (opts.layout && opts.layout !== "classic") params.push(`layout=${enc(opts.layout)}`);
+  if (opts.preset && opts.preset !== "default") params.push(`preset=${enc(opts.preset)}`);
+  if (opts.showProgress != null) params.push(`show_progress=${opts.showProgress}`);
+  if (opts.showLogo != null) params.push(`show_logo=${opts.showLogo}`);
+  if (opts.showLinkIcon != null) params.push(`show_link_icon=${opts.showLinkIcon}`);
   return `${base.replace(/\/$/, "")}/api/card?${params.join("&")}`;
 }
 function buildProfileUrl(base, handle, theme, opts) {
@@ -30109,6 +30328,11 @@ async function run() {
         theme: inputs.theme,
         lang: inputs.lang,
         ...inputs.width != null && { width: inputs.width },
+        layout: inputs.layout,
+        preset: inputs.preset,
+        showProgress: inputs.showProgress,
+        showLogo: inputs.showLogo,
+        showLinkIcon: inputs.showLinkIcon,
         colorOverrides: {
           ...inputs.bgColor && { bg: inputs.bgColor },
           ...inputs.textColor && { text: inputs.textColor },
@@ -30127,7 +30351,12 @@ async function run() {
         ...inputs.width != null && { width: inputs.width },
         ...inputs.bgColor && { bgColor: inputs.bgColor },
         ...inputs.textColor && { textColor: inputs.textColor },
-        ...inputs.accentColor && { accentColor: inputs.accentColor }
+        ...inputs.accentColor && { accentColor: inputs.accentColor },
+        layout: inputs.layout,
+        preset: inputs.preset,
+        showProgress: inputs.showProgress,
+        showLogo: inputs.showLogo,
+        showLinkIcon: inputs.showLinkIcon
       });
     }
     core2.setOutput("profile", profile ? JSON.stringify(profile) : "");

@@ -3,9 +3,15 @@ import { renderEqualizer } from './equalizer.js';
 import { escapeAttr, escapeXml } from './escape.js';
 import { formatCount, formatDuration } from './format.js';
 import { type Lang, formatRelativeTime, t } from './i18n/index.js';
+import { renderLinkIcon } from './linkIcon.js';
 import { renderModelBadgeHtml } from './modelBadge.js';
 import { renderNewBadge } from './newBadge.js';
+import { renderProgressBar } from './progressBar.js';
+import { renderSunoLogo } from './sunoLogo.js';
 import { renderTagChipsHtml } from './tagChips.js';
+import type { PresetName } from './themes.js';
+
+export type CardLayout = 'classic' | 'player';
 
 export type SongCardOptions = {
   /** Data URI (data:image/jpeg;base64,...) for the cover. Passed in by the caller. */
@@ -13,6 +19,10 @@ export type SongCardOptions = {
   width?: number;
   height?: number;
   lang?: Lang;
+  /** Card layout. `classic` = info-dense, `player` = Suno-style player. Default `classic`. */
+  layout?: CardLayout;
+  /** Color preset. Default `default`. */
+  preset?: PresetName;
   showPlays?: boolean;
   showLikes?: boolean;
   showDuration?: boolean;
@@ -21,6 +31,12 @@ export type SongCardOptions = {
   showModelBadge?: boolean;
   showNewBadge?: boolean;
   showTags?: boolean;
+  /** Show progress bar with play button and time labels. Default depends on layout. */
+  showProgress?: boolean;
+  /** Show SUNO logo in bottom-right. Default depends on layout. */
+  showLogo?: boolean;
+  /** Show link icon in top-right. Default depends on layout. */
+  showLinkIcon?: boolean;
   /** Max tag chips rendered. Default 4. */
   maxTags?: number;
   /**
@@ -35,6 +51,13 @@ export const SONG_CARD_DEFAULT_WIDTH = 480;
 export const SONG_CARD_DEFAULT_HEIGHT = 140;
 const COVER_SIZE = 120;
 const COVER_PADDING = 10;
+
+// Player layout constants
+export const PLAYER_CARD_DEFAULT_WIDTH = 640;
+export const PLAYER_CARD_DEFAULT_HEIGHT = 160;
+const PLAYER_COVER_SIZE = 130;
+const PLAYER_COVER_PADDING = 15;
+const PLAYER_COVER_RADIUS = 12;
 
 /**
  * Render a single Spotify-flashy song card as a `<g>` group at the given
@@ -55,6 +78,9 @@ const COVER_PADDING = 10;
  *   └──────────────────────────────────────────────┘
  */
 export function renderSongCard(song: SunoSong, opts: SongCardOptions = {}): string {
+  const layout = opts.layout ?? 'classic';
+  if (layout === 'player') return renderPlayerCard(song, opts);
+
   const width = opts.width ?? SONG_CARD_DEFAULT_WIDTH;
   const height = opts.height ?? SONG_CARD_DEFAULT_HEIGHT;
   const lang = opts.lang ?? 'en';
@@ -158,5 +184,103 @@ export function renderSongCard(song: SunoSong, opts: SongCardOptions = {}): stri
     ${equalizer}
     ${newBadge}
     ${foreignObject}
+  </g>`;
+}
+
+// ---------------------------------------------------------------------------
+// Player layout — Suno-style music player card
+// ---------------------------------------------------------------------------
+
+function renderPlayerCard(song: SunoSong, opts: SongCardOptions): string {
+  const width = opts.width ?? PLAYER_CARD_DEFAULT_WIDTH;
+  const height = opts.height ?? PLAYER_CARD_DEFAULT_HEIGHT;
+  const lang = opts.lang ?? 'en';
+  const x = opts.x ?? 0;
+  const y = opts.y ?? 0;
+
+  // Player layout defaults: minimal, music-player-like
+  const showEqualizer = opts.showEqualizer ?? true;
+  const showProgress = opts.showProgress ?? true;
+  const showLogo = opts.showLogo ?? true;
+  const showLinkIconFlag = opts.showLinkIcon ?? true;
+  const showNewBadge = opts.showNewBadge ?? false;
+  const showDuration = opts.showDuration ?? false;
+
+  // ---------- Cover panel ---------------------------------------------------
+  const coverX = PLAYER_COVER_PADDING;
+  const coverY = (height - PLAYER_COVER_SIZE) / 2;
+  const coverClipId = `cover-clip-${song.id}`;
+
+  const coverImage = opts.coverDataUri
+    ? `<image xlink:href="${escapeAttr(opts.coverDataUri)}" href="${escapeAttr(opts.coverDataUri)}" x="${coverX}" y="${coverY}" width="${PLAYER_COVER_SIZE}" height="${PLAYER_COVER_SIZE}" preserveAspectRatio="xMidYMid slice" clip-path="url(#${coverClipId})" filter="url(#cover-glow)" />`
+    : `<rect x="${coverX}" y="${coverY}" width="${PLAYER_COVER_SIZE}" height="${PLAYER_COVER_SIZE}" rx="${PLAYER_COVER_RADIUS}" fill="url(#cover-placeholder)" filter="url(#cover-glow)" />
+       <text x="${coverX + PLAYER_COVER_SIZE / 2}" y="${coverY + PLAYER_COVER_SIZE / 2 + 8}" text-anchor="middle" font-size="36" fill="rgba(255,255,255,0.6)">♪</text>`;
+
+  // Duration pill (hidden by default in player, shown if explicitly enabled)
+  const durationPill =
+    showDuration && song.durationSeconds > 0
+      ? (() => {
+          const label = formatDuration(song.durationSeconds);
+          const pillWidth = label.length * 7 + 10;
+          const pillX = coverX + PLAYER_COVER_SIZE - pillWidth - 6;
+          const pillY = coverY + PLAYER_COVER_SIZE - 22;
+          return `<g class="duration-badge"><rect class="duration-pill" x="${pillX}" y="${pillY}" width="${pillWidth}" height="16" rx="8" /><text class="duration-text" x="${pillX + pillWidth / 2}" y="${pillY + 11}" text-anchor="middle">${escapeXml(label)}</text></g>`;
+        })()
+      : '';
+
+  // Equalizer bars — top-left corner of cover (kept by default!)
+  const equalizer = showEqualizer
+    ? renderEqualizer({ x: coverX + 8, y: coverY + 8, width: 36, height: 32 })
+    : '';
+
+  // NEW badge
+  const newBadge =
+    showNewBadge && song.isNew
+      ? renderNewBadge(coverX + PLAYER_COVER_SIZE - 44, coverY + 8, lang)
+      : '';
+
+  // ---------- Text area (right of cover) ------------------------------------
+  const contentX = coverX + PLAYER_COVER_SIZE + 16;
+  const contentWidth = width - contentX - 16;
+
+  // Title — single line via foreignObject for CJK support
+  const title = song.title.trim() || '(untitled)';
+  const titleY = coverY + 4;
+  const titleHeight = 26;
+  const titleFO = `<foreignObject x="${contentX}" y="${titleY}" width="${contentWidth - (showLinkIconFlag ? 24 : 0)}" height="${titleHeight}">
+    <p xmlns="http://www.w3.org/1999/xhtml" class="player-title">${escapeXml(title)}</p>
+  </foreignObject>`;
+
+  // Progress bar — centered vertically in the remaining space below title
+  const progressY = coverY + PLAYER_COVER_SIZE / 2 + 8;
+  const progressBar =
+    showProgress && song.durationSeconds > 0
+      ? renderProgressBar({
+          x: contentX,
+          y: progressY,
+          width: contentWidth,
+          durationSeconds: song.durationSeconds,
+        })
+      : '';
+
+  // SUNO logo — bottom-right
+  const logo = showLogo ? renderSunoLogo(width - 16, height - 16) : '';
+
+  // Link icon — top-right
+  const linkIcon = showLinkIconFlag ? renderLinkIcon(width - 30, coverY + 4, 14) : '';
+
+  // ---------- Compose -------------------------------------------------------
+  return `<g class="song-card" transform="translate(${x}, ${y})">
+    <clipPath id="${coverClipId}"><rect x="${coverX}" y="${coverY}" width="${PLAYER_COVER_SIZE}" height="${PLAYER_COVER_SIZE}" rx="${PLAYER_COVER_RADIUS}" /></clipPath>
+    <rect class="card-bg" x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="14" />
+    ${coverImage}
+    <rect class="cover-overlay" x="${coverX}" y="${coverY}" width="${PLAYER_COVER_SIZE}" height="${PLAYER_COVER_SIZE}" rx="${PLAYER_COVER_RADIUS}" />
+    ${durationPill}
+    ${equalizer}
+    ${newBadge}
+    ${titleFO}
+    ${progressBar}
+    ${logo}
+    ${linkIcon}
   </g>`;
 }

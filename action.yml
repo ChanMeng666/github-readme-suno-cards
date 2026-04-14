@@ -61,6 +61,25 @@ inputs:
     required: false
     default: 'true'
 
+  # ──── Visual style ─────────────────────────────────────────────────────────
+  layout:
+    description: 'Card layout: `classic` (info-dense) or `player` (Suno-style with progress bar).'
+    required: false
+    default: 'classic'
+  preset:
+    description: 'Color preset: `default` (purple) or `suno` (navy + gold).'
+    required: false
+    default: 'default'
+  show_progress:
+    description: 'Show progress bar with play button (default: true for player layout).'
+    required: false
+  show_logo:
+    description: 'Show SUNO logo in bottom-right.'
+    required: false
+  show_link_icon:
+    description: 'Show link icon in top-right.'
+    required: false
+
   # ──── Output ───────────────────────────────────────────────────────────────
   render_mode:
     description: '`service` (default, live cards via hosted Vercel URL) or `local` (pre-render SVGs into your repo).'

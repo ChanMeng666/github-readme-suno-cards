@@ -17,6 +17,8 @@ export type ThemeColors = {
   chipText: string;
   chipBorder: string;
   barColor: string;
+  progressTrack: string;
+  scrubber: string;
 };
 
 export type Theme = {
@@ -41,6 +43,8 @@ export const DEFAULT_THEME: Theme = {
     chipText: '#c4b5fd',
     chipBorder: 'rgba(139, 92, 246, 0.3)',
     barColor: '#a78bfa',
+    progressTrack: '#3a3a4f',
+    scrubber: '#ffffff',
   },
   light: {
     bg: '#ffffff',
@@ -56,8 +60,55 @@ export const DEFAULT_THEME: Theme = {
     chipText: '#6d28d9',
     chipBorder: 'rgba(124, 58, 237, 0.2)',
     barColor: '#7c3aed',
+    progressTrack: '#d0d0e0',
+    scrubber: '#18181b',
   },
 };
+
+export const SUNO_PRESET: Theme = {
+  name: 'suno',
+  dark: {
+    bg: '#1c202c',
+    cardBg: '#1d264b',
+    cardBgGradientStart: '#1e295e',
+    cardBgGradientEnd: '#1d264b',
+    text: '#ffffff',
+    subtext: '#8888aa',
+    accent: '#fbd38d',
+    accentGlow: 'rgba(251, 211, 141, 0.35)',
+    border: 'rgba(255, 255, 255, 0.06)',
+    chipBg: 'rgba(251, 211, 141, 0.12)',
+    chipText: '#fbd38d',
+    chipBorder: 'rgba(251, 211, 141, 0.25)',
+    barColor: '#fbd38d',
+    progressTrack: '#3a3a5c',
+    scrubber: '#ffffff',
+  },
+  light: {
+    bg: '#f5f5fa',
+    cardBg: '#ffffff',
+    cardBgGradientStart: '#f0f0f8',
+    cardBgGradientEnd: '#e8e8f0',
+    text: '#1a1a3e',
+    subtext: '#666688',
+    accent: '#b8912e',
+    accentGlow: 'rgba(184, 145, 46, 0.25)',
+    border: 'rgba(0, 0, 0, 0.08)',
+    chipBg: 'rgba(184, 145, 46, 0.1)',
+    chipText: '#8a6d1f',
+    chipBorder: 'rgba(184, 145, 46, 0.2)',
+    barColor: '#b8912e',
+    progressTrack: '#d0d0e0',
+    scrubber: '#1a1a3e',
+  },
+};
+
+export type PresetName = 'default' | 'suno';
+
+export function resolvePreset(name: PresetName = 'default'): Theme {
+  if (name === 'suno') return SUNO_PRESET;
+  return DEFAULT_THEME;
+}
 
 export type ColorOverrides = {
   bg?: string;
@@ -119,7 +170,9 @@ export function themeCss(theme: ResolvedTheme): string {
       --c-chip-bg: ${c.chipBg};
       --c-chip-text: ${c.chipText};
       --c-chip-border: ${c.chipBorder};
-      --c-bar: ${c.barColor};`;
+      --c-bar: ${c.barColor};
+      --c-progress-track: ${c.progressTrack};
+      --c-scrubber: ${c.scrubber};`;
 
   if (theme.mode === 'dark') {
     return `

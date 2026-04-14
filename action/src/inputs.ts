@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import type { SortKey } from '@suno-cards/parser';
-import type { ThemeMode } from '@suno-cards/render';
+import type { CardLayout, PresetName, ThemeMode } from '@suno-cards/render';
 
 /**
  * Read and validate Action inputs from `core.getInput()`. All inputs are
@@ -28,6 +28,13 @@ export type ActionInputs = {
   featured: string[] | null;
   allowExplicit: boolean;
   showProfileCard: boolean;
+
+  // Visual style
+  layout: CardLayout;
+  preset: PresetName;
+  showProgress: boolean | null;
+  showLogo: boolean | null;
+  showLinkIcon: boolean | null;
 
   // Output
   renderMode: 'service' | 'local';
@@ -123,6 +130,12 @@ export function readInputs(): ActionInputs {
     featured: csv('featured'),
     allowExplicit: bool('allow_explicit', true),
     showProfileCard: bool('show_profile_card', true),
+
+    layout: enumIn('layout', ['classic', 'player'] as const, 'classic'),
+    preset: enumIn('preset', ['default', 'suno'] as const, 'default'),
+    showProgress: maybeStr('show_progress') != null ? bool('show_progress', false) : null,
+    showLogo: maybeStr('show_logo') != null ? bool('show_logo', false) : null,
+    showLinkIcon: maybeStr('show_link_icon') != null ? bool('show_link_icon', false) : null,
 
     renderMode: enumIn('render_mode', ['service', 'local'] as const, 'service'),
     localCardsDir: str('local_cards_dir', '.suno-cards'),

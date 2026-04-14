@@ -153,4 +153,51 @@ export const CARD_CSS = `
   }
   .error-title { font-size: 14px; font-weight: 700; color: var(--c-text); margin: 0; }
   .error-subtitle { font-size: 11px; color: var(--c-subtext); margin-top: 4px; }
+
+  /* Player layout elements */
+  .player-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--c-text);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .play-btn-circle {
+    fill: var(--c-accent);
+  }
+  .play-btn-icon {
+    fill: #ffffff;
+  }
+  .progress-track {
+    fill: var(--c-progress-track);
+  }
+  .progress-played {
+    fill: var(--c-accent);
+  }
+  .progress-scrubber {
+    fill: var(--c-scrubber);
+  }
+  .time-label {
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    fill: var(--c-subtext);
+  }
+  .suno-logo {
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    fill: var(--c-text);
+    opacity: 0.9;
+    letter-spacing: 2px;
+  }
+  .link-icon {
+    stroke: var(--c-subtext);
+    stroke-width: 1.5;
+    fill: none;
+    opacity: 0.5;
+  }
 `;

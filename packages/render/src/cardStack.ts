@@ -2,13 +2,15 @@ import type { SunoProfile, SunoSong } from '@suno-cards/parser';
 import type { Lang } from './i18n/index.js';
 import { PROFILE_CARD_DEFAULT_HEIGHT, renderProfileCard } from './profileCard.js';
 import {
+  PLAYER_CARD_DEFAULT_HEIGHT,
+  PLAYER_CARD_DEFAULT_WIDTH,
   SONG_CARD_DEFAULT_HEIGHT,
   SONG_CARD_DEFAULT_WIDTH,
   type SongCardOptions,
   renderSongCard,
 } from './songCard.js';
 import { renderRootSvg } from './svg.js';
-import type { ColorOverrides, ThemeMode } from './themes.js';
+import type { ColorOverrides, PresetName, ThemeMode } from './themes.js';
 
 export type CardStackItem =
   | { kind: 'profile'; profile: SunoProfile; avatarDataUri?: string | null }
@@ -19,6 +21,7 @@ export type CardStackOptions = {
   gap?: number;
   theme?: ThemeMode;
   colorOverrides?: ColorOverrides;
+  preset?: PresetName;
   lang?: Lang;
   /** Forwarded to every song card in the stack. */
   songOptions?: Omit<SongCardOptions, 'x' | 'y' | 'coverDataUri' | 'width' | 'height' | 'lang'>;
@@ -30,9 +33,12 @@ export type CardStackOptions = {
  * multi-card endpoint.
  */
 export function renderCardStack(items: CardStackItem[], opts: CardStackOptions = {}): string {
-  const width = opts.width ?? SONG_CARD_DEFAULT_WIDTH;
+  const layout = opts.songOptions?.layout ?? 'classic';
+  const isPlayer = layout === 'player';
+  const width = opts.width ?? (isPlayer ? PLAYER_CARD_DEFAULT_WIDTH : SONG_CARD_DEFAULT_WIDTH);
   const gap = opts.gap ?? 10;
   const lang = opts.lang ?? 'en';
+  const preset = opts.preset ?? opts.songOptions?.preset;
 
   if (items.length === 0) {
     return renderRootSvg('', {
@@ -40,11 +46,13 @@ export function renderCardStack(items: CardStackItem[], opts: CardStackOptions =
       height: 40,
       theme: opts.theme,
       colorOverrides: opts.colorOverrides,
+      preset,
     });
   }
 
+  const songHeight = isPlayer ? PLAYER_CARD_DEFAULT_HEIGHT : SONG_CARD_DEFAULT_HEIGHT;
   const heights = items.map((item) =>
-    item.kind === 'profile' ? PROFILE_CARD_DEFAULT_HEIGHT : SONG_CARD_DEFAULT_HEIGHT,
+    item.kind === 'profile' ? PROFILE_CARD_DEFAULT_HEIGHT : songHeight,
   );
   const totalHeight = heights.reduce((acc, h) => acc + h, 0) + gap * (items.length - 1);
 
@@ -69,7 +77,7 @@ export function renderCardStack(items: CardStackItem[], opts: CardStackOptions =
         renderSongCard(item.song, {
           ...(opts.songOptions ?? {}),
           width,
-          height: SONG_CARD_DEFAULT_HEIGHT,
+          height: songHeight,
           lang,
           coverDataUri: item.coverDataUri ?? null,
           x: 0,
@@ -85,6 +93,7 @@ export function renderCardStack(items: CardStackItem[], opts: CardStackOptions =
     height: totalHeight,
     theme: opts.theme,
     colorOverrides: opts.colorOverrides,
+    preset,
   });
 }
 
@@ -99,14 +108,16 @@ export function renderSingleSongSvg(
     colorOverrides?: ColorOverrides;
   } = {},
 ): string {
-  const width = opts.width ?? SONG_CARD_DEFAULT_WIDTH;
-  const height = opts.height ?? SONG_CARD_DEFAULT_HEIGHT;
+  const isPlayer = (opts.layout ?? 'classic') === 'player';
+  const width = opts.width ?? (isPlayer ? PLAYER_CARD_DEFAULT_WIDTH : SONG_CARD_DEFAULT_WIDTH);
+  const height = opts.height ?? (isPlayer ? PLAYER_CARD_DEFAULT_HEIGHT : SONG_CARD_DEFAULT_HEIGHT);
   const inner = renderSongCard(song, { ...opts, x: 0, y: 0, width, height });
   return renderRootSvg(inner, {
     width,
     height,
     theme: opts.theme,
     colorOverrides: opts.colorOverrides,
+    preset: opts.preset,
   });
 }
 

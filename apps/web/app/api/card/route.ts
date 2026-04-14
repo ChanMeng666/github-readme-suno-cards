@@ -40,6 +40,8 @@ export async function GET(req: NextRequest): Promise<Response> {
       coverDataUri,
       theme,
       lang,
+      layout: q.layout,
+      preset: q.preset,
       width: q.width,
       colorOverrides: q.colors,
       showPlays: q.showPlays,
@@ -50,6 +52,9 @@ export async function GET(req: NextRequest): Promise<Response> {
       showModelBadge: q.showModelBadge,
       showNewBadge: q.showNewBadge,
       showTags: q.showTags,
+      showProgress: q.showProgress,
+      showLogo: q.showLogo,
+      showLinkIcon: q.showLinkIcon,
       maxTags: q.maxTags,
     });
     return svgResponse(svg);

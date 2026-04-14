@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_THEME, resolveTheme, themeCss } from '../src/themes.js';
+import {
+  DEFAULT_THEME,
+  SUNO_PRESET,
+  resolvePreset,
+  resolveTheme,
+  themeCss,
+} from '../src/themes.js';
 
 describe('resolveTheme', () => {
   it('returns DEFAULT_THEME unchanged when no overrides', () => {
@@ -31,8 +37,48 @@ describe('themeCss', () => {
   });
   it('includes all custom properties', () => {
     const css = themeCss(resolveTheme('auto'));
-    for (const v of ['--c-bg', '--c-text', '--c-subtext', '--c-accent', '--c-chip-bg', '--c-bar']) {
+    for (const v of [
+      '--c-bg',
+      '--c-text',
+      '--c-subtext',
+      '--c-accent',
+      '--c-chip-bg',
+      '--c-bar',
+      '--c-progress-track',
+      '--c-scrubber',
+    ]) {
       expect(css).toContain(v);
     }
+  });
+});
+
+describe('SUNO_PRESET', () => {
+  it('has gold accent color', () => {
+    expect(SUNO_PRESET.dark.accent).toBe('#fbd38d');
+    expect(SUNO_PRESET.dark.barColor).toBe('#fbd38d');
+  });
+
+  it('has navy card background colors', () => {
+    expect(SUNO_PRESET.dark.cardBg).toBe('#1d264b');
+    expect(SUNO_PRESET.dark.cardBgGradientStart).toBe('#1e295e');
+  });
+
+  it('has progressTrack and scrubber fields', () => {
+    expect(SUNO_PRESET.dark.progressTrack).toBeDefined();
+    expect(SUNO_PRESET.dark.scrubber).toBeDefined();
+  });
+});
+
+describe('resolvePreset', () => {
+  it('returns DEFAULT_THEME for "default"', () => {
+    expect(resolvePreset('default')).toBe(DEFAULT_THEME);
+  });
+
+  it('returns SUNO_PRESET for "suno"', () => {
+    expect(resolvePreset('suno')).toBe(SUNO_PRESET);
+  });
+
+  it('returns DEFAULT_THEME when no name given', () => {
+    expect(resolvePreset()).toBe(DEFAULT_THEME);
   });
 });
