@@ -1,6 +1,10 @@
-# github-readme-suno-cards
+<p align="center">
+  <img src="docs/logo.svg" alt="suno-cards logo" width="120" />
+</p>
 
-Display your [Suno AI](https://suno.com/)-generated music as dynamic, animated SVG cards in your GitHub profile README.
+<h1 align="center">github-readme-suno-cards</h1>
+
+<p align="center">Display your <a href="https://suno.com/">Suno AI</a>-generated music as dynamic, animated SVG cards in your GitHub profile README.</p>
 
 [![CI](https://github.com/ChanMeng666/github-readme-suno-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/ChanMeng666/github-readme-suno-cards/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)

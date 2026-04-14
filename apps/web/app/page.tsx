@@ -58,7 +58,7 @@ export default function HomePage() {
     <div className="mx-auto max-w-5xl px-6">
       {/* Hero */}
       <section className="pt-20 pb-16 text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight bg-gradient-to-r from-violet-600 via-purple-500 to-pink-500 dark:from-violet-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-purple-600 dark:text-purple-400">
           github-readme-suno-cards
         </h1>
         <p className="mt-4 text-lg text-muted max-w-2xl mx-auto">

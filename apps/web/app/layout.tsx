@@ -17,6 +17,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           name="description"
           content="Display your Suno AI-generated music as dynamic cards in your GitHub README."
         />
+        <link rel="icon" href="/logo.svg" type="image/svg+xml" />
       </head>
       <body className="min-h-screen flex flex-col">
         <ThemeProvider>
