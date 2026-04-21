@@ -19,23 +19,24 @@ export function CodeBlock({ code, label }: CodeBlockProps) {
   }, [code]);
 
   return (
-    <div className="relative group">
-      {label && <span className="text-xs font-medium text-muted mb-1 block">{label}</span>}
-      <div className="relative">
-        <pre className="bg-surface border border-border rounded-lg p-3 pr-12 overflow-x-auto text-xs font-mono leading-relaxed">
-          <code className="text-muted break-all whitespace-pre-wrap">{code}</code>
+    <div className="relative">
+      {label && (
+        <span className="mb-2 block font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
+          {label}
+        </span>
+      )}
+      <div className="glass-pill relative rounded-[var(--radius-md)] p-4 pr-14">
+        <pre className="overflow-x-auto font-mono text-xs leading-relaxed text-muted-strong">
+          <code className="whitespace-pre-wrap break-all">{code}</code>
         </pre>
         <button
           type="button"
           onClick={handleCopy}
+          aria-label={copied ? 'Copied' : 'Copy to clipboard'}
           className={cn(
-            'absolute top-2 right-2 p-1.5 rounded-md border transition-all duration-200',
-            'text-muted hover:text-foreground',
-            copied
-              ? 'bg-green-500/10 border-green-500/30 text-green-600 dark:text-green-400'
-              : 'bg-surface border-border hover:bg-muted/10',
+            'glass-pill-quiet focus-ring absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full',
+            copied ? 'text-[color:var(--success)]' : 'text-muted hover:text-foreground',
           )}
-          aria-label="Copy to clipboard"
         >
           {copied ? (
             <svg

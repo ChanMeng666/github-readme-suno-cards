@@ -10,27 +10,33 @@ type ToggleSwitchProps = {
 
 export function ToggleSwitch({ label, checked, onChange }: ToggleSwitchProps) {
   return (
-    <span className="flex items-center gap-2.5 cursor-pointer select-none group">
-      <button
-        type="button"
-        role="switch"
-        aria-checked={checked}
-        onClick={() => onChange(!checked)}
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      onClick={() => onChange(!checked)}
+      className="group flex cursor-pointer select-none items-center gap-3 text-left"
+    >
+      <span
         className={cn(
-          'relative w-8 h-[18px] rounded-full transition-colors duration-200',
-          checked ? 'bg-accent' : 'bg-muted/30 border border-border',
+          'focus-ring relative h-[20px] w-9 shrink-0 rounded-full border transition-colors duration-300',
+          checked
+            ? 'border-transparent bg-foreground'
+            : 'border-border bg-[color:var(--surface-3)]',
         )}
       >
         <span
           className={cn(
-            'absolute top-0.5 left-0.5 w-3 h-3 rounded-full bg-white shadow-sm transition-transform duration-200',
-            checked && 'translate-x-[14px]',
+            'absolute top-[1px] left-[1px] h-[16px] w-[16px] rounded-full transition-transform duration-300',
+            checked
+              ? 'translate-x-[16px] bg-background'
+              : 'translate-x-0 border border-border bg-background',
           )}
         />
-      </button>
-      <span className="text-xs text-foreground group-hover:text-accent transition-colors">
+      </span>
+      <span className="text-sm text-foreground transition-colors group-hover:text-muted-strong">
         {label}
       </span>
-    </span>
+    </button>
   );
 }

@@ -7,6 +7,7 @@ import { CodeBlock } from '../../components/CodeBlock.js';
 import { ColorPicker } from '../../components/ColorPicker.js';
 import { SegmentedControl } from '../../components/SegmentedControl.js';
 import { ToggleSwitch } from '../../components/ToggleSwitch.js';
+import { Skeleton } from '../../components/ui/Skeleton.js';
 import type { CardConfig, CardLayout } from '../../lib/cardParams.js';
 import {
   buildCardUrl,
@@ -68,38 +69,32 @@ function Section({
   title,
   defaultOpen = true,
   children,
+  last = false,
 }: {
   title: string;
   defaultOpen?: boolean;
   children: React.ReactNode;
+  last?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className="border-b border-border last:border-b-0">
+    <div className={cn(!last && 'border-b border-hairline')}>
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-3 text-xs font-semibold text-muted uppercase tracking-wider hover:text-foreground transition-colors"
+        aria-expanded={open}
+        className="focus-ring flex w-full items-center justify-between py-4 font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-muted transition-colors hover:text-foreground"
       >
-        {title}
-        <svg
-          className={cn('w-4 h-4 transition-transform duration-200', open && 'rotate-180')}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-          aria-hidden="true"
-          role="img"
-        >
-          <title>Toggle section</title>
-          <path d="M19 9l-7 7-7-7" />
-        </svg>
+        <span>{title}</span>
+        <span aria-hidden className="text-base leading-none">
+          {open ? '−' : '+'}
+        </span>
       </button>
       <div
         className={cn(
-          'overflow-hidden transition-all duration-200',
-          open ? 'max-h-[500px] opacity-100 pb-4' : 'max-h-0 opacity-0',
+          'overflow-hidden transition-all duration-300',
+          open ? 'max-h-[600px] opacity-100 pb-5' : 'max-h-0 opacity-0',
         )}
       >
         {children}
@@ -108,20 +103,50 @@ function Section({
   );
 }
 
-// ── Builder Inner (needs searchParams) ───────────────
+// ── Tab Pills ────────────────────────────────────────
+
+type Tab = 'markdown' | 'url' | 'html';
+
+function TabPills({ active, onChange }: { active: Tab; onChange: (t: Tab) => void }) {
+  const tabs: { value: Tab; label: string }[] = [
+    { value: 'markdown', label: 'Markdown' },
+    { value: 'url', label: 'URL' },
+    { value: 'html', label: 'HTML' },
+  ];
+
+  return (
+    <div className="glass-pill-quiet inline-flex items-center gap-1 rounded-full p-1">
+      {tabs.map((tab) => (
+        <button
+          key={tab.value}
+          type="button"
+          onClick={() => onChange(tab.value)}
+          className={cn(
+            'focus-ring rounded-full px-3 py-1.5 text-[11px] font-medium tracking-tight transition-colors',
+            active === tab.value
+              ? 'bg-foreground text-background'
+              : 'text-muted hover:text-foreground',
+          )}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ── Builder Inner ────────────────────────────────────
 
 function BuilderInner() {
   const searchParams = useSearchParams();
   const [config, dispatch] = useReducer(reducer, getDefaultConfig(DEMO_UUID));
-  const [activeTab, setActiveTab] = useState<'markdown' | 'url' | 'html'>('markdown');
+  const [activeTab, setActiveTab] = useState<Tab>('markdown');
   const [initialized, setInitialized] = useState(false);
 
-  // Load from URL params on mount
   useEffect(() => {
     if (initialized) return;
     const parsed = parseCardConfig(searchParams);
     if (Object.keys(parsed).length > 0) {
-      // If layout is specified, first apply layout defaults, then override with parsed values
       if (parsed.layout) {
         dispatch({ type: 'SET_LAYOUT', layout: parsed.layout });
       }
@@ -130,7 +155,6 @@ function BuilderInner() {
     setInitialized(true);
   }, [searchParams, initialized]);
 
-  // Sync state to URL
   useEffect(() => {
     if (!initialized) return;
     const url = buildCardUrl(config);
@@ -154,21 +178,31 @@ function BuilderInner() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="text-2xl font-bold text-foreground">Card Builder</h1>
-      <p className="mt-2 text-sm text-muted">
-        Customize your card, preview it live, then copy the embed code.
-      </p>
+    <div className="mx-auto max-w-5xl px-6 pt-16 pb-16">
+      {/* Header */}
+      <div className="mb-10 flex flex-col gap-3">
+        <span className="inline-flex w-fit">
+          <span className="glass-pill-quiet rounded-full px-3 py-1 font-mono text-[10px] uppercase tracking-[0.28em] text-muted">
+            Builder
+          </span>
+        </span>
+        <h1 className="font-display text-4xl italic leading-[1.05] tracking-tight text-foreground md:text-5xl">
+          Craft your card.
+        </h1>
+        <p className="max-w-xl text-sm leading-relaxed text-muted md:text-base">
+          Tweak anything on the left, preview instantly on the right, then copy the embed when
+          you're happy.
+        </p>
+      </div>
 
-      <div className="mt-8 grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-8">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[420px_1fr]">
         {/* Controls */}
-        <div className="bg-surface border border-border rounded-xl p-5">
-          {/* Song Input */}
+        <div className="glass-pill rounded-[var(--radius-lg)] px-6 py-2">
           <Section title="Song Input">
             <div>
               <label
                 htmlFor="song-id-input"
-                className="text-xs font-medium text-muted block mb-1.5"
+                className="mb-2 block font-mono text-[10px] uppercase tracking-[0.18em] text-muted"
               >
                 Song ID or URL
               </label>
@@ -178,18 +212,18 @@ function BuilderInner() {
                 value={config.id}
                 onChange={(e) => setField('id', e.target.value.trim())}
                 placeholder="Song UUID, short code, or full URL"
+                spellCheck={false}
                 className={cn(
-                  'w-full bg-background border border-border rounded-lg px-3 py-2',
-                  'text-sm text-foreground placeholder:text-muted/50',
-                  'focus:border-accent/50 focus:outline-none transition-colors',
+                  'glass-pill-quiet focus-ring w-full rounded-full px-4 py-2.5',
+                  'text-sm text-foreground placeholder:text-muted/60 font-mono',
+                  'focus:outline-none',
                 )}
               />
             </div>
           </Section>
 
-          {/* Layout & Theme */}
           <Section title="Layout & Theme">
-            <div className="space-y-3">
+            <div className="space-y-4">
               <SegmentedControl
                 label="Layout"
                 options={[
@@ -221,42 +255,40 @@ function BuilderInner() {
             </div>
           </Section>
 
-          {/* Colors */}
           <Section title="Colors">
             <div className="space-y-3">
-              <div className="space-y-2.5">
-                <ColorPicker
-                  label="Background"
-                  value={config.bgColor}
-                  onChange={(v) => setField('bgColor', v)}
-                  defaultColor="#12121a"
-                />
-                <ColorPicker
-                  label="Text"
-                  value={config.textColor}
-                  onChange={(v) => setField('textColor', v)}
-                  defaultColor="#f5f5f7"
-                />
-                <ColorPicker
-                  label="Accent"
-                  value={config.accentColor}
-                  onChange={(v) => setField('accentColor', v)}
-                  defaultColor="#a78bfa"
-                />
+              <ColorPicker
+                label="Background"
+                value={config.bgColor}
+                onChange={(v) => setField('bgColor', v)}
+                defaultColor="#12121a"
+              />
+              <ColorPicker
+                label="Text"
+                value={config.textColor}
+                onChange={(v) => setField('textColor', v)}
+                defaultColor="#f5f5f7"
+              />
+              <ColorPicker
+                label="Accent"
+                value={config.accentColor}
+                onChange={(v) => setField('accentColor', v)}
+                defaultColor="#a78bfa"
+              />
+              <div className="flex justify-end pt-1">
+                <button
+                  type="button"
+                  onClick={() => dispatch({ type: 'RESET_COLORS' })}
+                  className="focus-ring rounded-full px-2 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted transition-colors hover:text-foreground"
+                >
+                  Reset
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => dispatch({ type: 'RESET_COLORS' })}
-                className="mt-2 text-xs text-muted hover:text-accent transition-colors ml-auto block"
-              >
-                Reset to preset defaults
-              </button>
             </div>
           </Section>
 
-          {/* Element Toggles */}
-          <Section title="Element Toggles">
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
+          <Section title="Element Toggles" last>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-3">
               {TOGGLES.map(({ key, label }) => (
                 <ToggleSwitch
                   key={key}
@@ -270,30 +302,17 @@ function BuilderInner() {
         </div>
 
         {/* Preview + Embed */}
-        <div className="lg:sticky lg:top-20 lg:self-start space-y-6">
-          {/* Preview frame */}
-          <div className="bg-surface border border-border rounded-xl p-6 flex items-center justify-center min-h-[200px]">
+        <div className="lg:sticky lg:top-24 lg:self-start space-y-5">
+          <div className="glass-pill flex min-h-[240px] items-center justify-center rounded-[var(--radius-lg)] p-6">
             <CardPreview config={config} debounceMs={300} />
           </div>
 
-          {/* Embed code */}
           <div>
-            <div className="flex items-center gap-1 mb-3">
-              {(['markdown', 'url', 'html'] as const).map((tab) => (
-                <button
-                  key={tab}
-                  type="button"
-                  onClick={() => setActiveTab(tab)}
-                  className={cn(
-                    'px-3 py-1.5 text-xs font-medium rounded-md transition-colors duration-150',
-                    activeTab === tab
-                      ? 'bg-foreground text-background'
-                      : 'text-muted hover:text-foreground',
-                  )}
-                >
-                  {tab === 'markdown' ? 'Markdown' : tab === 'url' ? 'URL' : 'HTML'}
-                </button>
-              ))}
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
+                Embed code
+              </span>
+              <TabPills active={activeTab} onChange={setActiveTab} />
             </div>
             <CodeBlock code={embedCode} />
           </div>
@@ -303,18 +322,18 @@ function BuilderInner() {
   );
 }
 
-// ── Page wrapper with Suspense ───────────────────────
+// ── Page wrapper ─────────────────────────────────────
 
 export default function BuilderPage() {
   return (
     <Suspense
       fallback={
-        <div className="mx-auto max-w-5xl px-6 py-12">
-          <div className="skeleton h-8 w-48 rounded-lg mb-4" />
-          <div className="skeleton h-4 w-96 rounded mb-8" />
-          <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-8">
-            <div className="skeleton h-[600px] rounded-xl" />
-            <div className="skeleton h-[300px] rounded-xl" />
+        <div className="mx-auto max-w-5xl px-6 pt-16 pb-16">
+          <Skeleton className="mb-4 h-8 w-48" />
+          <Skeleton className="mb-10 h-4 w-96" />
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[420px_1fr]">
+            <Skeleton height={600} className="rounded-[var(--radius-lg)]" />
+            <Skeleton height={300} className="rounded-[var(--radius-lg)]" />
           </div>
         </div>
       }

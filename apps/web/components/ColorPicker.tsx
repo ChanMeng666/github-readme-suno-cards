@@ -7,7 +7,7 @@ type ColorPickerProps = {
   label: string;
   value: string; // hex without '#'
   onChange: (hex: string) => void;
-  defaultColor?: string; // for the color input default
+  defaultColor?: string;
 };
 
 export function ColorPicker({
@@ -45,25 +45,36 @@ export function ColorPicker({
     [onChange],
   );
 
+  const swatchValue = value ? `#${value}` : defaultColor;
+
   return (
     <div className="flex items-center gap-3">
-      <span className="text-xs font-medium text-muted w-20 shrink-0">{label}</span>
-      <input
-        type="color"
-        value={value ? `#${value}` : defaultColor}
-        onChange={handlePickerChange}
-        className="w-8 h-8 rounded-md border border-border cursor-pointer bg-transparent p-0.5 shrink-0"
-      />
+      <span className="w-20 shrink-0 font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
+        {label}
+      </span>
+      <label
+        className="focus-ring relative h-8 w-8 shrink-0 cursor-pointer overflow-hidden rounded-full border border-border-strong"
+        style={{ background: swatchValue }}
+        aria-label={`${label} color picker`}
+      >
+        <input
+          type="color"
+          value={swatchValue}
+          onChange={handlePickerChange}
+          className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+        />
+      </label>
       <input
         type="text"
         value={hexInput}
         onChange={handleHexInput}
         placeholder="auto"
         maxLength={7}
+        spellCheck={false}
         className={cn(
-          'flex-1 bg-surface border border-border rounded-lg px-2.5 py-1.5',
-          'text-xs font-mono text-foreground placeholder:text-muted/50',
-          'focus:border-accent/50 focus:outline-none transition-colors',
+          'glass-pill-quiet focus-ring flex-1 rounded-full px-3 py-1.5 text-xs',
+          'font-mono text-foreground placeholder:text-muted/60',
+          'focus:outline-none',
         )}
       />
     </div>

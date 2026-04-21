@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import type { CardConfig } from '../lib/cardParams.js';
-import { buildCardQueryString, buildCardUrl, buildMarkdownEmbed } from '../lib/cardParams.js';
+import { buildCardQueryString, buildMarkdownEmbed } from '../lib/cardParams.js';
 import { cn } from '../lib/cn.js';
 import { ORIGIN_HINT } from '../lib/constants.js';
 
@@ -28,50 +28,51 @@ export function GalleryCard({ title, description, config }: GalleryCardProps) {
   const qs = buildCardQueryString(config);
 
   return (
-    <div className="group relative bg-surface border border-border rounded-xl overflow-hidden hover:border-accent/30 transition-all duration-200 hover:shadow-lg hover:shadow-accent/5">
-      {/* Preview frame */}
-      <div className="p-4 flex items-center justify-center min-h-[120px]">
+    <article className="reveal-item group glass-pill relative flex flex-col overflow-hidden rounded-[var(--radius-lg)] transition-transform duration-500 hover:-translate-y-1">
+      <div className="relative flex min-h-[140px] items-center justify-center p-5">
+        <div
+          aria-hidden
+          className="luminance-wash pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-[50%] opacity-50"
+        />
         <img
           src={`/api/card?${qs}&theme=${config.theme}`}
           alt={title}
           width={width}
-          className="max-w-full h-auto rounded-lg"
           loading="lazy"
+          className="h-auto max-w-full rounded-[var(--radius-md)]"
         />
       </div>
 
-      {/* Info */}
-      <div className="px-4 pb-4">
-        <h3 className="text-sm font-medium text-foreground">{title}</h3>
-        <p className="text-xs text-muted mt-0.5">{description}</p>
+      <div className="flex items-start justify-between gap-3 border-t border-hairline px-5 py-4">
+        <div className="min-w-0 flex-1">
+          <h3 className="font-display text-base leading-tight text-foreground">{title}</h3>
+          <p className="mt-1 text-xs leading-relaxed text-muted">{description}</p>
+        </div>
       </div>
 
-      {/* Hover overlay */}
       <div
         className={cn(
-          'absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center gap-3',
-          'opacity-0 group-hover:opacity-100 transition-opacity duration-200',
+          'absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-1 transition-opacity duration-300',
+          'opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100',
         )}
       >
         <button
           type="button"
           onClick={handleCopy}
           className={cn(
-            'px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200',
-            copied
-              ? 'bg-green-500/10 border-green-500/30 text-green-600 dark:text-green-400'
-              : 'border-border text-foreground hover:bg-surface',
+            'glass-pill focus-ring rounded-full px-3 py-1.5 text-[11px] font-semibold tracking-tight',
+            copied ? 'text-[color:var(--success)]' : 'text-foreground',
           )}
         >
-          {copied ? 'Copied!' : 'Copy Code'}
+          {copied ? 'Copied' : 'Copy'}
         </button>
         <Link
           href={`/builder?${qs}`}
-          className="px-3 py-1.5 text-xs font-medium rounded-lg bg-accent text-white hover:bg-accent-hover transition-colors duration-200"
+          className="glass-pill-quiet focus-ring rounded-full px-3 py-1.5 text-[11px] font-semibold tracking-tight text-muted hover:text-foreground"
         >
           Customize
         </Link>
       </div>
-    </div>
+    </article>
   );
 }

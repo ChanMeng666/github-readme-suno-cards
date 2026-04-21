@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { CardConfig } from '../lib/cardParams.js';
 import { buildCardQueryString } from '../lib/cardParams.js';
 import { cn } from '../lib/cn.js';
+import { Skeleton } from './ui/Skeleton.js';
 
 type CardPreviewProps = {
   config: CardConfig;
@@ -39,18 +40,19 @@ export function CardPreview({ config, className, debounceMs = 300 }: CardPreview
   }, [config, debounceMs]);
 
   const width = config.layout === 'player' ? 640 : 480;
+  const aspect = config.layout === 'player' ? '640/160' : '480/140';
 
   return (
     <div className={cn('relative', className)}>
-      {/* Skeleton */}
+      <div
+        aria-hidden
+        className="luminance-wash pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-[50%] opacity-60"
+      />
       {!loaded && src && (
-        <div
-          className="skeleton rounded-xl"
-          style={{
-            width: '100%',
-            maxWidth: width,
-            aspectRatio: config.layout === 'player' ? '640/160' : '480/140',
-          }}
+        <Skeleton
+          aspectRatio={aspect}
+          style={{ width: '100%', maxWidth: width }}
+          className="rounded-[var(--radius-md)]"
         />
       )}
       {src && (
@@ -59,8 +61,8 @@ export function CardPreview({ config, className, debounceMs = 300 }: CardPreview
           alt="Card preview"
           width={width}
           className={cn(
-            'max-w-full h-auto rounded-xl transition-opacity duration-300',
-            loaded ? 'opacity-100' : 'opacity-0 absolute top-0 left-0',
+            'h-auto max-w-full rounded-[var(--radius-md)] transition-opacity duration-500',
+            loaded ? 'opacity-100' : 'absolute top-0 left-0 opacity-0',
           )}
           onLoad={() => setLoaded(true)}
         />

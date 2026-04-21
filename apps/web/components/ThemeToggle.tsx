@@ -5,60 +5,57 @@ import { useEffect, useState } from 'react';
 import { cn } from '../lib/cn.js';
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
   if (!mounted) {
-    return <div className="w-9 h-9" />;
+    return <div aria-hidden className="h-8 w-8" />;
   }
 
-  const isDark = theme === 'dark';
+  const isDark = resolvedTheme !== 'light';
 
   return (
     <button
       type="button"
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       className={cn(
-        'relative w-9 h-9 flex items-center justify-center rounded-lg',
-        'border border-border bg-surface',
-        'hover:bg-muted/10 transition-colors duration-200',
+        'glass-pill-quiet focus-ring relative flex h-8 w-8 items-center justify-center rounded-full',
+        'text-muted hover:text-foreground',
       )}
       aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
     >
-      {/* Sun */}
       <svg
         className={cn(
-          'w-4 h-4 absolute transition-all duration-300',
-          isDark ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100',
+          'absolute h-4 w-4 transition-all duration-500',
+          isDark ? 'rotate-90 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100',
         )}
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
-        strokeWidth={2}
+        strokeWidth={1.75}
         aria-hidden="true"
         role="img"
       >
         <title>Light mode</title>
-        <circle cx="12" cy="12" r="5" />
-        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        <circle cx="12" cy="12" r="4.5" />
+        <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
       </svg>
-      {/* Moon */}
       <svg
         className={cn(
-          'w-4 h-4 absolute transition-all duration-300',
-          isDark ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0',
+          'absolute h-4 w-4 transition-all duration-500',
+          isDark ? 'rotate-0 scale-100 opacity-100' : '-rotate-90 scale-0 opacity-0',
         )}
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
-        strokeWidth={2}
+        strokeWidth={1.75}
         aria-hidden="true"
         role="img"
       >
         <title>Dark mode</title>
-        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+        <path d="M20.5 14.5A8 8 0 019.5 3.5a8.5 8.5 0 1011 11z" />
       </svg>
     </button>
   );
