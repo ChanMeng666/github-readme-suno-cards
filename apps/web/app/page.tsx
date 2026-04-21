@@ -164,7 +164,6 @@ export default function HomePage() {
             </PillLink>
           </div>
         </div>
-
       </section>
 
       {/* Features */}
