@@ -29,6 +29,19 @@ export function Footer() {
             </Link>
           </div>
         </div>
+        {/* Developer brand credit — Chan Meng */}
+        <div className="flex flex-col items-center gap-1 pb-8 text-center font-mono text-[11px] uppercase tracking-[0.22em] text-muted">
+          <a
+            href="https://github.com/ChanMeng666"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Built by Chan Meng — custom app development · chanmeng.dev@gmail.com"
+            className="inline-flex items-center gap-2 transition-colors hover:text-foreground"
+          >
+            <img src="/brand/chan-meng-monkey.svg" alt="Chan Meng" className="h-4 w-4" />
+            Built by Chan Meng · custom apps: chanmeng.dev@gmail.com
+          </a>
+        </div>
       </div>
     </footer>
   );
