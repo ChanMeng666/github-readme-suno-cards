@@ -28,9 +28,31 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata = {
+  metadataBase: new URL('https://github-readme-suno-cards.vercel.app'),
   title: 'Suno Cards — Dynamic Music Cards for GitHub README',
   description: 'Display your Suno AI-generated music as dynamic cards in your GitHub README.',
   icons: { icon: '/logo.svg' },
+  openGraph: {
+    title: 'Suno Cards — Dynamic Music Cards for GitHub README',
+    description: 'Display your Suno AI-generated music as dynamic cards in your GitHub README.',
+    type: 'website',
+    siteName: 'Suno Cards',
+    url: 'https://github-readme-suno-cards.vercel.app',
+    images: [
+      {
+        url: '/og-cover.png',
+        width: 1200,
+        height: 630,
+        alt: 'Suno Cards — dynamic music cards for your GitHub README',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Suno Cards — Dynamic Music Cards for GitHub README',
+    description: 'Display your Suno AI-generated music as dynamic cards in your GitHub README.',
+    images: ['/og-cover.png'],
+  },
 };
 
 export const viewport = {
