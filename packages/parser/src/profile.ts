@@ -1,5 +1,5 @@
 import * as v from 'valibot';
-import { SunoHandleNotFoundError, SunoSchemaError } from './errors.js';
+import { SunoHandleNotFoundError, SunoInvalidRequestError, SunoSchemaError } from './errors.js';
 import { type FetchJsonOptions, fetchJson } from './fetcher.js';
 import { mapClipToSong } from './mapping.js';
 import {
@@ -54,7 +54,11 @@ export async function fetchProfilePage(
     revalidateSeconds: opts.revalidateSeconds ?? 600,
   });
 
-  if (status === 404 || status === 422) throw new SunoHandleNotFoundError(handle);
+  // 404 = the handle genuinely does not exist. 422 = Suno couldn't parse the
+  // request (e.g. missing sort params) — a different failure that must not be
+  // reported to users as "handle not found".
+  if (status === 404) throw new SunoHandleNotFoundError(handle);
+  if (status === 422) throw new SunoInvalidRequestError(url, status);
   if (status < 200 || status >= 300) {
     throw new SunoSchemaError(url, { status }, body);
   }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SunoHandleNotFoundError } from '../src/errors.js';
+import { SunoHandleNotFoundError, SunoInvalidRequestError } from '../src/errors.js';
 import { fetchProfile, fetchProfilePage } from '../src/profile.js';
 import { loadFixture, mockFetchJson } from './_helpers.js';
 
@@ -29,12 +29,18 @@ describe('fetchProfilePage', () => {
     ).rejects.toBeInstanceOf(SunoHandleNotFoundError);
   });
 
-  it('maps 422 (bad handle) to SunoHandleNotFoundError', async () => {
+  it('maps 422 (malformed request) to SunoInvalidRequestError, not handle-not-found', async () => {
     await expect(
-      fetchProfilePage('!!!', {
-        fetchImpl: mockFetchJson(/api\/profiles/, 422, { detail: 'bad handle' }),
+      fetchProfilePage('somebody', {
+        fetchImpl: mockFetchJson(/api\/profiles/, 422, { detail: 'missing sort params' }),
       }),
-    ).rejects.toBeInstanceOf(SunoHandleNotFoundError);
+    ).rejects.toBeInstanceOf(SunoInvalidRequestError);
+    // A 422 must NOT be conflated with a genuinely missing handle (404).
+    await expect(
+      fetchProfilePage('somebody', {
+        fetchImpl: mockFetchJson(/api\/profiles/, 422, { detail: 'missing sort params' }),
+      }),
+    ).rejects.not.toBeInstanceOf(SunoHandleNotFoundError);
   });
 });
 

@@ -2,6 +2,7 @@ import {
   SunoError,
   SunoHandleNotFoundError,
   SunoInvalidInputError,
+  SunoInvalidRequestError,
   SunoNotFoundError,
   SunoNotReadyError,
   SunoPrivateError,
@@ -45,6 +46,12 @@ export function classifyError(err: unknown): { kind: ErrorKind; detail: string }
   }
   if (err instanceof SunoInvalidInputError) {
     return { kind: 'not_found', detail: err.input };
+  }
+  // A 422 is a malformed request, not a missing user — render the generic
+  // error card rather than the "not found" one so we don't imply the handle
+  // is wrong.
+  if (err instanceof SunoInvalidRequestError) {
+    return { kind: 'error', detail: err.message };
   }
   if (err instanceof SunoError) {
     return { kind: 'error', detail: err.message };

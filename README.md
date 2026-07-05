@@ -767,7 +767,7 @@ See [`examples/`](./examples) for ready-to-copy workflow files:
 
 ### v0.3
 
-- [ ] **Vercel KV play-count history** — trending arrows (`+15 this week`), weekly summaries
+- [ ] **Vercel KV play-count history** — trending arrows (`+15 this week`), weekly summaries. Note: must be built on a **live** source (Suno's curated Explore shelves / your own captured play-count history). Do **not** build this on `/api/trending` — that endpoint is an abandoned September-2024 snapshot, not a live feed.
 - [ ] **RSS/Atom feed per handle** — `/api/feed/{handle}.xml`
 
 ### v0.4+

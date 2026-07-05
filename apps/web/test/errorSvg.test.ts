@@ -1,6 +1,7 @@
 import {
   SunoHandleNotFoundError,
   SunoInvalidInputError,
+  SunoInvalidRequestError,
   SunoNotFoundError,
   SunoNotReadyError,
   SunoPrivateError,
@@ -27,6 +28,10 @@ describe('classifyError', () => {
   });
   it('maps SunoInvalidInputError to not_found', () => {
     expect(classifyError(new SunoInvalidInputError('???')).kind).toBe('not_found');
+  });
+  it('maps SunoInvalidRequestError (422) to generic error, not not_found', () => {
+    const err = new SunoInvalidRequestError('https://studio-api-prod.suno.com/api/profiles/x', 422);
+    expect(classifyError(err).kind).toBe('error');
   });
   it('maps unknown Error to generic error', () => {
     expect(classifyError(new Error('boom')).kind).toBe('error');

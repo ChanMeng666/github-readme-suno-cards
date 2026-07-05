@@ -23,6 +23,22 @@ export class SunoHandleNotFoundError extends SunoError {
   }
 }
 
+/**
+ * The Suno API rejected the request itself as malformed — an HTTP 422
+ * "Unprocessable Entity", typically a missing/invalid query parameter (e.g.
+ * `clips_sort_by` / `playlists_sort_by` on `/api/profiles`). This is distinct
+ * from {@link SunoHandleNotFoundError} (a 404, meaning the handle does not
+ * exist): a 422 says "we couldn't parse your request", not "no such user".
+ */
+export class SunoInvalidRequestError extends SunoError {
+  constructor(
+    public readonly endpoint: string,
+    public readonly status: number,
+  ) {
+    super(`Suno rejected the request as malformed (HTTP ${status}): ${endpoint}`);
+  }
+}
+
 export class SunoPrivateError extends SunoError {
   constructor(public readonly uuid: string) {
     super(`Song is private or unlisted: ${uuid}`);

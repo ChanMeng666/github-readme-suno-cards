@@ -21,7 +21,9 @@ export { resolveShortCode } from './resolver.js';
 export { fetchProfilePage } from './profile.js';
 export { mapClipToSong } from './mapping.js';
 export { fetchPlaylist, fetchPlaylistDetailUrl, type FetchPlaylistOptions } from './playlist.js';
-export { fetchTrending } from './trending.js';
+// NOTE: fetchTrending is intentionally NOT re-exported. `/api/trending` is an
+// abandoned Sept-2024 snapshot (see trending.ts + the orphaned-endpoint probe);
+// hiding it from the public surface keeps contributors from building on stale data.
 
 /**
  * Convenience wrapper: accept any normalized input form that resolves to a
