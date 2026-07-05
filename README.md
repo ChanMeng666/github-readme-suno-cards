@@ -57,6 +57,7 @@
 - [GitHub Action Reference](#github-action-reference)
 - [Render Modes](#render-modes)
 - [Example Workflows](#example-workflows)
+- [Status / upstream findings (2026-07)](#status--upstream-findings-2026-07)
 - [Roadmap](#roadmap)
 - [Architecture & Internals](#architecture--internals)
 - [Acknowledgements](#acknowledgements)
@@ -749,6 +750,17 @@ See [`examples/`](./examples) for ready-to-copy workflow files:
 | [`suno-songs.yml`](./examples/suno-songs.yml) | — | Sample manifest file |
 
 </details>
+
+---
+
+## Status / upstream findings (2026-07)
+
+A full audit on **2026-07-05** found the project healthy: all three deployed render surfaces (`/api/card`, `/api/profile`, `/api/cards`) were verified against live Suno data and render correctly. The parser already sends the now-required `clips_sort_by` / `playlists_sort_by` query params, so it is immune to the recent Suno profile-endpoint schema drift that returns HTTP `422` when they are missing.
+
+Two findings shaped the current API surface:
+
+- **`/api/trending` is a dead endpoint.** It is not a live feed — it is an abandoned playlist frozen at a **September-2024 snapshot** (byte-stable across fetches, sharing zero clips with Suno's post-2026 curated Explore). `fetchTrending()` still round-trips the shape but has been **removed from the parser's public exports** so nobody builds a "trending" feature on stale data. Forensic evidence lives in the research repo at `docs/probes/2026-07-05-orphaned-endpoint/`.
+- **HTTP `422` now maps to its own error type.** Malformed requests raise `SunoInvalidRequestError` (distinct from the `404` `SunoHandleNotFoundError`, which means "no such handle"). The card surfaces render `422` as the generic error style, not "not found".
 
 ---
 

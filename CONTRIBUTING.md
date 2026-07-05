@@ -50,6 +50,10 @@ npm run build
 npm test
 ```
 
+## Known Issues
+
+- **`packages/parser/src/playlist.ts` maps HTTP `422` to `SunoHandleNotFoundError`.** Elsewhere (`profile.ts`) a `422` now raises the dedicated `SunoInvalidRequestError` — "malformed request", distinct from a `404` "no such handle". The playlist path still conflates the two; a small, welcome fix is to route its `422` to `SunoInvalidRequestError` as well.
+
 ## Code of Conduct
 
 By participating, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md). For questions or
