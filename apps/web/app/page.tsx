@@ -5,7 +5,7 @@ import { GiantWordmark } from '../components/ui/GiantWordmark.js';
 import { LuminanceBackdrop } from '../components/ui/LuminanceBackdrop.js';
 import { PillLink } from '../components/ui/PillLink.js';
 import { ScrollReveal } from '../components/ui/ScrollReveal.js';
-import { DEMO_HANDLE, DEMO_UUID } from '../lib/constants.js';
+import { DEMO_HANDLE, DEMO_UUID, SEISMOPHONE_URL } from '../lib/constants.js';
 
 const FEATURED_CARDS = [
   {
@@ -283,6 +283,31 @@ export default function HomePage() {
             </div>
           </div>
         </ScrollReveal>
+      </section>
+
+      {/* Seismophone cross-link — unobtrusive, single placement */}
+      <section className="mx-auto max-w-5xl px-6 py-8">
+        <a
+          href={`${SEISMOPHONE_URL}?ref=suno-cards`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="glass-pill-quiet focus-ring group flex flex-col gap-3 rounded-[var(--radius-lg)] px-6 py-5 transition-colors hover:text-foreground sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div className="flex flex-col gap-1">
+            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-muted">
+              From the same author
+            </span>
+            <p className="text-sm text-muted-strong">
+              Want live Suno charts and a free portfolio for your profile?{' '}
+              <span className="text-foreground">Seismophone</span> — the independent observatory for
+              AI music.
+            </p>
+          </div>
+          <span className="inline-flex shrink-0 items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted transition-transform duration-300 group-hover:translate-x-0.5">
+            seismophone.chanmeng.org
+            {ArrowRight}
+          </span>
+        </a>
       </section>
 
       {/* CTA */}

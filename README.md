@@ -57,6 +57,7 @@
 - [GitHub Action Reference](#github-action-reference)
 - [Render Modes](#render-modes)
 - [Example Workflows](#example-workflows)
+- [See the bigger picture — Seismophone](#see-the-bigger-picture--seismophone)
 - [Status / upstream findings (2026-07)](#status--upstream-findings-2026-07)
 - [Roadmap](#roadmap)
 - [Architecture & Internals](#architecture--internals)
@@ -750,6 +751,27 @@ See [`examples/`](./examples) for ready-to-copy workflow files:
 | [`suno-songs.yml`](./examples/suno-songs.yml) | — | Sample manifest file |
 
 </details>
+
+---
+
+## See the bigger picture — Seismophone
+
+These cards put your music in your README. **[Seismophone](https://seismophone.chanmeng.org?ref=suno-cards)** — an independent observatory for AI music by the same author — puts it on the map.
+
+It's a free, no-signup companion to this project (not affiliated with Suno — an independent third-party observatory):
+
+- **Live Suno charts** — daily snapshots of Suno's curated Explore shelves, the feed that actually moves.
+- **Your free portfolio** at `https://seismophone.chanmeng.org/@your-handle` — the same public Suno data these cards render, as a shareable page.
+- **Remix-lineage explorer** — trace which songs remixed which, from a research-derived archive.
+- **Data-journalism reports** — short, sourced observatory pieces on how the AI-music ecosystem behaves.
+
+**Point your card at your portfolio instead of suno.com** — wrap any card (here, the profile card) in your Seismophone URL:
+
+```markdown
+[![](https://github-readme-suno-cards.vercel.app/api/profile?handle=YOUR_HANDLE)](https://seismophone.chanmeng.org/@YOUR_HANDLE)
+```
+
+> **Tip:** The **[interactive builder](https://github-readme-suno-cards.vercel.app/builder)** has a *Link Target* option that generates this for you — flip "Link to Seismophone portfolio" and enter your handle. The default stays suno.com.
 
 ---
 

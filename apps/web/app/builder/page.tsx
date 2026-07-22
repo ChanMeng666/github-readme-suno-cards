@@ -8,7 +8,7 @@ import { ColorPicker } from '../../components/ColorPicker.js';
 import { SegmentedControl } from '../../components/SegmentedControl.js';
 import { ToggleSwitch } from '../../components/ToggleSwitch.js';
 import { Skeleton } from '../../components/ui/Skeleton.js';
-import type { CardConfig, CardLayout } from '../../lib/cardParams.js';
+import type { CardConfig, CardLayout, EmbedLinkTarget } from '../../lib/cardParams.js';
 import {
   buildCardUrl,
   buildHtmlEmbed,
@@ -18,7 +18,7 @@ import {
   parseCardConfig,
 } from '../../lib/cardParams.js';
 import { cn } from '../../lib/cn.js';
-import { DEMO_UUID, ORIGIN_HINT } from '../../lib/constants.js';
+import { DEMO_UUID, ORIGIN_HINT, SEISMOPHONE_URL } from '../../lib/constants.js';
 
 // ── Reducer ──────────────────────────────────────────
 
@@ -142,6 +142,9 @@ function BuilderInner() {
   const [config, dispatch] = useReducer(reducer, getDefaultConfig(DEMO_UUID));
   const [activeTab, setActiveTab] = useState<Tab>('markdown');
   const [initialized, setInitialized] = useState(false);
+  // Optional: link the card to a free Seismophone portfolio instead of suno.com.
+  const [linkToSeismophone, setLinkToSeismophone] = useState(false);
+  const [seismophoneHandle, setSeismophoneHandle] = useState('');
 
   useEffect(() => {
     if (initialized) return;
@@ -162,16 +165,21 @@ function BuilderInner() {
     window.history.replaceState(null, '', `/builder?${qs}`);
   }, [config, initialized]);
 
+  const linkTarget: EmbedLinkTarget =
+    linkToSeismophone && seismophoneHandle.trim()
+      ? { target: 'seismophone', handle: seismophoneHandle }
+      : { target: 'suno' };
+
   const embedCode = useMemo(() => {
     switch (activeTab) {
       case 'markdown':
-        return buildMarkdownEmbed(config, ORIGIN_HINT);
+        return buildMarkdownEmbed(config, ORIGIN_HINT, linkTarget);
       case 'url':
         return buildCardUrl(config, ORIGIN_HINT);
       case 'html':
-        return buildHtmlEmbed(config, ORIGIN_HINT);
+        return buildHtmlEmbed(config, ORIGIN_HINT, linkTarget);
     }
-  }, [config, activeTab]);
+  }, [config, activeTab, linkTarget]);
 
   const setField = useCallback((field: keyof CardConfig, value: string | boolean) => {
     dispatch({ type: 'SET_FIELD', field, value });
@@ -287,7 +295,7 @@ function BuilderInner() {
             </div>
           </Section>
 
-          <Section title="Element Toggles" last>
+          <Section title="Element Toggles">
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
               {TOGGLES.map(({ key, label }) => (
                 <ToggleSwitch
@@ -297,6 +305,56 @@ function BuilderInner() {
                   onChange={(v) => setField(key, v)}
                 />
               ))}
+            </div>
+          </Section>
+
+          <Section title="Link Target" defaultOpen={false} last>
+            <div className="space-y-3">
+              <p className="text-xs leading-relaxed text-muted">
+                By default the card links to the song on suno.com. Optionally link it to your free{' '}
+                <a
+                  href={`${SEISMOPHONE_URL}?ref=suno-cards`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-strong underline decoration-hairline underline-offset-2 transition-colors hover:text-foreground"
+                >
+                  Seismophone
+                </a>{' '}
+                portfolio instead — the independent observatory for AI music.
+              </p>
+              <ToggleSwitch
+                label="Link to Seismophone portfolio"
+                checked={linkToSeismophone}
+                onChange={setLinkToSeismophone}
+              />
+              {linkToSeismophone && (
+                <div>
+                  <label
+                    htmlFor="seismophone-handle-input"
+                    className="mb-2 block font-mono text-[10px] uppercase tracking-[0.18em] text-muted"
+                  >
+                    Seismophone handle
+                  </label>
+                  <input
+                    id="seismophone-handle-input"
+                    type="text"
+                    value={seismophoneHandle}
+                    onChange={(e) => setSeismophoneHandle(e.target.value.trim())}
+                    placeholder="your-handle"
+                    spellCheck={false}
+                    className={cn(
+                      'glass-pill-quiet focus-ring w-full rounded-full px-4 py-2.5',
+                      'text-sm text-foreground placeholder:text-muted/60 font-mono',
+                      'focus:outline-none',
+                    )}
+                  />
+                  {!seismophoneHandle.trim() && (
+                    <p className="mt-2 text-[11px] leading-relaxed text-muted">
+                      Enter a handle to switch the link — otherwise it stays on suno.com.
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
           </Section>
         </div>
