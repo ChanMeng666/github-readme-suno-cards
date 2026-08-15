@@ -775,13 +775,13 @@ It's a free, no-signup companion to this project (not affiliated with Suno — a
 
 ---
 
-## Status / upstream findings (2026-07)
+## Status / upstream findings (2026-08)
 
 A full audit on **2026-07-05** found the project healthy: all three deployed render surfaces (`/api/card`, `/api/profile`, `/api/cards`) were verified against live Suno data and render correctly. The parser already sends the now-required `clips_sort_by` / `playlists_sort_by` query params, so it is immune to the recent Suno profile-endpoint schema drift that returns HTTP `422` when they are missing.
 
 Two findings shaped the current API surface:
 
-- **`/api/trending` is a dead endpoint.** It is not a live feed — it is an abandoned playlist frozen at a **September-2024 snapshot** (byte-stable across fetches, sharing zero clips with Suno's post-2026 curated Explore). `fetchTrending()` still round-trips the shape but has been **removed from the parser's public exports** so nobody builds a "trending" feature on stale data. Forensic evidence lives in the research repo at `docs/probes/2026-07-05-orphaned-endpoint/`.
+- **The `/api/trending` route was removed on 2026-07-24 — the object it served is still public.** The route was never a live feed; it was an alias for one abandoned playlist object, and `GET /api/playlist/1190bf92-10dc-4ce5-968a-7a377f37f984` still answers `200` today. That object's **membership has been frozen since September 2024** (it shares zero clips with Suno's curated Explore shelves) while its **per-clip statistics are still live**, so it is a historical exhibit, not a feed. `fetchTrending()` was therefore removed from the parser in v0.2.0 — if you want the object, ask for it by UUID with `fetchPlaylist('1190bf92-10dc-4ce5-968a-7a377f37f984')`, and build nothing time-sensitive on it. Background reading: [The feed Suno forgot](https://seismophone.chanmeng.org/observatory/the-explore-feed-that-froze) and [The day the fossil was deleted](https://seismophone.chanmeng.org/observatory/the-day-the-fossil-was-deleted).
 - **HTTP `422` now maps to its own error type.** Malformed requests raise `SunoInvalidRequestError` (distinct from the `404` `SunoHandleNotFoundError`, which means "no such handle"). The card surfaces render `422` as the generic error style, not "not found".
 
 ---
@@ -801,7 +801,7 @@ Two findings shaped the current API surface:
 
 ### v0.3
 
-- [ ] **Vercel KV play-count history** — trending arrows (`+15 this week`), weekly summaries. Note: must be built on a **live** source (Suno's curated Explore shelves / your own captured play-count history). Do **not** build this on `/api/trending` — that endpoint is an abandoned September-2024 snapshot, not a live feed.
+- [ ] **Vercel KV play-count history** — trending arrows (`+15 this week`), weekly summaries. Note: must be built on a **live** source (Suno's curated Explore shelves / your own captured play-count history). Do **not** build this on the old `/api/trending` — that route was removed on 2026-07-24, and the playlist object behind it has had frozen membership since September 2024.
 - [ ] **RSS/Atom feed per handle** — `/api/feed/{handle}.xml`
 
 ### v0.4+
