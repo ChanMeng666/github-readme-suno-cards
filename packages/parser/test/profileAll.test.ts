@@ -26,8 +26,10 @@ describe('fetchAllClips', () => {
 
     expect(page1Calls).toBe(1);
     expect(page2Calls).toBe(1);
-    expect(result.profile.totalClips).toBe(26);
-    expect(result.clips.length).toBe(26);
+    // Derived from the fixtures — `num_total_clips` is a live counter.
+    const expectedTotal = (page1 as { num_total_clips: number }).num_total_clips;
+    expect(result.profile.totalClips).toBe(expectedTotal);
+    expect(result.clips.length).toBe(expectedTotal);
   });
 
   it('stops early when maxClips is reached', async () => {

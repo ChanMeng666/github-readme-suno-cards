@@ -60,6 +60,9 @@
         "is_hidden": false,
         "created_at": "2026-01-02T11:42:22.629Z",
         "is_public": true,
+        "is_persona_root": false,
+        "is_following_creator": false,
+        "albums": [],
         "explicit": false,
         "comment_count": 0,
         "flag_count": 0,
@@ -116,7 +119,8 @@
           ]
         }
       },
-      "relative_index": 1
+      "relative_index": 1,
+      "created_at": "2026-01-02T12:10:59.416Z"
     },
     {
       "clip": {
@@ -175,6 +179,9 @@
         "is_hidden": false,
         "created_at": "2026-01-03T09:59:32.331Z",
         "is_public": true,
+        "is_persona_root": false,
+        "is_following_creator": false,
+        "albums": [],
         "explicit": true,
         "comment_count": 0,
         "flag_count": 0,
@@ -243,11 +250,12 @@
           ]
         }
       },
-      "relative_index": 2
+      "relative_index": 2,
+      "created_at": "2026-01-03T12:06:09.347Z"
     }
   ],
   "image_url": "https://cdn2.suno.ai/image_ce04f151-f558-45ef-920e-56ab7aff9164.jpeg",
-  "num_total_results": 55,
+  "num_total_results": 61,
   "current_page": 1,
   "is_owned": false,
   "is_trashed": false,
@@ -258,6 +266,7 @@
   "user_avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp",
   "user_is_verified": false,
   "description": "",
+  "reaction": "",
   "next_cursor": "eyJyZWxhdGl2ZV9pbmRleCI6IDUwLjAsICJwYWdlX251bWJlciI6IDJ9",
   "upvote_count": 0,
   "dislike_count": 0,
@@ -265,6 +274,6 @@
   "skip_count": 0,
   "play_count": 0,
   "song_count": 0,
-  "total_duration": 13765.599999999999,
+  "total_duration": 15506.92,
   "is_discover_playlist": false
 }

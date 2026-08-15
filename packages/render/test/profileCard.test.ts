@@ -45,9 +45,11 @@ describe('renderProfileCard', () => {
 
   it('includes the real aggregate stats', () => {
     const svg = renderProfileCard(profile);
-    expect(svg).toContain('26'); // total clips
-    expect(svg).toContain('736'); // total plays
-    expect(svg).toContain('55'); // total likes
+    // Derived from the fixture, not pinned: these are live Suno counters and
+    // move on every fixture refresh.
+    expect(svg).toContain(String(profile.totalClips));
+    expect(svg).toContain(String(profile.stats.totalPlays));
+    expect(svg).toContain(String(profile.stats.totalLikes));
   });
 
   it('localizes labels to Chinese', () => {

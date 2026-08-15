@@ -1,1 +1,977 @@
-{"user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7", "display_name": "Chan", "handle": "chanmeng", "profile_description": "", "clips": [{"status": "complete", "title": "\u6218\u58eb\u963f\u82b1", "play_count": 40, "upvote_count": 2, "allow_comments": true, "is_verified": false, "id": "7cd0994c-c606-4135-bdd0-2f9f8fb617d3", "entity_type": "song_schema", "video_url": "https://cdn1.suno.ai/7cd0994c-c606-4135-bdd0-2f9f8fb617d3.mp4", "audio_url": "https://cdn1.suno.ai/7cd0994c-c606-4135-bdd0-2f9f8fb617d3.mp3", "image_url": "https://cdn2.suno.ai/image_7cd0994c-c606-4135-bdd0-2f9f8fb617d3.jpeg", "image_large_url": "https://cdn2.suno.ai/image_large_7cd0994c-c606-4135-bdd0-2f9f8fb617d3.jpeg", "major_model_version": "v4.5-all", "model_name": "chirp-auk", "metadata": {"tags": "Neo-Soul, 90s R&B, Layback, Groovy Bassline, Smooth Female Vocals, Jazz chords, Downtempo, Chill, Mandarin Chinese, Sophisticated, Sultry but Sarcastic", "prompt": "[Intro]\n(Soft Jazzy Piano & Bass intro)\n(Yeah... uh huh...)\n(This is for Ah Hua)\n(Listen...)\n\n[Verse 1]\n(Smooth flow)\n\u963f\u82b1\u4eca\u5e74\u4e8c\u5341\u516b\n\u65e9\u5df2\u770b\u900f\u7236\u6743\u865a\u5047\n\u76f8\u4eb2\u5bf9\u8c61\u90a3\u4e2a\u963f\u53d1\n\u5f20\u53e3\u95ed\u53e3\u4e0d\u4ec5\u662f\u7239\u5473 \u751a\u81f3\u8fd8\u6709\u70b9\u5927\n\u963f\u82b1\u51b7\u773c\u770b\u963f\u53d1 (He's a joke, baby)\n\u6536\u8d77\u4f60\u90a3\u5982\u610f\u7b97\u76d8\u5427\n\u60f3\u8981\u4fdd\u59c6\u8bf7\u4f60\u81ea\u5df1\u82b1\u94b1\u96c7\u4f63\u5979\n\u522b\u60f3\u767d\u5ad6\u6211\u7684\u5e74\u534e\n\n[Pre-Chorus]\n(Groovy)\n\u540e\u6765\u6545\u4e8b\u53d1\u5c55\u5f88\u706b\u8fa3\n\u963f\u82b1\u5f53\u573a\u6380\u7ffb\u4e86\u540d\u4e3a\u4f20\u7edf\u7684\u5854\n\u4ec0\u4e48\u65e7\u7231\u65b0\u6b22 (I don't care)\n\u90fd\u4e0dcare\u554a\n\u4ec0\u4e48\u8d24\u59bb\u826f\u6bcd\u7684\u5267\u672c\n\u53bb\u6b7b\u5427 (Let it burn)\n\n[Chorus]\n(Soulful & Melodic)\n\u89c9\u9192\u5427 \u89c9\u9192\u5427\n\u5c31\u7b97\u738b\u5b50\u771f\u7684\u9a91\u7740\u767d\u9a6c\n\u4e5f\u76f4\u63a5\u8ba9\u4ed6\u6eda\u56de\u57ce\u5821\u5427\n\u6211\u7684\u5e7f\u9614\u5929\u5730\u65e0\u9700\u90a3\u4e2a\u4ed6\n\u89c9\u9192\u5427 \u6218\u58eb\u963f\u82b1\n\u5c11\u5973\u7684\u68a6\u65e9\u5df2\u7ecf\u6b7b\u5728\u6628\u5929\u5566\n\u90a3\u5e26\u8840\u7684\u675f\u8eab\u8863\u624e\u6210\u6367\u82b1\n\u6254\u8fdb\u706b\u91cc\u70e7\u4e86\u4e2a\u7a00\u91cc\u54d7\u5566\n\n[Verse 2]\n(Layback style)\n\u963f\u53d1\u5413\u574f\u4e86\u770b\u963f\u82b1\n\u5979\u526a\u6389\u957f\u53d1\u6d17\u53bb\u4e86\u5986\u5bb9\u554a\n\u4e00\u751f\u4e00\u4e16\u8fd9\u753b\u997c\u592a\u5ec9\u4ef7\n\u72ec\u884c\u51fa\u53d1\u5427\n(Bye bye, boy)\n\n[Pre-Chorus]\n\u540e\u6765\u6545\u4e8b\u53d1\u5c55\u66f4\u6f47\u6d12\n\u518d\u4e5f\u6ca1\u6709\u8c01\u80fd\u7b49\u7740\u963f\u82b1\u56de\u5bb6\n\u4e00\u4e2a\u4eba\u8bfb\u4e66\u5065\u8eab\u95ef\u8361\u5929\u4e0b\n\u641e\u641e\u4e8b\u4e1a\u4e5f\u4f1a\u7814\u7a76\u7814\u7a76\u4ee3\u7801 (Coding my life)\n\n[Chorus]\n\u89c9\u9192\u5427 \u89c9\u9192\u5427\n\u5c31\u7b97\u738b\u5b50\u771f\u7684\u9a91\u7740\u767d\u9a6c\n\u4e5f\u76f4\u63a5\u8ba9\u4ed6\u6eda\u56de\u57ce\u5821\u5427\n\u6211\u7684\u5e7f\u9614\u5929\u5730\u65e0\u9700\u90a3\u4e2a\u4ed6\n\u89c9\u9192\u5427 \u6218\u58eb\u963f\u82b1\n\u5c11\u5973\u7684\u68a6\u65e9\u5df2\u7ecf\u6b7b\u5728\u6628\u5929\u5566\n\u90a3\u5e26\u8840\u7684\u675f\u8eab\u8863\u624e\u6210\u6367\u82b1\n\u6254\u8fdb\u706b\u91cc\u70e7\u4e86\u4e2a\u7a00\u91cc\u54d7\u5566\n\n[Bridge]\n(Saxophone or Keyboard Solo - Jazzy vibe)\n(Spoken Word)\n\"\u963f\u82b1\u4eca\u5e74\u516d\u5341\u516b\n\u5979\u65e9\u5df2\u4e0d\u518d\u9700\u8981\u5bb6\n\u90a3\u662f\u7236\u6743\u7f16\u7ec7\u7684\u7bf1\u7b06\"\n(Singing resumes)\n\u5979\u548c\u59d0\u59b9\u5728\u6b64\u523b \u62e5\u6709\u4e86\u5929\u4e0b\n\n[Chorus]\n\u89c9\u9192\u5427 \u89c9\u9192\u5427\n\u5c31\u7b97\u738b\u5b50\u771f\u7684\u9a91\u7740\u767d\u9a6c\n\u4e5f\u76f4\u63a5\u8ba9\u4ed6\u6eda\u56de\u57ce\u5821\u5427\n\u6211\u7684\u5e7f\u9614\u5929\u5730\u65e0\u9700\u90a3\u4e2a\u4ed6\n\u89c9\u9192\u5427 \u6218\u58eb\u963f\u82b1\n\u5c11\u5973\u7684\u68a6\u65e9\u5df2\u7ecf\u6b7b\u5728\u6628\u5929\u5566\n\u90a3\u5e26\u8840\u7684\u675f\u8eab\u8863\u624e\u6210\u6367\u82b1\n\u6254\u8fdb\u706b\u91cc\u70e7\u4e86\u4e2a\u7a00\u91cc\u54d7\u5566\n\n[Outro]\n(Ad-libs & Fading out)\n\u6254\u8fdb\u706b\u91cc...\n\u70e7\u4e86\u5427...\n\u65b0\u5a18\u963f\u82b1 is dead...\nLong live Warrior Ah Hua...\n(Smooth fade out)", "type": "gen", "duration": 239.52, "refund_credits": false, "stream": true, "make_instrumental": false, "can_remix": true, "is_remix": false, "priority": 0, "has_stem": false, "video_is_stale": false, "uses_latest_model": false, "model_badges": {"songrow": {"display_name": "v4.5-all", "light": {"text_color": "7D7C83", "background_color": "00000000", "border_color": "0000001A"}, "dark": {"text_color": "A3A3A3", "background_color": "00000000", "border_color": "FFFFFF1A"}}}, "is_mumble": false}, "is_liked": false, "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7", "display_name": "Chan", "handle": "chanmeng", "is_handle_updated": true, "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp", "is_trashed": false, "is_hidden": false, "created_at": "2026-01-02T11:42:22.629Z", "is_public": true, "explicit": false, "comment_count": 0, "flag_count": 0, "is_contest_clip": false, "has_hook": false, "batch_index": 1, "action_config": {"actions": [{"action_type": "add_to_playlist", "disabled": false, "visible": true}, {"action_type": "like_song", "disabled": false, "visible": true}, {"action_type": "share_song", "disabled": false, "visible": true}, {"action_type": "dislike_song", "disabled": false, "visible": true}, {"action_type": "report_song", "disabled": false, "visible": true}, {"action_type": "remove_from_playlist", "disabled": false, "visible": true}, {"action_type": "remix_extend", "disabled": false, "visible": true}, {"action_type": "remix_cover", "disabled": false, "visible": true}, {"action_type": "remix_reuse_style", "disabled": false, "visible": true}]}}, {"status": "complete", "title": "\u5348\u591c\u6162\u6162\u7231", "play_count": 14, "upvote_count": 2, "allow_comments": true, "is_verified": false, "id": "5060d0b1-2c48-43d2-9923-31cd17f553f6", "entity_type": "song_schema", "video_url": "https://cdn1.suno.ai/5060d0b1-2c48-43d2-9923-31cd17f553f6.mp4", "audio_url": "https://cdn1.suno.ai/5060d0b1-2c48-43d2-9923-31cd17f553f6.mp3", "image_url": "https://cdn2.suno.ai/image_5060d0b1-2c48-43d2-9923-31cd17f553f6.jpeg", "image_large_url": "https://cdn2.suno.ai/image_large_5060d0b1-2c48-43d2-9923-31cd17f553f6.jpeg", "major_model_version": "v4.5-all", "model_name": "chirp-auk", "metadata": {"tags": "funk, Smoky 90s neo-soul groove at slow tempo; warm Rhodes chords and lazy swung drums sink into a deep, rounded bass. Sultry female vocals sit right on the edge of a whisper, stacked harmonies blooming in the choruses. Subtle wah guitar answers the vocal phrases, with soft pads in the back. Overall, an intimate late-night vibe that builds just a touch in the bridge, then melts back down for the final hook., slow, emotional, warm, soul, r&b", "prompt": "[Verse 1]\n\u7a97\u5916\u96e8\u70b9\n\u4e00\u70b9\u4e00\u70b9\u6572\u5728\u88ab\u5355\n\u4f60\u8bf4\u592a\u665a\n\u518d\u5f85\u4e94\u5206\u949f\u4e5f\u7b97\u6d6a\u6f2b\n\u547c\u5438\u9ecf\u5728\n\u4f60\u9501\u9aa8\u7684\u7ebf\u6162\u6162\u76d8\u65cb\n\u4e0d\u5fc5\u591a\u8c08\n\u8eab\u4f53\u6bd4\u5bf9\u767d\u8fd8\u8bda\u6073\u4e00\u70b9\n\n[Chorus]\n\u5c31\u8fd9\u6837\u5348\u591c\u6162\u6162\u7231\n\u65f6\u95f4\u6162\u4e0b\u6765 \u53ea\u5269\u4e0b\u4f60\u5b58\u5728\n\u4f60\u7684\u624b\u6ed1\u8fc7\u6211\u88d9\u6446\n\u50cf\u5728\u7ffb\u4e00\u9875\u8fd8\u6ca1\u8bfb\u5b8c\u7684\u544a\u767d\n\u5c31\u8fd9\u6837\u5348\u591c\u6162\u6162\u7231\n\u706f\u5149\u592a\u66a7\u6627 \u770b\u4e0d\u6e05\u8c01\u4e3b\u5bb0\n\u4f60\u9760\u5728\u6211\u8033\u8fb9\u55d3\u97f3\u592a\u574f\n\u4e00\u53e5\u5b9d\u8d1d\u6211\u5c31\u6ca6\u9677\u5f97\u592a\u5feb\n\n[Verse 2]\n\u6307\u5c16\u7ed5\u5708\n\u5728\u4f60\u80f8\u53e3\u5199\u6211\u59d3\u6c0f\n\u4f60\u7684\u7b11\u610f\n\u6643\u5f97\u6795\u8fb9\u90fd\u8ddf\u7740\u504f\u79fb\n\u8bf4\u4e0d\u51fa\u53e3\n\u7684\u90a3\u53e5\u6211\u4eec\u7b97\u4ec0\u4e48\u5173\u7cfb\n\u773c\u795e\u6e38\u79fb\n\u5374\u628a\u6240\u6709\u7b54\u6848\u90fd\u66b4\u9732\u7ed9\u4f60\n\n[Bridge]\n[\u4f4e\u58f0\u5462\u5583] \u522b\u5f00\u706f\n\u8ba9\u5f71\u5b50\u7ee7\u7eed\u8d34\u7740\u543b\n\u5fc3\u8df3\u4e71\u5bf8\u5bf8\n\u8d34\u7740\u9f13\u70b9\u88ab\u4f60\u62c9\u7d27\u4e86\u7cbe\u795e\n\u4f60\u95ee\u6211\u6015\u4e0d\u6015\n\u6211\u8bf4\u6015\u9192\u6765\u4e0d\u5728\u4f60\u6c99\u53d1\n\u6015\u8fd9\u573a\u68a6\n\u9192\u6765\u53ea\u5269\u6211\u4e00\u4e2a\u4eba\u56de\u5bb6\n\n[Chorus]", "gpt_description_prompt": "90s Neo-soul, R&B, layback groove, sultry Chinese vocals, rhodes, slow tempo, chillout, warm bass, emotional", "type": "gen", "duration": 259.48, "refund_credits": false, "stream": true, "make_instrumental": false, "can_remix": true, "is_remix": false, "priority": 0, "has_stem": false, "video_is_stale": false, "uses_latest_model": false, "model_badges": {"songrow": {"display_name": "v4.5-all", "light": {"text_color": "7D7C83", "background_color": "00000000", "border_color": "0000001A"}, "dark": {"text_color": "A3A3A3", "background_color": "00000000", "border_color": "FFFFFF1A"}}}, "is_mumble": false}, "is_liked": false, "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7", "display_name": "Chan", "handle": "chanmeng", "is_handle_updated": true, "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp", "is_trashed": false, "is_hidden": false, "created_at": "2026-01-01T05:36:10.045Z", "is_public": true, "explicit": true, "comment_count": 0, "flag_count": 0, "is_contest_clip": false, "has_hook": false, "batch_index": 0, "action_config": {"actions": [{"action_type": "add_to_playlist", "disabled": false, "visible": true}, {"action_type": "like_song", "disabled": false, "visible": true}, {"action_type": "share_song", "disabled": false, "visible": true}, {"action_type": "dislike_song", "disabled": false, "visible": true}, {"action_type": "report_song", "disabled": false, "visible": true}, {"action_type": "remove_from_playlist", "disabled": false, "visible": true}, {"action_type": "remix_extend", "disabled": false, "visible": true}, {"action_type": "remix_cover", "disabled": false, "visible": true}, {"action_type": "remix_reuse_style", "disabled": false, "visible": true}]}}, {"status": "complete", "title": "\u534a\u676f\u7ea2\u9152\u7684\u8ddd\u79bb", "play_count": 62, "upvote_count": 3, "allow_comments": true, "is_verified": false, "id": "19e6d67e-f214-48d5-abd8-988bcd68773a", "entity_type": "song_schema", "video_url": "https://cdn1.suno.ai/19e6d67e-f214-48d5-abd8-988bcd68773a.mp4", "audio_url": "https://cdn1.suno.ai/19e6d67e-f214-48d5-abd8-988bcd68773a.mp3", "image_url": "https://cdn2.suno.ai/image_19e6d67e-f214-48d5-abd8-988bcd68773a.jpeg", "image_large_url": "https://cdn2.suno.ai/image_large_19e6d67e-f214-48d5-abd8-988bcd68773a.jpeg", "major_model_version": "v4.5-all", "model_name": "chirp-auk", "metadata": {"tags": "pop, Glossy 90s R&B x Mandopop blend over warm electric piano and silky bassline; Neo-soul chords with sophisti-pop polish. Laid-back pocket, bouncy drum groove, subtle funk guitar and airy pads. Verses stay intimate and close-mic; chorus lifts with stacked male falsetto harmonies, light percussion sparkle, and a tasteful sax fill answering the vocal. Smooth male Chinese vocals, effortless runs, confident but unhurried delivery., groovy, soul, electric, smooth, romantic, r&b", "prompt": "[Verse 1]\n\u4f60\u7684\u5916\u5957\u6302\u5728\u6905\u5b50\u4e0a\n\u6e29\u5ea6\u8fd8\u505c\u5728\u4f60\u80a9\u8180\n\u7a97\u5916\u6708\u5149\u521a\u597d\u7167\u8fdb\u6765\n\u50cf\u4f60\u770b\u6211\u3000\u4e0d\u8bf4\u8bdd\u7684\u67d4\u8f6f\n\n[Pre-Chorus]\n\u4f60\u7b11\u7740\u95ee\u3000\u8981\u559d\u70b9\u4ec0\u4e48\n\u6211\u8bf4\u968f\u4fbf\u3000\u5176\u5b9e\u90fd\u60f3\u591a\u7559\u4e00\u523b\n\u6c14\u6c1b\u6162\u6162\u3000\u53d8\u5f97\u6709\u70b9\u66a7\u6627\n\u8fde\u65f6\u949f\u6ef4\u7b54\u3000\u90fd\u53d8\u5f97\u5f88\u8f7b\u9ed1\n\n[Chorus]\n\u534a\u676f\u7ea2\u9152\u7684\u8ddd\u79bb\n\u521a\u597d\u591f\u8ba9\u6211\u3000\u770b\u6e05\u4f60\u8868\u60c5\n\u8bdd\u8bf4\u4e00\u534a\u3000\u773c\u795e\u5148\u9760\u8fd1\n\u547c\u5438\u8ddf\u7740\u3000\u8282\u594f\u6162\u6162\u6643\u6765\u56de\nBaby \u9760\u8fd1\u4e00\u70b9\u70b9\n\u518d\u9760\u8fd1\u4e00\u70b9\u70b9\u3000\u522b\u505c\u5728\u539f\u5730\n\u5982\u679c\u8fd9\u4e00\u523b\u7b97\u662f\u5267\u60c5\n\u6211\u53ea\u60f3\u5361\u5728\u8fd9\u4e00\u53e5\u53f0\u8bcd\u91cc\n\n[Verse 2]\n\u4f60\u7684\u624b\u6307\u7ed5\u7740\u676f\u6cbf\u8f6c\n\u6211\u5374\u5728\u610f\u4f60\u4e0d\u7ecf\u610f\u7684\u4e60\u60ef\n\u4f60\u8bf4\u6700\u8fd1\u6709\u70b9\u7d2f\u6709\u70b9\u4e71\n\u6211\u7a81\u7136\u5f88\u60f3\u3000\u7ed9\u4f60\u4e00\u4e2a\u7b54\u6848\n\n[Pre-Chorus]\n\u706f\u5149\u8c03\u4f4e\u4e00\u70b9\u70b9\u989c\u8272\n\u5f71\u5b50\u8d34\u7740\u6211\u4eec\u8d8a\u8d70\u8d8a\u6a21\u7cca\u4e86\n\u5fc3\u4e8b\u597d\u50cf\u3000\u90fd\u88ab\u65f6\u95f4\u6eb6\u89e3\n\u53ea\u5269\u4e0b\u4f60\u5728\u3000\u6211\u4e16\u754c\u91cc\u9762\n\n[Chorus]\n\n[Bridge]\n\u5c31\u8ba9\u97f3\u4e50\u7ee7\u7eed\u6643\n\u522b\u6025\u7740\u56de\u653e\u8fc7\u5f80\n\u4f60\u9760\u5728\u6c99\u53d1\u53f3\u8fb9\u7684\u90a3\u4e00\u89d2\n\u662f\u6211\u4ee5\u540e\u3000\u6240\u6709\u5b64\u5355\u7684\u53c2\u8003\n[\u4f4e\u58f0] \u5982\u679c\u660e\u5929\u4f60\u8fd8\u8bb0\u5f97\u4eca\u665a\n\u90a3\u5c31\u8ba9\u4eca\u665a\u3000\u53d8\u6210\u4ee5\u540e\u90fd\u5728\n\n[Chorus]", "gpt_description_prompt": "90s R&B, Mando-Pop, Neo-soul, groovy, sophisti-pop, electric piano, slick production, romantic, falsetto, laid back but bouncy, smooth male Chinese vocals", "type": "gen", "duration": 260.8, "refund_credits": false, "stream": true, "make_instrumental": false, "can_remix": true, "is_remix": false, "priority": 0, "has_stem": false, "video_is_stale": false, "uses_latest_model": false, "model_badges": {"songrow": {"display_name": "v4.5-all", "light": {"text_color": "7D7C83", "background_color": "00000000", "border_color": "0000001A"}, "dark": {"text_color": "A3A3A3", "background_color": "00000000", "border_color": "FFFFFF1A"}}}, "is_mumble": false}, "is_liked": false, "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7", "display_name": "Chan", "handle": "chanmeng", "is_handle_updated": true, "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp", "is_trashed": false, "is_hidden": false, "created_at": "2026-01-01T05:33:14.369Z", "is_public": true, "explicit": false, "comment_count": 0, "flag_count": 0, "is_contest_clip": false, "has_hook": false, "batch_index": 1, "action_config": {"actions": [{"action_type": "add_to_playlist", "disabled": false, "visible": true}, {"action_type": "like_song", "disabled": false, "visible": true}, {"action_type": "share_song", "disabled": false, "visible": true}, {"action_type": "dislike_song", "disabled": false, "visible": true}, {"action_type": "report_song", "disabled": false, "visible": true}, {"action_type": "remove_from_playlist", "disabled": false, "visible": true}, {"action_type": "remix_extend", "disabled": false, "visible": true}, {"action_type": "remix_cover", "disabled": false, "visible": true}, {"action_type": "remix_reuse_style", "disabled": false, "visible": true}]}}, {"status": "complete", "title": "\u5348\u591c\u6eab\u67d4", "play_count": 20, "upvote_count": 2, "allow_comments": true, "is_verified": false, "id": "8cd1ac12-66d0-421e-adfa-0c299f78bcf5", "entity_type": "song_schema", "video_url": "https://cdn1.suno.ai/8cd1ac12-66d0-421e-adfa-0c299f78bcf5.mp4", "audio_url": "https://cdn1.suno.ai/8cd1ac12-66d0-421e-adfa-0c299f78bcf5.mp3", "image_url": "https://cdn2.suno.ai/image_8cd1ac12-66d0-421e-adfa-0c299f78bcf5.jpeg", "image_large_url": "https://cdn2.suno.ai/image_large_8cd1ac12-66d0-421e-adfa-0c299f78bcf5.jpeg", "major_model_version": "v4.5-all", "model_name": "chirp-auk", "metadata": {"tags": "funk, Dusty 90s neo-soul with Fender Rhodes and warm male vocals in Chinese. Lazy boom-bap drums and a thick, rubbery bass sit deep in the pocket. Verses are intimate and close-mic\u2019d; chorus blossoms with stacked harmonies and soft ad-libs, Rhodes chords swelling. Subtle vinyl crackle and brushed percussion for a sensual, late-night chill vibe., bassline, smooth, soulful, soul, r&b, sensual", "prompt": "[Verse 1]\n\u4f60\u7684\u9aee \u9084\u6709\u4e00\u9ede\u6fd5\n\u9580\u4e00\u95dc \u6574\u500b\u623f\u9593\u6162\u4e86\u7bc0\u594f\n\u5916\u9762\u5435 \u9019\u88e1\u50cf\u88ab\u8ab0\u975c\u97f3\n\u4f60\u5728\u6211\u80f8\u53e3\u756b\u5708 \u6162\u6162\u5931\u5b88\n\n[Pre-Chorus]\n\u4f60\u8aaa\u4eca\u5929 \u5fc3\u6709\u9ede\u4e82\n\u60f3\u627e\u500b\u5730\u65b9 \u5077\u500b\u665a\u5b89\n\u6211\u6307\u8457\u6c99\u767c \u8aaa\u525b\u525b\u597d\n\u4f60\u7684\u7b11 \u628a\u6642\u9593\u90fd\u653e\u8edf\n\n[Chorus]\nBaby \u5c31\u9019\u6a23 \u5225\u8aaa\u8a71\n\u8b93\u5348\u591c\u6eab\u67d4 \u628a\u6211\u5011\u878d\u5316\n\u4f60\u7684\u547c\u5438 \u8cbc\u8457\u6211\u7684\u56de\u7b54\n\u4e00\u9ede\u4e00\u6ef4 \u628a\u767d\u5929\u90fd\u878d\u5316\nBaby \u518d\u9760\u8fd1 \u4e00\u9ede\u9ede\u5c31\u597d\n\u8b93\u7bc0\u594f\u6162\u6162 \u628a\u5f7c\u6b64\u62c6\u7a7f\n\u5728\u9019\u4e00\u523b \u4e0d\u9700\u8981\u507d\u88dd\n\u53ea\u5269\u4f60\u548c\u6211 \u5fc3\u8df3\u5728\u56de\u97ff\n\n[Verse 2]\n\u4f60\u8173\u5c16 \u8e22\u958b\u9ad8\u8ddf\u978b\n\u8d64\u8173\u8e29\u5728 \u6211\u820a\u6bdb\u6bef\u908a\u7de3\n\u4f60\u8aaa\u559c\u6b61 \u9019\u7a2e\u820a\u820a\u5473\u9053\n\u50cf\u6211\u5011 \u8aaa\u4e0d\u6e05\u7684\u7518\u751c\n\n[Bridge]\n\u71c8\u518d\u6697\u4e00\u683c \u4e16\u754c\u9000\u5230\u9580\u5916\n\u6307\u5c16\u7e5e\u8457\u4f60 \u8166\u888b\u4e00\u7247\u7a7a\u767d\n\u9019\u8ddd\u96e2 \u592a\u525b\u597d \u4e0d\u591a\u4e00\u516c\u5206\n\u4f60\u773c\u795e\u4e00\u6643 \u6211\u5c31\u6295\u964d\u627f\u8a8d\n\n[Chorus]", "gpt_description_prompt": "90s Neo-soul, vintage R&B, layback groove, smooth Chinese vocals, Fender Rhodes piano, boom bap drums, heavy bassline, soulful, chill, sensual", "type": "gen", "duration": 218.72, "refund_credits": false, "stream": true, "make_instrumental": false, "can_remix": true, "is_remix": false, "priority": 0, "has_stem": false, "video_is_stale": false, "uses_latest_model": false, "model_badges": {"songrow": {"display_name": "v4.5-all", "light": {"text_color": "7D7C83", "background_color": "00000000", "border_color": "0000001A"}, "dark": {"text_color": "A3A3A3", "background_color": "00000000", "border_color": "FFFFFF1A"}}}, "is_mumble": false}, "is_liked": false, "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7", "display_name": "Chan", "handle": "chanmeng", "is_handle_updated": true, "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp", "is_trashed": false, "is_hidden": false, "created_at": "2026-01-01T05:23:27.325Z", "is_public": true, "explicit": false, "comment_count": 0, "flag_count": 0, "is_contest_clip": false, "has_hook": false, "batch_index": 1, "action_config": {"actions": [{"action_type": "add_to_playlist", "disabled": false, "visible": true}, {"action_type": "like_song", "disabled": false, "visible": true}, {"action_type": "share_song", "disabled": false, "visible": true}, {"action_type": "dislike_song", "disabled": false, "visible": true}, {"action_type": "report_song", "disabled": false, "visible": true}, {"action_type": "remove_from_playlist", "disabled": false, "visible": true}, {"action_type": "remix_extend", "disabled": false, "visible": true}, {"action_type": "remix_cover", "disabled": false, "visible": true}, {"action_type": "remix_reuse_style", "disabled": false, "visible": true}]}}, {"status": "complete", "title": "Electric Nostalgia", "play_count": 93, "upvote_count": 3, "allow_comments": true, "is_verified": false, "id": "606cd57f-35cd-4b99-a62e-76f9d80d9e1b", "entity_type": "song_schema", "video_url": "https://cdn1.suno.ai/606cd57f-35cd-4b99-a62e-76f9d80d9e1b.mp4", "audio_url": "https://cdn1.suno.ai/606cd57f-35cd-4b99-a62e-76f9d80d9e1b.mp3", "image_url": "https://cdn2.suno.ai/image_606cd57f-35cd-4b99-a62e-76f9d80d9e1b.jpeg", "image_large_url": "https://cdn2.suno.ai/image_large_606cd57f-35cd-4b99-a62e-76f9d80d9e1b.jpeg", "major_model_version": "v4.5-all", "model_name": "chirp-auk", "metadata": {"tags": "j-pop, female vocals, synth-pop, dreamy atmosphere, dream pop, sentimental melody, mid-tempo, arpeggiated synths, warm synthesizer pads, soft auto-tuned female vocals, emotional, nostalgic, warm, hopeful and emotional, pop, soft", "prompt": "[Verse]\nFlickering lights in the city haze\nA thousand memories in a neon maze\nYour shadow lingers where the pavement breaks\n\n[Prechorus]\nI keep running\nThrough the static hum\nSearching for the echoes of what we\u2019ve become\n\n[Chorus]\nTake me back to electric nostalgia\nWhere time was soft and love would hold ya\nEvery spark\nEvery glow\nWe were brighter\nDon\u2019t you know\nTake me back to electric nostalgia\n\n[Verse 2]\nRaindrops dance on an empty street\nThe past is a song on repeat\nYour voice a whisper I can\u2019t delete\n\n[Prechorus]\nI keep chasing\nThe colors that fade\nTracing the outline of dreams we made\n\n[Chorus]\nTake me back to electric nostalgia\nWhere time was soft and love would hold ya\nEvery spark\nEvery glow\nWe were brighter\nDon\u2019t you know\nTake me back to electric nostalgia", "gpt_description_prompt": "Synth-pop, J-Pop, Dream Pop, mid-tempo, nostalgic, warm synthesizer pads, sentimental melody, soft auto-tuned female vocals, arpeggiated synths, dreamy atmosphere, hopeful and emotional", "type": "gen", "duration": 165.0, "refund_credits": false, "stream": true, "make_instrumental": false, "can_remix": true, "is_remix": false, "priority": 0, "has_stem": false, "video_is_stale": false, "uses_latest_model": false, "model_badges": {"songrow": {"display_name": "v4.5-all", "light": {"text_color": "7D7C83", "background_color": "00000000", "border_color": "0000001A"}, "dark": {"text_color": "A3A3A3", "background_color": "00000000", "border_color": "FFFFFF1A"}}}, "is_mumble": false}, "is_liked": false, "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7", "display_name": "Chan", "handle": "chanmeng", "is_handle_updated": true, "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp", "is_trashed": false, "is_hidden": false, "created_at": "2025-12-01T05:46:48.873Z", "is_public": true, "explicit": false, "comment_count": 0, "flag_count": 0, "is_contest_clip": false, "has_hook": false, "batch_index": 1, "action_config": {"actions": [{"action_type": "add_to_playlist", "disabled": false, "visible": true}, {"action_type": "like_song", "disabled": false, "visible": true}, {"action_type": "share_song", "disabled": false, "visible": true}, {"action_type": "dislike_song", "disabled": false, "visible": true}, {"action_type": "report_song", "disabled": false, "visible": true}, {"action_type": "remove_from_playlist", "disabled": false, "visible": true}, {"action_type": "remix_extend", "disabled": false, "visible": true}, {"action_type": "remix_cover", "disabled": false, "visible": true}, {"action_type": "remix_reuse_style", "disabled": false, "visible": true}]}}, {"status": "complete", "title": "\u6d41\u6c34\u68a6 - Dream of Flowing Waters", "play_count": 23, "upvote_count": 3, "allow_comments": true, "is_verified": false, "id": "ce04f151-f558-45ef-920e-56ab7aff9164", "entity_type": "song_schema", "video_url": "https://cdn1.suno.ai/ce04f151-f558-45ef-920e-56ab7aff9164.mp4", "audio_url": "https://cdn1.suno.ai/ce04f151-f558-45ef-920e-56ab7aff9164.mp3", "image_url": "https://cdn2.suno.ai/image_ce04f151-f558-45ef-920e-56ab7aff9164.jpeg", "image_large_url": "https://cdn2.suno.ai/image_large_ce04f151-f558-45ef-920e-56ab7aff9164.jpeg", "major_model_version": "v3.5", "model_name": "chirp-v3", "metadata": {"tags": "meditative instrumental traditional chinese", "prompt": "[Instrumental]", "gpt_description_prompt": "Create a purely instrumental Chinese traditional piece: no vocals, no singing. Slow tempo (60 BPM) with guqin, xiao, and guzheng only. Gentle flowing melodies like flowing water, meditative mood.", "type": "gen", "duration": 105.08, "refund_credits": false, "stream": true, "make_instrumental": true, "can_remix": true, "is_remix": false, "priority": 0, "has_stem": false, "uses_latest_model": false, "model_badges": {"songrow": {"display_name": "v3.5", "light": {"text_color": "7D7C83", "background_color": "00000000", "border_color": "0000001A"}, "dark": {"text_color": "A3A3A3", "background_color": "00000000", "border_color": "FFFFFF1A"}}}}, "is_liked": false, "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7", "display_name": "Chan", "handle": "chanmeng", "is_handle_updated": true, "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp", "is_trashed": false, "is_hidden": false, "created_at": "2024-10-28T00:40:31.573Z", "is_public": true, "explicit": false, "comment_count": 0, "flag_count": 0, "is_contest_clip": false, "has_hook": false, "batch_index": 0, "action_config": {"actions": [{"action_type": "add_to_playlist", "disabled": false, "visible": true}, {"action_type": "like_song", "disabled": false, "visible": true}, {"action_type": "share_song", "disabled": false, "visible": true}, {"action_type": "dislike_song", "disabled": false, "visible": true}, {"action_type": "report_song", "disabled": false, "visible": true}, {"action_type": "remove_from_playlist", "disabled": false, "visible": true}, {"action_type": "remix_extend", "disabled": false, "visible": true}, {"action_type": "remix_cover", "disabled": false, "visible": true}, {"action_type": "remix_reuse_style", "disabled": false, "visible": true}]}}], "stats": {}, "is_flagged": false, "is_following": false, "viewer_is_blocking_profile": false, "viewer_is_blocked_by_profile": false, "num_total_clips": 26, "current_page": 2, "playlists": [{"id": "0e89c244-c1fe-4c92-bd57-d14633a96b60", "entity_type": "playlist_schema", "image_url": "https://cdn2.suno.ai/image_ce04f151-f558-45ef-920e-56ab7aff9164.jpeg", "playlist_clips": [], "current_page": 0, "num_total_results": 55, "is_owned": false, "is_trashed": false, "is_public": true, "user_display_name": "Chan", "is_hidden": false, "user_handle": "chanmeng", "user_avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp", "user_is_verified": false, "name": "Chan's Creation", "description": "", "upvote_count": 0, "dislike_count": 0, "flag_count": 0, "skip_count": 0, "play_count": 98, "song_count": 55, "total_duration": 13765.599999999999, "is_discover_playlist": false}], "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp", "favorite_songs": [], "personas": [], "user_comments_blocked": false, "artist_profiles_enabled": true, "viewer_is_hiding_creator_hook": false, "viewer_is_hiding_creator_clip": false, "is_verified": false, "is_contact": false, "profiles_v2_enabled": false}
+{
+  "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7",
+  "display_name": "Chan",
+  "handle": "chanmeng",
+  "profile_description": "",
+  "clips": [
+    {
+      "status": "complete",
+      "title": "Vibe Coder",
+      "play_count": 62,
+      "upvote_count": 2,
+      "allow_comments": true,
+      "is_verified": false,
+      "id": "da76e35e-d870-4eca-831a-22885d088ffc",
+      "entity_type": "song_schema",
+      "video_url": "https://cdn1.suno.ai/da76e35e-d870-4eca-831a-22885d088ffc.mp4",
+      "audio_url": "https://cdn1.suno.ai/da76e35e-d870-4eca-831a-22885d088ffc.mp3",
+      "image_url": "https://cdn2.suno.ai/image_da76e35e-d870-4eca-831a-22885d088ffc.jpeg",
+      "image_large_url": "https://cdn2.suno.ai/image_large_da76e35e-d870-4eca-831a-22885d088ffc.jpeg",
+      "major_model_version": "v4.5-all",
+      "model_name": "chirp-auk",
+      "metadata": {
+        "tags": "pop, Glossy 90s R&B x Mandopop blend over warm electric piano and silky bassline; Neo-soul chords with sophisti-pop polish. Laid-back pocket, bouncy drum groove, subtle funk guitar and airy pads. Verses stay intimate and close-mic; chorus lifts with stacked male falsetto harmonies, light percussion sparkle, and a tasteful sax fill answering the vocal. Smooth male Chinese vocals, effortless runs, confident but unhurried delivery., groovy, soul, electric, smooth, romantic, r&b",
+        "prompt": "[Intro] (Warm electric piano riffs, soft vinyl crackle) (Silky bassline enters) Yeah... Just the screen and me tonight. Vibe coding. Let it flow.\n\n[Verse 1] 窗外的城市 已经悄悄入睡 只剩桌角的台灯 散发着暧昧 不需要复杂的文档 也不想太累 手指在键盘上 像是某种爵士乐的聚会 (Close-mic, intimate) 这一刻没有Bug 只有灵感在飞 AI 是我的乐手 懂我每一个以为 变量在跳舞 逻辑在排队 这种感觉 对不对 不需要谁来给\n\n[Pre-Chorus] 抛开白天的琐碎 进入心流的堡垒 不需要为了谁 只是纯粹 把脑海里的画面 慢慢构建成丰碑 Oh yeah, feels so right\n\n[Chorus] (Stacked Falsetto Harmonies, Airy and bright) 这是属于独立开发者的 Vibe Coding 在深夜里 编织最自由的梦境 从零到一的距离 是最迷人的旅行 指尖划过 像丝绸一样的命令 当我按下 Deploy 分享给世界的眼睛 每一个点击 都是心跳的回应 Oh~ It's purely magic, baby Creating is my loving\n\n[Verse 2] (Bouncy drum groove, subtle funk guitar licks) 一杯冰咖啡 融化了时间的边界 屏幕上的光标 像在呼吸的特写 不是枯燥的工程 是艺术的妥协 在这行与行之间 我找到了我的世界 工具也好 应用也罢 都是我的孩子 看着它们生长 用最优雅的姿态 不需要解释 懂的人自然会来 这份快乐 无法被替代\n\n[Bridge] (Slow down, dreamy pads) 或许在地球的另一端 有人因为这个工具 而感到心安 这就是连接 这就是答案 代码是冰冷的 但我的心是暖\n\n[Saxophone Solo] (Tasteful and smooth sax fill, answering the vibe)\n\n[Chorus] (Stacked Falsetto Harmonies, Emotional lift) 这是属于独立开发者的 Vibe Coding 在深夜里 编织最自由的梦境 从零到一的距离 是最迷人的旅行 指尖划过 像丝绸一样的命令 当我按下 Deploy 分享给世界的眼睛 每一个点击 都是心跳的回应 Oh~ It's purely magic, baby Creating is my loving\n\n[Outro] (Ad-libs, effortless runs) Yeah, just create and share... Vibe coding... 直到天亮... (Fade out with electric piano and sax)",
+        "type": "gen",
+        "duration": 236.6,
+        "refund_credits": false,
+        "stream": true,
+        "make_instrumental": false,
+        "can_remix": true,
+        "is_remix": false,
+        "priority": 0,
+        "has_stem": false,
+        "video_is_stale": false,
+        "uses_latest_model": false,
+        "model_badges": {
+          "songrow": {
+            "display_name": "v4.5-all",
+            "light": {
+              "text_color": "7D7C83",
+              "background_color": "00000000",
+              "border_color": "0000001A"
+            },
+            "dark": {
+              "text_color": "A3A3A3",
+              "background_color": "00000000",
+              "border_color": "FFFFFF1A"
+            }
+          }
+        },
+        "is_mumble": false
+      },
+      "is_liked": false,
+      "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7",
+      "display_name": "Chan",
+      "handle": "chanmeng",
+      "is_handle_updated": true,
+      "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp",
+      "is_trashed": false,
+      "is_hidden": false,
+      "created_at": "2026-01-03T05:33:58.531Z",
+      "is_public": true,
+      "is_persona_root": false,
+      "is_following_creator": false,
+      "albums": [],
+      "explicit": false,
+      "comment_count": 0,
+      "flag_count": 0,
+      "is_contest_clip": false,
+      "has_hook": false,
+      "batch_index": 1,
+      "action_config": {
+        "actions": [
+          {
+            "action_type": "add_to_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "like_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "share_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "dislike_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "report_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remove_from_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_extend",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_cover",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_reuse_style",
+            "disabled": false,
+            "visible": true
+          }
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "title": "独身主义的咖啡",
+      "play_count": 23,
+      "upvote_count": 2,
+      "allow_comments": true,
+      "is_verified": false,
+      "id": "842161e3-d695-4bb2-91aa-38fcab03df5d",
+      "entity_type": "song_schema",
+      "video_url": "https://cdn1.suno.ai/842161e3-d695-4bb2-91aa-38fcab03df5d.mp4",
+      "audio_url": "https://cdn1.suno.ai/842161e3-d695-4bb2-91aa-38fcab03df5d.mp3",
+      "image_url": "https://cdn2.suno.ai/image_842161e3-d695-4bb2-91aa-38fcab03df5d.jpeg",
+      "image_large_url": "https://cdn2.suno.ai/image_large_842161e3-d695-4bb2-91aa-38fcab03df5d.jpeg",
+      "major_model_version": "v4.5-all",
+      "model_name": "chirp-auk",
+      "metadata": {
+        "tags": "pop, Glossy 90s R&B x Mandopop blend over warm electric piano and silky bassline; Neo-soul chords with sophisti-pop polish. Laid-back pocket, bouncy drum groove, subtle funk guitar and airy pads. Verses stay intimate and close-mic; chorus lifts with stacked male falsetto harmonies, light percussion sparkle, and a tasteful sax fill answering the vocal. Smooth male Chinese vocals, effortless runs, confident but unhurried delivery., groovy, soul, electric, smooth, romantic, r&b",
+        "prompt": "[Verse 1]\n窗外在滴答\n像谁的钟在催\n可我慢慢搅拌\n一小匙苦 入口不回嘴\n角落的座位\n只坐得下一个人\n把外套搭在对面\n假装有人 跟我对饮\n\n[Chorus]\n下雨天 喝咖啡\n一个人也很完美\n不必为谁 收敛口味\n糖多一点 还是不加也无所谓\n独身主义的余味\n在舌尖慢慢化开了防备\n不等谁来陪\n我和自己先约会\n\n[Verse 2]\n雾气在窗上\n画一颗偷笑的心\n画到一半又抹平\n怕被看见 我的曾经\n手机调静音\n让世界自己去吵\n小勺碰杯沿的声响\n刚刚好 盖过心跳\n\n[Chorus]\n\n[Bridge]\n他们问 你不怕老了以后\n椅子对面 空得刺眼难受\n我抿一口 微苦的温柔\n说至少此刻\n我拥有\n整家店 安静的自由\n\n[Chorus]",
+        "type": "gen",
+        "duration": 251.64,
+        "refund_credits": false,
+        "stream": true,
+        "make_instrumental": false,
+        "can_remix": true,
+        "is_remix": false,
+        "priority": 0,
+        "has_stem": false,
+        "video_is_stale": false,
+        "uses_latest_model": false,
+        "model_badges": {
+          "songrow": {
+            "display_name": "v4.5-all",
+            "light": {
+              "text_color": "7D7C83",
+              "background_color": "00000000",
+              "border_color": "0000001A"
+            },
+            "dark": {
+              "text_color": "A3A3A3",
+              "background_color": "00000000",
+              "border_color": "FFFFFF1A"
+            }
+          }
+        },
+        "is_mumble": false
+      },
+      "is_liked": false,
+      "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7",
+      "display_name": "Chan",
+      "handle": "chanmeng",
+      "is_handle_updated": true,
+      "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp",
+      "is_trashed": false,
+      "is_hidden": false,
+      "created_at": "2026-01-03T05:21:56.495Z",
+      "is_public": true,
+      "is_persona_root": false,
+      "is_following_creator": false,
+      "albums": [],
+      "explicit": false,
+      "comment_count": 0,
+      "flag_count": 0,
+      "is_contest_clip": false,
+      "has_hook": false,
+      "batch_index": 1,
+      "action_config": {
+        "actions": [
+          {
+            "action_type": "add_to_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "like_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "share_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "dislike_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "report_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remove_from_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_extend",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_cover",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_reuse_style",
+            "disabled": false,
+            "visible": true
+          }
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "title": "战士阿花",
+      "play_count": 40,
+      "upvote_count": 2,
+      "allow_comments": true,
+      "is_verified": false,
+      "id": "7cd0994c-c606-4135-bdd0-2f9f8fb617d3",
+      "entity_type": "song_schema",
+      "video_url": "https://cdn1.suno.ai/7cd0994c-c606-4135-bdd0-2f9f8fb617d3.mp4",
+      "audio_url": "https://cdn1.suno.ai/7cd0994c-c606-4135-bdd0-2f9f8fb617d3.mp3",
+      "image_url": "https://cdn2.suno.ai/image_7cd0994c-c606-4135-bdd0-2f9f8fb617d3.jpeg",
+      "image_large_url": "https://cdn2.suno.ai/image_large_7cd0994c-c606-4135-bdd0-2f9f8fb617d3.jpeg",
+      "major_model_version": "v4.5-all",
+      "model_name": "chirp-auk",
+      "metadata": {
+        "tags": "Neo-Soul, 90s R&B, Layback, Groovy Bassline, Smooth Female Vocals, Jazz chords, Downtempo, Chill, Mandarin Chinese, Sophisticated, Sultry but Sarcastic",
+        "prompt": "[Intro]\n(Soft Jazzy Piano & Bass intro)\n(Yeah... uh huh...)\n(This is for Ah Hua)\n(Listen...)\n\n[Verse 1]\n(Smooth flow)\n阿花今年二十八\n早已看透父权虚假\n相亲对象那个阿发\n张口闭口不仅是爹味 甚至还有点大\n阿花冷眼看阿发 (He's a joke, baby)\n收起你那如意算盘吧\n想要保姆请你自己花钱雇佣她\n别想白嫖我的年华\n\n[Pre-Chorus]\n(Groovy)\n后来故事发展很火辣\n阿花当场掀翻了名为传统的塔\n什么旧爱新欢 (I don't care)\n都不care啊\n什么贤妻良母的剧本\n去死吧 (Let it burn)\n\n[Chorus]\n(Soulful & Melodic)\n觉醒吧 觉醒吧\n就算王子真的骑着白马\n也直接让他滚回城堡吧\n我的广阔天地无需那个他\n觉醒吧 战士阿花\n少女的梦早已经死在昨天啦\n那带血的束身衣扎成捧花\n扔进火里烧了个稀里哗啦\n\n[Verse 2]\n(Layback style)\n阿发吓坏了看阿花\n她剪掉长发洗去了妆容啊\n一生一世这画饼太廉价\n独行出发吧\n(Bye bye, boy)\n\n[Pre-Chorus]\n后来故事发展更潇洒\n再也没有谁能等着阿花回家\n一个人读书健身闯荡天下\n搞搞事业也会研究研究代码 (Coding my life)\n\n[Chorus]\n觉醒吧 觉醒吧\n就算王子真的骑着白马\n也直接让他滚回城堡吧\n我的广阔天地无需那个他\n觉醒吧 战士阿花\n少女的梦早已经死在昨天啦\n那带血的束身衣扎成捧花\n扔进火里烧了个稀里哗啦\n\n[Bridge]\n(Saxophone or Keyboard Solo - Jazzy vibe)\n(Spoken Word)\n\"阿花今年六十八\n她早已不再需要家\n那是父权编织的篱笆\"\n(Singing resumes)\n她和姐妹在此刻 拥有了天下\n\n[Chorus]\n觉醒吧 觉醒吧\n就算王子真的骑着白马\n也直接让他滚回城堡吧\n我的广阔天地无需那个他\n觉醒吧 战士阿花\n少女的梦早已经死在昨天啦\n那带血的束身衣扎成捧花\n扔进火里烧了个稀里哗啦\n\n[Outro]\n(Ad-libs & Fading out)\n扔进火里...\n烧了吧...\n新娘阿花 is dead...\nLong live Warrior Ah Hua...\n(Smooth fade out)",
+        "type": "gen",
+        "duration": 239.52,
+        "refund_credits": false,
+        "stream": true,
+        "make_instrumental": false,
+        "can_remix": true,
+        "is_remix": false,
+        "priority": 0,
+        "has_stem": false,
+        "video_is_stale": false,
+        "uses_latest_model": false,
+        "model_badges": {
+          "songrow": {
+            "display_name": "v4.5-all",
+            "light": {
+              "text_color": "7D7C83",
+              "background_color": "00000000",
+              "border_color": "0000001A"
+            },
+            "dark": {
+              "text_color": "A3A3A3",
+              "background_color": "00000000",
+              "border_color": "FFFFFF1A"
+            }
+          }
+        },
+        "is_mumble": false
+      },
+      "is_liked": false,
+      "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7",
+      "display_name": "Chan",
+      "handle": "chanmeng",
+      "is_handle_updated": true,
+      "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp",
+      "is_trashed": false,
+      "is_hidden": false,
+      "created_at": "2026-01-02T11:42:22.629Z",
+      "is_public": true,
+      "is_persona_root": false,
+      "is_following_creator": false,
+      "albums": [],
+      "explicit": false,
+      "comment_count": 0,
+      "flag_count": 0,
+      "is_contest_clip": false,
+      "has_hook": false,
+      "batch_index": 1,
+      "action_config": {
+        "actions": [
+          {
+            "action_type": "add_to_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "like_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "share_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "dislike_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "report_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remove_from_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_extend",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_cover",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_reuse_style",
+            "disabled": false,
+            "visible": true
+          }
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "title": "午夜慢慢爱",
+      "play_count": 14,
+      "upvote_count": 2,
+      "allow_comments": true,
+      "is_verified": false,
+      "id": "5060d0b1-2c48-43d2-9923-31cd17f553f6",
+      "entity_type": "song_schema",
+      "video_url": "https://cdn1.suno.ai/5060d0b1-2c48-43d2-9923-31cd17f553f6.mp4",
+      "audio_url": "https://cdn1.suno.ai/5060d0b1-2c48-43d2-9923-31cd17f553f6.mp3",
+      "image_url": "https://cdn2.suno.ai/image_5060d0b1-2c48-43d2-9923-31cd17f553f6.jpeg",
+      "image_large_url": "https://cdn2.suno.ai/image_large_5060d0b1-2c48-43d2-9923-31cd17f553f6.jpeg",
+      "major_model_version": "v4.5-all",
+      "model_name": "chirp-auk",
+      "metadata": {
+        "tags": "funk, Smoky 90s neo-soul groove at slow tempo; warm Rhodes chords and lazy swung drums sink into a deep, rounded bass. Sultry female vocals sit right on the edge of a whisper, stacked harmonies blooming in the choruses. Subtle wah guitar answers the vocal phrases, with soft pads in the back. Overall, an intimate late-night vibe that builds just a touch in the bridge, then melts back down for the final hook., slow, emotional, warm, soul, r&b",
+        "prompt": "[Verse 1]\n窗外雨点\n一点一点敲在被单\n你说太晚\n再待五分钟也算浪漫\n呼吸黏在\n你锁骨的线慢慢盘旋\n不必多谈\n身体比对白还诚恳一点\n\n[Chorus]\n就这样午夜慢慢爱\n时间慢下来 只剩下你存在\n你的手滑过我裙摆\n像在翻一页还没读完的告白\n就这样午夜慢慢爱\n灯光太暧昧 看不清谁主宰\n你靠在我耳边嗓音太坏\n一句宝贝我就沦陷得太快\n\n[Verse 2]\n指尖绕圈\n在你胸口写我姓氏\n你的笑意\n晃得枕边都跟着偏移\n说不出口\n的那句我们算什么关系\n眼神游移\n却把所有答案都暴露给你\n\n[Bridge]\n[低声呢喃] 别开灯\n让影子继续贴着吻\n心跳乱寸寸\n贴着鼓点被你拉紧了精神\n你问我怕不怕\n我说怕醒来不在你沙发\n怕这场梦\n醒来只剩我一个人回家\n\n[Chorus]",
+        "gpt_description_prompt": "90s Neo-soul, R&B, layback groove, sultry Chinese vocals, rhodes, slow tempo, chillout, warm bass, emotional",
+        "type": "gen",
+        "duration": 259.48,
+        "refund_credits": false,
+        "stream": true,
+        "make_instrumental": false,
+        "can_remix": true,
+        "is_remix": false,
+        "priority": 0,
+        "has_stem": false,
+        "video_is_stale": false,
+        "uses_latest_model": false,
+        "model_badges": {
+          "songrow": {
+            "display_name": "v4.5-all",
+            "light": {
+              "text_color": "7D7C83",
+              "background_color": "00000000",
+              "border_color": "0000001A"
+            },
+            "dark": {
+              "text_color": "A3A3A3",
+              "background_color": "00000000",
+              "border_color": "FFFFFF1A"
+            }
+          }
+        },
+        "is_mumble": false
+      },
+      "is_liked": false,
+      "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7",
+      "display_name": "Chan",
+      "handle": "chanmeng",
+      "is_handle_updated": true,
+      "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp",
+      "is_trashed": false,
+      "is_hidden": false,
+      "created_at": "2026-01-01T05:36:10.045Z",
+      "is_public": true,
+      "is_persona_root": false,
+      "is_following_creator": false,
+      "albums": [],
+      "explicit": true,
+      "comment_count": 0,
+      "flag_count": 0,
+      "is_contest_clip": false,
+      "has_hook": false,
+      "batch_index": 0,
+      "action_config": {
+        "actions": [
+          {
+            "action_type": "add_to_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "like_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "share_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "dislike_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "report_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remove_from_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_extend",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_cover",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_reuse_style",
+            "disabled": false,
+            "visible": true
+          }
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "title": "半杯红酒的距离",
+      "play_count": 62,
+      "upvote_count": 3,
+      "allow_comments": true,
+      "is_verified": false,
+      "id": "19e6d67e-f214-48d5-abd8-988bcd68773a",
+      "entity_type": "song_schema",
+      "video_url": "https://cdn1.suno.ai/19e6d67e-f214-48d5-abd8-988bcd68773a.mp4",
+      "audio_url": "https://cdn1.suno.ai/19e6d67e-f214-48d5-abd8-988bcd68773a.mp3",
+      "image_url": "https://cdn2.suno.ai/image_19e6d67e-f214-48d5-abd8-988bcd68773a.jpeg",
+      "image_large_url": "https://cdn2.suno.ai/image_large_19e6d67e-f214-48d5-abd8-988bcd68773a.jpeg",
+      "major_model_version": "v4.5-all",
+      "model_name": "chirp-auk",
+      "metadata": {
+        "tags": "pop, Glossy 90s R&B x Mandopop blend over warm electric piano and silky bassline; Neo-soul chords with sophisti-pop polish. Laid-back pocket, bouncy drum groove, subtle funk guitar and airy pads. Verses stay intimate and close-mic; chorus lifts with stacked male falsetto harmonies, light percussion sparkle, and a tasteful sax fill answering the vocal. Smooth male Chinese vocals, effortless runs, confident but unhurried delivery., groovy, soul, electric, smooth, romantic, r&b",
+        "prompt": "[Verse 1]\n你的外套挂在椅子上\n温度还停在你肩膀\n窗外月光刚好照进来\n像你看我　不说话的柔软\n\n[Pre-Chorus]\n你笑着问　要喝点什么\n我说随便　其实都想多留一刻\n气氛慢慢　变得有点暧昧\n连时钟滴答　都变得很轻黑\n\n[Chorus]\n半杯红酒的距离\n刚好够让我　看清你表情\n话说一半　眼神先靠近\n呼吸跟着　节奏慢慢晃来回\nBaby 靠近一点点\n再靠近一点点　别停在原地\n如果这一刻算是剧情\n我只想卡在这一句台词里\n\n[Verse 2]\n你的手指绕着杯沿转\n我却在意你不经意的习惯\n你说最近有点累有点乱\n我突然很想　给你一个答案\n\n[Pre-Chorus]\n灯光调低一点点颜色\n影子贴着我们越走越模糊了\n心事好像　都被时间溶解\n只剩下你在　我世界里面\n\n[Chorus]\n\n[Bridge]\n就让音乐继续晃\n别急着回放过往\n你靠在沙发右边的那一角\n是我以后　所有孤单的参考\n[低声] 如果明天你还记得今晚\n那就让今晚　变成以后都在\n\n[Chorus]",
+        "gpt_description_prompt": "90s R&B, Mando-Pop, Neo-soul, groovy, sophisti-pop, electric piano, slick production, romantic, falsetto, laid back but bouncy, smooth male Chinese vocals",
+        "type": "gen",
+        "duration": 260.8,
+        "refund_credits": false,
+        "stream": true,
+        "make_instrumental": false,
+        "can_remix": true,
+        "is_remix": false,
+        "priority": 0,
+        "has_stem": false,
+        "video_is_stale": false,
+        "uses_latest_model": false,
+        "model_badges": {
+          "songrow": {
+            "display_name": "v4.5-all",
+            "light": {
+              "text_color": "7D7C83",
+              "background_color": "00000000",
+              "border_color": "0000001A"
+            },
+            "dark": {
+              "text_color": "A3A3A3",
+              "background_color": "00000000",
+              "border_color": "FFFFFF1A"
+            }
+          }
+        },
+        "is_mumble": false
+      },
+      "is_liked": false,
+      "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7",
+      "display_name": "Chan",
+      "handle": "chanmeng",
+      "is_handle_updated": true,
+      "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp",
+      "is_trashed": false,
+      "is_hidden": false,
+      "created_at": "2026-01-01T05:33:14.369Z",
+      "is_public": true,
+      "is_persona_root": false,
+      "is_following_creator": false,
+      "albums": [],
+      "explicit": false,
+      "comment_count": 0,
+      "flag_count": 0,
+      "is_contest_clip": false,
+      "has_hook": false,
+      "batch_index": 1,
+      "action_config": {
+        "actions": [
+          {
+            "action_type": "add_to_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "like_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "share_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "dislike_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "report_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remove_from_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_extend",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_cover",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_reuse_style",
+            "disabled": false,
+            "visible": true
+          }
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "title": "午夜溫柔",
+      "play_count": 20,
+      "upvote_count": 2,
+      "allow_comments": true,
+      "is_verified": false,
+      "id": "8cd1ac12-66d0-421e-adfa-0c299f78bcf5",
+      "entity_type": "song_schema",
+      "video_url": "https://cdn1.suno.ai/8cd1ac12-66d0-421e-adfa-0c299f78bcf5.mp4",
+      "audio_url": "https://cdn1.suno.ai/8cd1ac12-66d0-421e-adfa-0c299f78bcf5.mp3",
+      "image_url": "https://cdn2.suno.ai/image_8cd1ac12-66d0-421e-adfa-0c299f78bcf5.jpeg",
+      "image_large_url": "https://cdn2.suno.ai/image_large_8cd1ac12-66d0-421e-adfa-0c299f78bcf5.jpeg",
+      "major_model_version": "v4.5-all",
+      "model_name": "chirp-auk",
+      "metadata": {
+        "tags": "funk, Dusty 90s neo-soul with Fender Rhodes and warm male vocals in Chinese. Lazy boom-bap drums and a thick, rubbery bass sit deep in the pocket. Verses are intimate and close-mic’d; chorus blossoms with stacked harmonies and soft ad-libs, Rhodes chords swelling. Subtle vinyl crackle and brushed percussion for a sensual, late-night chill vibe., bassline, smooth, soulful, soul, r&b, sensual",
+        "prompt": "[Verse 1]\n你的髮 還有一點濕\n門一關 整個房間慢了節奏\n外面吵 這裡像被誰靜音\n你在我胸口畫圈 慢慢失守\n\n[Pre-Chorus]\n你說今天 心有點亂\n想找個地方 偷個晚安\n我指著沙發 說剛剛好\n你的笑 把時間都放軟\n\n[Chorus]\nBaby 就這樣 別說話\n讓午夜溫柔 把我們融化\n你的呼吸 貼著我的回答\n一點一滴 把白天都融化\nBaby 再靠近 一點點就好\n讓節奏慢慢 把彼此拆穿\n在這一刻 不需要偽裝\n只剩你和我 心跳在回響\n\n[Verse 2]\n你腳尖 踢開高跟鞋\n赤腳踩在 我舊毛毯邊緣\n你說喜歡 這種舊舊味道\n像我們 說不清的甘甜\n\n[Bridge]\n燈再暗一格 世界退到門外\n指尖繞著你 腦袋一片空白\n這距離 太剛好 不多一公分\n你眼神一晃 我就投降承認\n\n[Chorus]",
+        "gpt_description_prompt": "90s Neo-soul, vintage R&B, layback groove, smooth Chinese vocals, Fender Rhodes piano, boom bap drums, heavy bassline, soulful, chill, sensual",
+        "type": "gen",
+        "duration": 218.72,
+        "refund_credits": false,
+        "stream": true,
+        "make_instrumental": false,
+        "can_remix": true,
+        "is_remix": false,
+        "priority": 0,
+        "has_stem": false,
+        "video_is_stale": false,
+        "uses_latest_model": false,
+        "model_badges": {
+          "songrow": {
+            "display_name": "v4.5-all",
+            "light": {
+              "text_color": "7D7C83",
+              "background_color": "00000000",
+              "border_color": "0000001A"
+            },
+            "dark": {
+              "text_color": "A3A3A3",
+              "background_color": "00000000",
+              "border_color": "FFFFFF1A"
+            }
+          }
+        },
+        "is_mumble": false
+      },
+      "is_liked": false,
+      "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7",
+      "display_name": "Chan",
+      "handle": "chanmeng",
+      "is_handle_updated": true,
+      "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp",
+      "is_trashed": false,
+      "is_hidden": false,
+      "created_at": "2026-01-01T05:23:27.325Z",
+      "is_public": true,
+      "is_persona_root": false,
+      "is_following_creator": false,
+      "albums": [],
+      "explicit": false,
+      "comment_count": 0,
+      "flag_count": 0,
+      "is_contest_clip": false,
+      "has_hook": false,
+      "batch_index": 1,
+      "action_config": {
+        "actions": [
+          {
+            "action_type": "add_to_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "like_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "share_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "dislike_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "report_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remove_from_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_extend",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_cover",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_reuse_style",
+            "disabled": false,
+            "visible": true
+          }
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "title": "Electric Nostalgia",
+      "play_count": 93,
+      "upvote_count": 4,
+      "allow_comments": true,
+      "is_verified": false,
+      "id": "606cd57f-35cd-4b99-a62e-76f9d80d9e1b",
+      "entity_type": "song_schema",
+      "video_url": "https://cdn1.suno.ai/606cd57f-35cd-4b99-a62e-76f9d80d9e1b.mp4",
+      "audio_url": "https://cdn1.suno.ai/606cd57f-35cd-4b99-a62e-76f9d80d9e1b.mp3",
+      "image_url": "https://cdn2.suno.ai/image_606cd57f-35cd-4b99-a62e-76f9d80d9e1b.jpeg",
+      "image_large_url": "https://cdn2.suno.ai/image_large_606cd57f-35cd-4b99-a62e-76f9d80d9e1b.jpeg",
+      "major_model_version": "v4.5-all",
+      "model_name": "chirp-auk",
+      "metadata": {
+        "tags": "j-pop, female vocals, synth-pop, dreamy atmosphere, dream pop, sentimental melody, mid-tempo, arpeggiated synths, warm synthesizer pads, soft auto-tuned female vocals, emotional, nostalgic, warm, hopeful and emotional, pop, soft",
+        "prompt": "[Verse]\nFlickering lights in the city haze\nA thousand memories in a neon maze\nYour shadow lingers where the pavement breaks\n\n[Prechorus]\nI keep running\nThrough the static hum\nSearching for the echoes of what we’ve become\n\n[Chorus]\nTake me back to electric nostalgia\nWhere time was soft and love would hold ya\nEvery spark\nEvery glow\nWe were brighter\nDon’t you know\nTake me back to electric nostalgia\n\n[Verse 2]\nRaindrops dance on an empty street\nThe past is a song on repeat\nYour voice a whisper I can’t delete\n\n[Prechorus]\nI keep chasing\nThe colors that fade\nTracing the outline of dreams we made\n\n[Chorus]\nTake me back to electric nostalgia\nWhere time was soft and love would hold ya\nEvery spark\nEvery glow\nWe were brighter\nDon’t you know\nTake me back to electric nostalgia",
+        "gpt_description_prompt": "Synth-pop, J-Pop, Dream Pop, mid-tempo, nostalgic, warm synthesizer pads, sentimental melody, soft auto-tuned female vocals, arpeggiated synths, dreamy atmosphere, hopeful and emotional",
+        "type": "gen",
+        "duration": 165,
+        "refund_credits": false,
+        "stream": true,
+        "make_instrumental": false,
+        "can_remix": true,
+        "is_remix": false,
+        "priority": 0,
+        "has_stem": false,
+        "video_is_stale": false,
+        "uses_latest_model": false,
+        "model_badges": {
+          "songrow": {
+            "display_name": "v4.5-all",
+            "light": {
+              "text_color": "7D7C83",
+              "background_color": "00000000",
+              "border_color": "0000001A"
+            },
+            "dark": {
+              "text_color": "A3A3A3",
+              "background_color": "00000000",
+              "border_color": "FFFFFF1A"
+            }
+          }
+        },
+        "is_mumble": false
+      },
+      "is_liked": false,
+      "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7",
+      "display_name": "Chan",
+      "handle": "chanmeng",
+      "is_handle_updated": true,
+      "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp",
+      "is_trashed": false,
+      "is_hidden": false,
+      "created_at": "2025-12-01T05:46:48.873Z",
+      "is_public": true,
+      "is_persona_root": false,
+      "is_following_creator": false,
+      "albums": [],
+      "explicit": false,
+      "comment_count": 0,
+      "flag_count": 0,
+      "is_contest_clip": false,
+      "has_hook": false,
+      "batch_index": 1,
+      "action_config": {
+        "actions": [
+          {
+            "action_type": "add_to_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "like_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "share_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "dislike_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "report_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remove_from_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_extend",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_cover",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_reuse_style",
+            "disabled": false,
+            "visible": true
+          }
+        ]
+      }
+    },
+    {
+      "status": "complete",
+      "title": "流水梦 - Dream of Flowing Waters",
+      "play_count": 23,
+      "upvote_count": 3,
+      "allow_comments": true,
+      "is_verified": false,
+      "id": "ce04f151-f558-45ef-920e-56ab7aff9164",
+      "entity_type": "song_schema",
+      "video_url": "https://cdn1.suno.ai/ce04f151-f558-45ef-920e-56ab7aff9164.mp4",
+      "audio_url": "https://cdn1.suno.ai/ce04f151-f558-45ef-920e-56ab7aff9164.mp3",
+      "image_url": "https://cdn2.suno.ai/image_ce04f151-f558-45ef-920e-56ab7aff9164.jpeg",
+      "image_large_url": "https://cdn2.suno.ai/image_large_ce04f151-f558-45ef-920e-56ab7aff9164.jpeg",
+      "major_model_version": "v3.5",
+      "model_name": "chirp-v3",
+      "metadata": {
+        "tags": "meditative instrumental traditional chinese",
+        "prompt": "[Instrumental]",
+        "gpt_description_prompt": "Create a purely instrumental Chinese traditional piece: no vocals, no singing. Slow tempo (60 BPM) with guqin, xiao, and guzheng only. Gentle flowing melodies like flowing water, meditative mood.",
+        "type": "gen",
+        "duration": 105.08,
+        "refund_credits": false,
+        "stream": true,
+        "make_instrumental": true,
+        "can_remix": true,
+        "is_remix": false,
+        "priority": 0,
+        "has_stem": false,
+        "uses_latest_model": false,
+        "model_badges": {
+          "songrow": {
+            "display_name": "v3.5",
+            "light": {
+              "text_color": "7D7C83",
+              "background_color": "00000000",
+              "border_color": "0000001A"
+            },
+            "dark": {
+              "text_color": "A3A3A3",
+              "background_color": "00000000",
+              "border_color": "FFFFFF1A"
+            }
+          }
+        }
+      },
+      "is_liked": false,
+      "user_id": "43e4d44d-6b8a-4886-82e7-dd47701711f7",
+      "display_name": "Chan",
+      "handle": "chanmeng",
+      "is_handle_updated": true,
+      "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp",
+      "is_trashed": false,
+      "is_hidden": false,
+      "created_at": "2024-10-28T00:40:31.573Z",
+      "is_public": true,
+      "is_persona_root": false,
+      "is_following_creator": false,
+      "albums": [],
+      "explicit": false,
+      "comment_count": 0,
+      "flag_count": 0,
+      "is_contest_clip": false,
+      "has_hook": false,
+      "batch_index": 0,
+      "action_config": {
+        "actions": [
+          {
+            "action_type": "add_to_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "like_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "share_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "dislike_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "report_song",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remove_from_playlist",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_extend",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_cover",
+            "disabled": false,
+            "visible": true
+          },
+          {
+            "action_type": "remix_reuse_style",
+            "disabled": false,
+            "visible": true
+          }
+        ]
+      }
+    }
+  ],
+  "stats": {},
+  "is_flagged": false,
+  "is_following": false,
+  "is_following_viewer": false,
+  "viewer_is_blocking_profile": false,
+  "viewer_is_blocked_by_profile": false,
+  "num_total_clips": 28,
+  "current_page": 2,
+  "playlists": [
+    {
+      "id": "0e89c244-c1fe-4c92-bd57-d14633a96b60",
+      "entity_type": "playlist_schema",
+      "image_url": "https://cdn2.suno.ai/image_ce04f151-f558-45ef-920e-56ab7aff9164.jpeg",
+      "playlist_clips": [],
+      "current_page": 0,
+      "num_total_results": 61,
+      "is_owned": false,
+      "is_trashed": false,
+      "is_public": true,
+      "user_display_name": "Chan",
+      "is_hidden": false,
+      "user_handle": "chanmeng",
+      "user_avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp",
+      "user_is_verified": false,
+      "name": "Chan's Creation",
+      "description": "",
+      "cover_is_user_set": false,
+      "upvote_count": 0,
+      "dislike_count": 0,
+      "flag_count": 0,
+      "skip_count": 0,
+      "play_count": 102,
+      "song_count": 61,
+      "total_duration": 15506.92,
+      "is_discover_playlist": false
+    }
+  ],
+  "avatar_image_url": "https://cdn1.suno.ai/7de14b2c.webp",
+  "favorite_songs": [],
+  "personas": [],
+  "user_comments_blocked": false,
+  "artist_profiles_enabled": true,
+  "viewer_is_hiding_creator_hook": false,
+  "viewer_is_hiding_creator_clip": false,
+  "is_verified": false,
+  "is_contact": false
+}

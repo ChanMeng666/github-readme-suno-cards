@@ -22,9 +22,15 @@ const ModelBadgesSchema = v.object({
 });
 
 /**
- * A "secondary badge" — parallel structure to `model_badges.songrow`, ships
- * with each clip when fetched standalone. Observed values for `icon_key`
- * include `"full_song"`.
+ * A "secondary badge" — parallel structure to `model_badges.songrow`.
+ *
+ * NOT full-shape-only (corrected 2026-08-16 against a live measurement): these
+ * ship on Suno's editorial-shelf playlist shape too — 12 of 22 clips on Staff
+ * Picks, 11 of 23 on "Best of v5.5". Vocabulary observed to date:
+ *   - `{display_name: "Upload", icon_key: "uploaded"}` — human-uploaded audio
+ *   - `{display_name: "Cover"}` with **no `icon_key`** (hence the field is optional)
+ *   - `"full_song"` — historical
+ * Parsed for completeness; nothing in this project renders them yet.
  */
 const SecondaryBadgeSchema = v.object({
   display_name: v.optional(v.string()),
@@ -69,7 +75,7 @@ const ClipMetadataSchema = v.object({
   /**
    * Full lyrics with `[Verse]`/`[Chorus]` structure markers, but ONLY on the
    * "full" /api/clip/{uuid} shape. Playlist-wrapped clips have this field
-   * dropped on playlist/trending endpoints.
+   * dropped on the playlist endpoint.
    */
   prompt: v.optional(v.nullable(v.string())),
   /**
@@ -81,8 +87,6 @@ const ClipMetadataSchema = v.object({
    * Suno workflow that preserves the source prompt.
    */
   gpt_description_prompt: v.optional(v.nullable(v.string())),
-  /** Comma-separated short-form tag list (sometimes present alongside `tags`). */
-  display_tags: v.optional(v.nullable(v.string())),
   /** Generation-time "avoid these traits" tag list. Example: `"Breathing, whispering, middle east, turkish"`. */
   negative_tags: v.optional(v.nullable(v.string())),
   duration: v.optional(v.nullable(v.number())),
@@ -152,8 +156,9 @@ const ClipMetadataSchema = v.object({
   type: v.optional(v.string()),
   concat_history: v.optional(v.array(ConcatHistoryEntrySchema)),
   /**
-   * A less-documented sibling to `concat_history` — appeared on 2 of 49
-   * trending clips. Shape includes an `id` field pointing at another clip.
+   * A less-documented sibling to `concat_history` — appeared on 2 of the 49
+   * clips in the archived Explore capture. Shape includes an `id` field
+   * pointing at another clip.
    * Structure is similar to concat_history but the semantics are unknown.
    */
   history: v.optional(
@@ -171,9 +176,24 @@ const ClipMetadataSchema = v.object({
   continue_at: v.optional(v.number()),
   infill: v.optional(v.boolean()),
 
-  // Model badge theming (full shape only)
+  /**
+   * Model badge theming. **NOT full-shape-only** — corrected 2026-08-16.
+   * `model_badges` is on the medium profile shape (20 of 20 clips) and on the
+   * editorial-shelf shape (18 of 22 Staff Picks, 23 of 23 "Best of v5.5"). The
+   * four Staff Picks clips without it are human uploads (`metadata.type:
+   * "upload"`, `model_name: "chirp-chirp"`, empty `major_model_version`) —
+   * there is no model to badge. Read absence as "not a Suno generation", not
+   * as "wrong serializer shape".
+   */
   model_badges: v.optional(v.nullable(ModelBadgesSchema)),
+  /** See {@link SecondaryBadgeSchema} — also present on the shelf shape. */
   secondary_badges: v.optional(v.array(SecondaryBadgeSchema)),
+
+  /**
+   * Points at a Persona entity. A different namespace from the clip-parent
+   * lineage pointers above, and not subject to their zero-UUID treatment.
+   */
+  persona_id: v.optional(v.nullable(v.string())),
 });
 
 /**
@@ -204,8 +224,10 @@ const ActionConfigSchema = v.object({
  *   1. `GET /api/clip/{uuid}`                              → "full" shape
  *   2. `GET /api/profiles/{handle}.clips[]`                → "medium" (adds `is_pinned`, lacks full-only fields)
  *   3. `GET /api/playlist/{uuid}.playlist_clips[].clip`    → "slim" shape
- *   4. `GET /api/trending.playlist_clips[].clip`           → slim variant
- *   5. `GET /api/profiles/{handle}.personas[].clip`        → medium variant
+ *      (this covers Suno's curated editorial shelves, which are ordinary playlists;
+ *      the former `/api/trending` route, removed by Suno on 2026-07-24, served
+ *      the same shape over one specific playlist object)
+ *   4. `GET /api/profiles/{handle}.personas[].clip`        → medium variant
  *
  * The "full" shape additionally carries: `ownership`, `comment_count`,
  * `explicit`, `action_config`, plus these metadata fields:
@@ -229,8 +251,21 @@ export const ClipSchema = v.object({
   allow_comments: v.optional(v.boolean()),
   /** Whether the clip is flagged as a contest submission. */
   is_contest_clip: v.optional(v.boolean()),
+  /**
+   * Companion to `is_contest_clip`, first seen 2026-08-02. Sparse — present on
+   * 1 of 22 Staff Picks clips and 0 of 20 medium profile clips (measured
+   * 2026-08-16), so it travels with a particular clip rather than a shape.
+   * Semantics inferred, not confirmed: the *base* clip a contest entry was
+   * built from.
+   */
+  is_contest_base_clip: v.optional(v.boolean()),
   /** Whether the clip has a dedicated "hook" segment. */
   has_hook: v.optional(v.boolean()),
+  /**
+   * Whether this clip is the canonical "root" a Suno Persona was seeded from.
+   * Observed `false` on non-persona clips.
+   */
+  is_persona_root: v.optional(v.boolean()),
 
   // Viewer-relative flags (always false for anonymous requests)
   is_liked: v.optional(v.boolean()),
@@ -238,11 +273,17 @@ export const ClipSchema = v.object({
   // Asymmetric-by-shape
   /** Appears only on `/api/profiles/{handle}.clips[]` (the medium shape). */
   is_pinned: v.optional(v.boolean()),
-  /** Appears only on the full shape. */
+  /**
+   * The next three were documented as "full shape only". **That is false** —
+   * corrected 2026-08-16 against a live measurement: each is present on the
+   * full clip shape, on 20 of 20 medium profile clips, and on 22 of 22
+   * editorial-shelf clips. They are absent only from the slim/oEmbed shape.
+   * Do not gate product code on "full shape" for these.
+   */
   is_following_creator: v.optional(v.boolean()),
-  /** Appears only on the full shape. */
+  /** See the shape note on `is_following_creator` — full + medium + shelf. */
   explicit: v.optional(v.boolean()),
-  /** Appears only on the full shape. */
+  /** See the shape note on `is_following_creator` — full + medium + shelf. */
   comment_count: v.optional(v.number()),
   /** Flag count exposed on every shape. */
   flag_count: v.optional(v.number()),
@@ -264,6 +305,11 @@ export const ClipSchema = v.object({
   image_large_url: v.string(),
   audio_url: v.string(),
   video_url: v.optional(v.string()),
+  // Short-form / hook media variants. Sparse: `hook_preview_thumbnail_url`
+  // travels with `has_hook` (8 of 22 Staff Picks clips, measured 2026-08-16).
+  preview_url: v.optional(v.nullable(v.string())),
+  video_cover_url: v.optional(v.nullable(v.string())),
+  hook_preview_thumbnail_url: v.optional(v.nullable(v.string())),
 
   // Model
   /** Short form: `"v3"`, `"v3.5"`, `"v4.5-all"`, `"v5"` etc. */
@@ -273,6 +319,35 @@ export const ClipSchema = v.object({
 
   created_at: v.string(),
   metadata: ClipMetadataSchema,
+
+  /**
+   * `caption` and `display_tags` are **top-level** fields. `display_tags` used
+   * to be declared on `ClipMetadataSchema` in this parser, which meant Valibot
+   * silently dropped it: Suno has never been observed sending either key inside
+   * `metadata`. Corrected 2026-08-16.
+   */
+  caption: v.optional(v.nullable(v.string())),
+  /** Comma-separated short-form tag list, alongside `metadata.tags`. */
+  display_tags: v.optional(v.nullable(v.string())),
+  /** Why Suno disables the download action for this clip, when it does. */
+  download_disabled_reason: v.optional(v.nullable(v.string())),
+
+  /**
+   * SHADOW FIELD — the schema shipped ahead of the product.
+   *
+   * `albums` appeared on 2026-08-09 simultaneously on `/api/clip/{uuid}`,
+   * `/api/profiles/{handle}.clips[]` and `/api/playlist/{uuid}`, i.e. it was
+   * added to Suno's shared clip serializer rather than to one endpoint. Present
+   * on 101 of 101 clips across this package's fixtures and **0 of 101
+   * non-empty** (measured 2026-08-16); a wider live sample the same day found no
+   * non-empty value either, and Suno's public release notes through 2026-08-13
+   * never mention albums.
+   *
+   * The element shape is therefore UNOBSERVED and `v.unknown()` is deliberate —
+   * do not invent one. Nothing in this project reads the field; it is modelled
+   * so the first non-empty value is captured rather than discovered late.
+   */
+  albums: v.optional(v.array(v.unknown())),
 
   /**
    * `ownership` — present only on the "full" /api/clip/{uuid} shape. Tells
@@ -453,8 +528,8 @@ export type OEmbedResponse = v.InferOutput<typeof OEmbedResponseSchema>;
 
 /**
  * Wrapper Suno uses around each clip inside a playlist's `playlist_clips`
- * array. `relative_index` is 1-based within the playlist (0-based for the
- * Explore/trending playlist — see schema test).
+ * array. `relative_index` is 1-based within user-owned playlists (the archived
+ * Explore capture is 0-based — see schema test).
  */
 export const PlaylistClipWrapperSchema = v.object({
   clip: ClipSchema,
@@ -462,14 +537,14 @@ export const PlaylistClipWrapperSchema = v.object({
 });
 
 /**
- * Full playlist detail as returned by both:
- *   - /api/playlist/{uuid}           → user-owned playlist ("Chan's Creation")
- *   - /api/trending                  → curated editorial playlist ("Explore")
+ * Full playlist detail as returned by `/api/playlist/{uuid}` — user-owned
+ * playlists ("Chan's Creation") and Suno's curated editorial shelves alike.
  *
- * The two share this shape exactly; the user-playlist variant additionally
- * carries `user_display_name`/`user_handle`/`user_avatar_image_url`/
- * `user_is_verified` + an opaque `next_cursor` when more pages exist. All
- * user-* fields are optional because the trending variant lacks them.
+ * The user-playlist variant additionally carries `user_display_name`/
+ * `user_handle`/`user_avatar_image_url`/`user_is_verified` + an opaque
+ * `next_cursor` when more pages exist. Those keys stay optional because the
+ * `/api/trending` route (removed by Suno on 2026-07-24) never carried them, and
+ * because curated shelves may not either.
  *
  * Pagination: `?page=N` (1-indexed). **Page size is 50** here — different
  * from /api/profiles/ which returns 20 per page.
@@ -583,6 +658,15 @@ export type SunoSong = {
   } | null;
   shareUrl: string;
   embedUrl: string;
+  /**
+   * Which fetcher produced this song.
+   *
+   * `'trending'` is **deprecated**: no fetcher emits it any more (the
+   * `/api/trending` route was removed by Suno on 2026-07-24). It is kept in the
+   * union so existing consumers still narrow, and because `fetchPlaylist` will
+   * still stamp it if a caller passes `source: 'trending'` explicitly. It will
+   * be dropped in the next major.
+   */
   source: 'clip' | 'profile' | 'oembed' | 'playlist' | 'trending';
 };
 
@@ -595,9 +679,9 @@ export type SunoPlaylist = {
 };
 
 /**
- * Normalized playlist-with-tracks result, used by both `fetchPlaylist(uuid)`
- * and `fetchTrending()`. `clips` is ordered by Suno's own `relative_index`
- * (ascending) so the first element is position 1 in the playlist.
+ * Normalized playlist-with-tracks result, returned by `fetchPlaylist(uuid)`.
+ * `clips` is ordered by Suno's own `relative_index` (ascending) so the first
+ * element is position 1 in the playlist.
  */
 export type SunoPlaylistDetail = {
   id: string;
@@ -614,6 +698,7 @@ export type SunoPlaylistDetail = {
     avatarUrl: string | null;
   } | null;
   shareUrl: string | null;
+  /** `'trending'` is deprecated — see the note on {@link SunoSong.source}. */
   source: 'playlist' | 'trending';
 };
 
