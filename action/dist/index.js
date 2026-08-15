@@ -20949,7 +20949,7 @@ var init_schema = __esm({
       /**
        * Full lyrics with `[Verse]`/`[Chorus]` structure markers, but ONLY on the
        * "full" /api/clip/{uuid} shape. Playlist-wrapped clips have this field
-       * dropped on playlist/trending endpoints.
+       * dropped on the playlist endpoint.
        */
       prompt: optional(nullable(string())),
       /**
@@ -20961,8 +20961,6 @@ var init_schema = __esm({
        * Suno workflow that preserves the source prompt.
        */
       gpt_description_prompt: optional(nullable(string())),
-      /** Comma-separated short-form tag list (sometimes present alongside `tags`). */
-      display_tags: optional(nullable(string())),
       /** Generation-time "avoid these traits" tag list. Example: `"Breathing, whispering, middle east, turkish"`. */
       negative_tags: optional(nullable(string())),
       duration: optional(nullable(number())),
@@ -21026,8 +21024,9 @@ var init_schema = __esm({
       type: optional(string()),
       concat_history: optional(array(ConcatHistoryEntrySchema)),
       /**
-       * A less-documented sibling to `concat_history` — appeared on 2 of 49
-       * trending clips. Shape includes an `id` field pointing at another clip.
+       * A less-documented sibling to `concat_history` — appeared on 2 of the 49
+       * clips in the archived Explore capture. Shape includes an `id` field
+       * pointing at another clip.
        * Structure is similar to concat_history but the semantics are unknown.
        */
       history: optional(
@@ -21044,9 +21043,23 @@ var init_schema = __esm({
        */
       continue_at: optional(number()),
       infill: optional(boolean()),
-      // Model badge theming (full shape only)
+      /**
+       * Model badge theming. **NOT full-shape-only** — corrected 2026-08-16.
+       * `model_badges` is on the medium profile shape (20 of 20 clips) and on the
+       * editorial-shelf shape (18 of 22 Staff Picks, 23 of 23 "Best of v5.5"). The
+       * four Staff Picks clips without it are human uploads (`metadata.type:
+       * "upload"`, `model_name: "chirp-chirp"`, empty `major_model_version`) —
+       * there is no model to badge. Read absence as "not a Suno generation", not
+       * as "wrong serializer shape".
+       */
       model_badges: optional(nullable(ModelBadgesSchema)),
-      secondary_badges: optional(array(SecondaryBadgeSchema))
+      /** See {@link SecondaryBadgeSchema} — also present on the shelf shape. */
+      secondary_badges: optional(array(SecondaryBadgeSchema)),
+      /**
+       * Points at a Persona entity. A different namespace from the clip-parent
+       * lineage pointers above, and not subject to their zero-UUID treatment.
+       */
+      persona_id: optional(nullable(string()))
     });
     ActionConfigEntrySchema = object({
       /**
@@ -21080,18 +21093,37 @@ var init_schema = __esm({
       allow_comments: optional(boolean()),
       /** Whether the clip is flagged as a contest submission. */
       is_contest_clip: optional(boolean()),
+      /**
+       * Companion to `is_contest_clip`, first seen 2026-08-02. Sparse — present on
+       * 1 of 22 Staff Picks clips and 0 of 20 medium profile clips (measured
+       * 2026-08-16), so it travels with a particular clip rather than a shape.
+       * Semantics inferred, not confirmed: the *base* clip a contest entry was
+       * built from.
+       */
+      is_contest_base_clip: optional(boolean()),
       /** Whether the clip has a dedicated "hook" segment. */
       has_hook: optional(boolean()),
+      /**
+       * Whether this clip is the canonical "root" a Suno Persona was seeded from.
+       * Observed `false` on non-persona clips.
+       */
+      is_persona_root: optional(boolean()),
       // Viewer-relative flags (always false for anonymous requests)
       is_liked: optional(boolean()),
       // Asymmetric-by-shape
       /** Appears only on `/api/profiles/{handle}.clips[]` (the medium shape). */
       is_pinned: optional(boolean()),
-      /** Appears only on the full shape. */
+      /**
+       * The next three were documented as "full shape only". **That is false** —
+       * corrected 2026-08-16 against a live measurement: each is present on the
+       * full clip shape, on 20 of 20 medium profile clips, and on 22 of 22
+       * editorial-shelf clips. They are absent only from the slim/oEmbed shape.
+       * Do not gate product code on "full shape" for these.
+       */
       is_following_creator: optional(boolean()),
-      /** Appears only on the full shape. */
+      /** See the shape note on `is_following_creator` — full + medium + shelf. */
       explicit: optional(boolean()),
-      /** Appears only on the full shape. */
+      /** See the shape note on `is_following_creator` — full + medium + shelf. */
       comment_count: optional(number()),
       /** Flag count exposed on every shape. */
       flag_count: optional(number()),
@@ -21110,6 +21142,11 @@ var init_schema = __esm({
       image_large_url: string(),
       audio_url: string(),
       video_url: optional(string()),
+      // Short-form / hook media variants. Sparse: `hook_preview_thumbnail_url`
+      // travels with `has_hook` (8 of 22 Staff Picks clips, measured 2026-08-16).
+      preview_url: optional(nullable(string())),
+      video_cover_url: optional(nullable(string())),
+      hook_preview_thumbnail_url: optional(nullable(string())),
       // Model
       /** Short form: `"v3"`, `"v3.5"`, `"v4.5-all"`, `"v5"` etc. */
       major_model_version: string(),
@@ -21117,6 +21154,33 @@ var init_schema = __esm({
       model_name: string(),
       created_at: string(),
       metadata: ClipMetadataSchema,
+      /**
+       * `caption` and `display_tags` are **top-level** fields. `display_tags` used
+       * to be declared on `ClipMetadataSchema` in this parser, which meant Valibot
+       * silently dropped it: Suno has never been observed sending either key inside
+       * `metadata`. Corrected 2026-08-16.
+       */
+      caption: optional(nullable(string())),
+      /** Comma-separated short-form tag list, alongside `metadata.tags`. */
+      display_tags: optional(nullable(string())),
+      /** Why Suno disables the download action for this clip, when it does. */
+      download_disabled_reason: optional(nullable(string())),
+      /**
+       * SHADOW FIELD — the schema shipped ahead of the product.
+       *
+       * `albums` appeared on 2026-08-09 simultaneously on `/api/clip/{uuid}`,
+       * `/api/profiles/{handle}.clips[]` and `/api/playlist/{uuid}`, i.e. it was
+       * added to Suno's shared clip serializer rather than to one endpoint. Present
+       * on 101 of 101 clips across this package's fixtures and **0 of 101
+       * non-empty** (measured 2026-08-16); a wider live sample the same day found no
+       * non-empty value either, and Suno's public release notes through 2026-08-13
+       * never mention albums.
+       *
+       * The element shape is therefore UNOBSERVED and `v.unknown()` is deliberate —
+       * do not invent one. Nothing in this project reads the field; it is modelled
+       * so the first non-empty value is captured rather than discovered late.
+       */
+      albums: optional(array(unknown())),
       /**
        * `ownership` — present only on the "full" /api/clip/{uuid} shape. Tells
        * the anonymous consumer whether the clip's creator is on a paying plan.

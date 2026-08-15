@@ -47,8 +47,12 @@ describe('fetchSong (integration)', () => {
 
 describe('fetchAllClips (integration)', () => {
   it('paginates, filters, and ranks real fixtures', async () => {
-    const page1 = loadFixture('profile-page1.json');
-    const page2 = loadFixture('profile-page2.json');
+    const page1 = loadFixture<{ clips: { play_count: number; is_public?: boolean }[] }>(
+      'profile-page1.json',
+    );
+    const page2 = loadFixture<{ clips: { play_count: number; is_public?: boolean }[] }>(
+      'profile-page2.json',
+    );
     const fetchImpl = async (url: string | URL | Request) => {
       const s = typeof url === 'string' ? url : url.toString();
       if (s.includes('page=1')) return new Response(JSON.stringify(page1), { status: 200 });
@@ -68,8 +72,16 @@ describe('fetchAllClips (integration)', () => {
     for (let i = 1; i < result.clips.length; i++) {
       expect(result.clips[i]!.playCount).toBeLessThanOrEqual(result.clips[i - 1]!.playCount);
     }
-    // The top song in chanmeng's library by play count is "无字书" with 71 plays
-    expect(result.clips[0]?.title).toBe('无字书');
-    expect(result.clips[0]?.playCount).toBe(71);
+    // The ranking is the assertion; the winning play count is live data and is
+    // derived from the fixture rather than pinned (it moved 71 → 80 on one
+    // fixture refresh and failed this file for no schema reason).
+    // Only page 1 participates: `max: 5` makes fetchAllClips request
+    // `max(5 * 2, 20) = 20` clips, which page 1 alone satisfies, so pagination
+    // stops before page 2. That is the behaviour under test, not an oversight.
+    const topPlays = Math.max(
+      ...page1.clips.filter((c) => c.is_public !== false).map((c) => c.play_count),
+    );
+    expect(result.clips[0]?.playCount).toBe(topPlays);
+    expect(result.clips[0]?.playCount).toBeGreaterThan(0);
   });
 });

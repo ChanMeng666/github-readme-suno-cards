@@ -5,16 +5,21 @@ import { loadFixture, mockFetchJson } from './_helpers.js';
 
 describe('fetchProfilePage', () => {
   it('returns normalized profile + clips from real page 1', async () => {
-    const body = loadFixture('profile-page1.json');
+    const body = loadFixture<{
+      num_total_clips: number;
+      stats: { play_count__sum: number; upvote_count__sum: number };
+    }>('profile-page1.json');
     const result = await fetchProfilePage('chanmeng', {
       fetchImpl: mockFetchJson(/api\/profiles\/chanmeng/, 200, body),
     });
 
     expect(result.profile.handle).toBe('chanmeng');
     expect(result.profile.displayName).toBe('Chan');
-    expect(result.profile.totalClips).toBe(26);
-    expect(result.profile.stats.totalPlays).toBe(736);
-    expect(result.profile.stats.totalLikes).toBe(55);
+    // Live counters — assert the mapping against the fixture, not a pinned
+    // number (they tick between fixture refreshes).
+    expect(result.profile.totalClips).toBe(body.num_total_clips);
+    expect(result.profile.stats.totalPlays).toBe(body.stats.play_count__sum);
+    expect(result.profile.stats.totalLikes).toBe(body.stats.upvote_count__sum);
     expect(result.profile.shareUrl).toBe('https://suno.com/@chanmeng');
     expect(result.clips).toHaveLength(20);
     expect(result.clips[0]?.source).toBe('profile');
@@ -46,11 +51,14 @@ describe('fetchProfilePage', () => {
 
 describe('fetchProfile', () => {
   it('returns summary only, ignoring clips', async () => {
-    const body = loadFixture('profile-page1.json');
+    const body = loadFixture<{
+      num_total_clips: number;
+      stats: { play_count__sum: number };
+    }>('profile-page1.json');
     const profile = await fetchProfile('chanmeng', {
       fetchImpl: mockFetchJson(/api\/profiles\/chanmeng/, 200, body),
     });
-    expect(profile.totalClips).toBe(26);
-    expect(profile.stats.totalPlays).toBe(736);
+    expect(profile.totalClips).toBe(body.num_total_clips);
+    expect(profile.stats.totalPlays).toBe(body.stats.play_count__sum);
   });
 });

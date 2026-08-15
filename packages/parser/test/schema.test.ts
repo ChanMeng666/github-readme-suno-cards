@@ -38,10 +38,16 @@ describe('ProfileResponseSchema', () => {
     if (!result.success) return;
 
     expect(result.output.handle).toBe('chanmeng');
-    expect(result.output.num_total_clips).toBe(26);
     expect(result.output.clips).toHaveLength(20);
-    expect(result.output.stats.play_count__sum).toBe(736);
-    expect(result.output.stats.upvote_count__sum).toBe(55);
+    // Counters are read live from Suno when the fixture is refreshed — assert
+    // the parse and the shape, never a pinned number (2026-08-16: 736 → 768
+    // plays and 26 → 28 clips in one refresh, which failed four test files for
+    // no schema reason).
+    expect(typeof result.output.num_total_clips).toBe('number');
+    expect(result.output.num_total_clips).toBeGreaterThanOrEqual(result.output.clips.length);
+    expect(typeof result.output.stats.play_count__sum).toBe('number');
+    expect(result.output.stats.play_count__sum).toBeGreaterThan(0);
+    expect(typeof result.output.stats.upvote_count__sum).toBe('number');
     expect(result.output.playlists).toHaveLength(1);
   });
 
