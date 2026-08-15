@@ -73,8 +73,10 @@ describe('normalizeInput', () => {
     });
   });
 
-  it('recognizes the stable trending playlist UUID via /playlist/ URL', () => {
-    // The stable UUID for /api/trending.
+  it('recognizes the retired Explore playlist UUID via /playlist/ URL', () => {
+    // The playlist object the removed `/api/trending` route used to alias. The
+    // route went away on 2026-07-24; the object is still public, so this UUID
+    // must keep normalizing as an ordinary playlist.
     const TRENDING_ID = '1190bf92-10dc-4ce5-968a-7a377f37f984';
     expect(normalizeInput(`https://suno.com/playlist/${TRENDING_ID}`)).toEqual({
       kind: 'playlistUuid',

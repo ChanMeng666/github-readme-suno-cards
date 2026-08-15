@@ -20189,7 +20189,7 @@ var init_dist = __esm({
 });
 
 // ../packages/parser/src/errors.ts
-var SunoError, SunoInvalidInputError, SunoNotFoundError, SunoHandleNotFoundError, SunoPrivateError, SunoNotReadyError, SunoSchemaError, SunoNetworkError;
+var SunoError, SunoInvalidInputError, SunoNotFoundError, SunoHandleNotFoundError, SunoInvalidRequestError, SunoPrivateError, SunoNotReadyError, SunoSchemaError, SunoNetworkError;
 var init_errors = __esm({
   "../packages/parser/src/errors.ts"() {
     "use strict";
@@ -20215,6 +20215,13 @@ var init_errors = __esm({
       constructor(handle) {
         super(`Handle not found: @${handle}`);
         this.handle = handle;
+      }
+    };
+    SunoInvalidRequestError = class extends SunoError {
+      constructor(endpoint, status) {
+        super(`Suno rejected the request as malformed (HTTP ${status}): ${endpoint}`);
+        this.endpoint = endpoint;
+        this.status = status;
       }
     };
     SunoPrivateError = class extends SunoError {
@@ -20251,9 +20258,6 @@ var init_errors = __esm({
 });
 
 // ../packages/parser/src/fetcher.ts
-function pickUserAgent() {
-  return USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)] ?? USER_AGENTS[0];
-}
 async function fetchJson(url, opts = {}) {
   const fetchImpl = opts.fetchImpl ?? fetch;
   const timeoutMs = opts.timeoutMs ?? 1e4;
@@ -20271,7 +20275,7 @@ async function fetchJson(url, opts = {}) {
         method: "GET",
         signal: controller.signal,
         headers: {
-          "User-Agent": pickUserAgent(),
+          "User-Agent": USER_AGENT,
           Accept: "application/json"
         }
       };
@@ -20300,18 +20304,12 @@ async function fetchJson(url, opts = {}) {
   }
   throw new SunoNetworkError(url, lastError);
 }
-var USER_AGENTS;
+var USER_AGENT;
 var init_fetcher = __esm({
   "../packages/parser/src/fetcher.ts"() {
     "use strict";
     init_errors();
-    USER_AGENTS = [
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15",
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0",
-      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
-    ];
+    USER_AGENT = "github-readme-suno-cards/0.2.0 (+https://github.com/ChanMeng666/github-readme-suno-cards)";
   }
 });
 
@@ -28826,7 +28824,8 @@ async function fetchProfilePage(handle, opts = {}) {
     cacheTags: opts.cacheTags ?? [`suno-profile-${handle}-${clipsSortBy}-${page}`],
     revalidateSeconds: opts.revalidateSeconds ?? 600
   });
-  if (status === 404 || status === 422) throw new SunoHandleNotFoundError(handle);
+  if (status === 404) throw new SunoHandleNotFoundError(handle);
+  if (status === 422) throw new SunoInvalidRequestError(url, status);
   if (status < 200 || status >= 300) {
     throw new SunoSchemaError(url, { status }, body);
   }
@@ -28938,12 +28937,6 @@ init_schema();
 init_tags();
 init_mapping();
 init_playlist();
-
-// ../packages/parser/src/trending.ts
-init_clip();
-init_playlist();
-
-// ../packages/parser/src/index.ts
 async function fetchSong(input, opts = {}) {
   const normalized = normalizeInput(input);
   let uuid2;

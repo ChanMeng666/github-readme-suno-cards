@@ -21,9 +21,12 @@ export { resolveShortCode } from './resolver.js';
 export { fetchProfilePage } from './profile.js';
 export { mapClipToSong } from './mapping.js';
 export { fetchPlaylist, fetchPlaylistDetailUrl, type FetchPlaylistOptions } from './playlist.js';
-// NOTE: fetchTrending is intentionally NOT re-exported. `/api/trending` is an
-// abandoned Sept-2024 snapshot (see trending.ts + the orphaned-endpoint probe);
-// hiding it from the public surface keeps contributors from building on stale data.
+// NOTE: there is no trending fetcher. Suno removed the `/api/trending` route on
+// 2026-07-24. The playlist object it aliased is still public and still returns
+// 200, so it stays reachable the ordinary way —
+// `fetchPlaylist('1190bf92-10dc-4ce5-968a-7a377f37f984')`. Its membership has
+// been frozen since September 2024 (the per-clip statistics still move), so
+// treat it as a historical exhibit, never as a live feed.
 
 /**
  * Convenience wrapper: accept any normalized input form that resolves to a

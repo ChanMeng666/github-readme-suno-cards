@@ -1,6 +1,6 @@
 import * as v from 'valibot';
 import { STUDIO_API_BASE } from './clip.js';
-import { SunoHandleNotFoundError, SunoNotFoundError, SunoSchemaError } from './errors.js';
+import { SunoInvalidRequestError, SunoNotFoundError, SunoSchemaError } from './errors.js';
 import { type FetchJsonOptions, fetchJson } from './fetcher.js';
 import { mapClipToSong } from './mapping.js';
 import {
@@ -18,14 +18,15 @@ export type FetchPlaylistOptions = FetchJsonOptions & {
 };
 
 /**
- * Fetch a playlist's detail page from `/api/playlist/{uuid}` or `/api/trending`.
+ * Fetch a playlist's detail page from a full `/api/playlist/{uuid}` URL.
  *
- * Fetch a playlist from Suno's public API.
  * Pagination is `?page=N` with **50 clips per page** (contrast with
  * /api/profiles/ which returns 20 per page).
  *
- * Both endpoints share the same response shape, so this function is reused by
- * `fetchTrending()` in trending.ts.
+ * This is the only playlist path the parser speaks. The `/api/trending` route
+ * that used to share this shape was removed by Suno on 2026-07-24; the playlist
+ * object it aliased is still public and still answers 200, so reach it the
+ * normal way — `fetchPlaylist('1190bf92-10dc-4ce5-968a-7a377f37f984')`.
  */
 export async function fetchPlaylistDetailUrl(
   url: string,
@@ -41,7 +42,10 @@ export async function fetchPlaylistDetailUrl(
   });
 
   if (status === 404) throw new SunoNotFoundError(fullUrl);
-  if (status === 422) throw new SunoHandleNotFoundError(fullUrl);
+  // 422 means Suno rejected the request itself (bad/missing query params), not
+  // "no such playlist" — mapping it to a not-found error was a lie to callers.
+  // Mirrors `profile.ts`.
+  if (status === 422) throw new SunoInvalidRequestError(fullUrl, status);
   if (status < 200 || status >= 300) {
     throw new SunoSchemaError(fullUrl, { status }, body);
   }

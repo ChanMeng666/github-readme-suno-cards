@@ -32,7 +32,7 @@ export type NormalizedInput =
  *   - Bare handle            "chanmeng" or "@chanmeng"
  *
  * Each endpoint only accepts its own ID namespace: /api/clip only clip UUIDs,
- * /api/playlist only playlist UUIDs (plus the stable trending UUID),
+ * /api/playlist only playlist UUIDs,
  * /api/profiles handles only.
  * That means a **bare UUID string** is genuinely ambiguous (could be a clip or
  * playlist) — we resolve that ambiguity by defaulting to clip, because clip is
