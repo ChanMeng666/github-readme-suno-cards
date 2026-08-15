@@ -1,6 +1,11 @@
 import * as v from 'valibot';
 import { describe, expect, it } from 'vitest';
-import { ClipSchema, OEmbedResponseSchema, ProfileResponseSchema } from '../src/schema.js';
+import {
+  ClipSchema,
+  OEmbedResponseSchema,
+  PlaylistDetailSchema,
+  ProfileResponseSchema,
+} from '../src/schema.js';
 import { loadFixture } from './_helpers.js';
 
 describe('ClipSchema', () => {
@@ -58,5 +63,28 @@ describe('OEmbedResponseSchema', () => {
     if (!result.success) return;
     expect(result.output.title).toBeTruthy();
     expect(result.output.iframe_url).toContain('/embed/');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// `fixtures/trending.json` is an ARCHIVE. It was captured from the `/api/trending`
+// route, which Suno removed on 2026-07-24. The playlist object behind that route
+// is still public and still returns 200 at
+// `/api/playlist/1190bf92-10dc-4ce5-968a-7a377f37f984`, and its membership has
+// been frozen since September 2024 — so this capture stays useful as a shape
+// sample. There is no fetcher for it; the only claim under test is that the
+// schema still accepts the shape.
+// ---------------------------------------------------------------------------
+describe('PlaylistDetailSchema — archived Explore capture', () => {
+  it('still parses the archived trending.json capture', () => {
+    const raw = loadFixture('trending.json');
+    const result = v.safeParse(PlaylistDetailSchema, raw);
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+
+    // The route carried no owner fields — that asymmetry is why every `user_*`
+    // key on PlaylistDetailSchema is optional.
+    expect(result.output.user_handle ?? null).toBeNull();
+    expect(result.output.playlist_clips.length).toBeGreaterThan(0);
   });
 });

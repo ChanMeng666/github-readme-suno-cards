@@ -1,23 +1,22 @@
 import { describe, expect, it } from 'vitest';
-import { SunoNotFoundError } from '../src/errors.js';
+import { SunoInvalidRequestError, SunoNotFoundError } from '../src/errors.js';
 import { fetchPlaylist } from '../src/playlist.js';
-import { fetchTrending } from '../src/trending.js';
 import { loadFixture, mockFetchJson } from './_helpers.js';
 
 const PLAYLIST_ID = '0e89c244-c1fe-4c92-bd57-d14633a96b60';
 const PLAYLIST_URL = `https://studio-api-prod.suno.com/api/playlist/${PLAYLIST_ID}`;
-const TRENDING_URL = 'https://studio-api-prod.suno.com/api/trending';
 
 describe('fetchPlaylist', () => {
   it('returns a normalized SunoPlaylistDetail from the real fixture', async () => {
-    const body = loadFixture('playlist-detail.json');
+    const body = loadFixture<{ num_total_results: number }>('playlist-detail.json');
     const pl = await fetchPlaylist(PLAYLIST_ID, {
       fetchImpl: mockFetchJson(PLAYLIST_URL, 200, body),
     });
 
     expect(pl.id).toBe(PLAYLIST_ID);
     expect(pl.name).toBe("Chan's Creation");
-    expect(pl.numTotalTracks).toBe(55);
+    // Live counter — derived from the fixture, not pinned.
+    expect(pl.numTotalTracks).toBe(body.num_total_results);
     expect(pl.currentPage).toBe(1);
     expect(pl.isDiscover).toBe(false);
     expect(pl.owner?.handle).toBe('chanmeng');
@@ -37,6 +36,25 @@ describe('fetchPlaylist', () => {
     ).rejects.toBeInstanceOf(SunoNotFoundError);
   });
 
+  // 422 is Suno rejecting the request shape (bad/missing query params). It used
+  // to be mapped to SunoHandleNotFoundError here, which told callers "no such
+  // playlist" for what is really a malformed request.
+  it('forwards 422 as SunoInvalidRequestError, not a not-found error', async () => {
+    await expect(
+      fetchPlaylist(PLAYLIST_ID, {
+        fetchImpl: mockFetchJson(PLAYLIST_URL, 422, { detail: 'unprocessable' }),
+      }),
+    ).rejects.toBeInstanceOf(SunoInvalidRequestError);
+
+    const err: unknown = await fetchPlaylist(PLAYLIST_ID, {
+      fetchImpl: mockFetchJson(PLAYLIST_URL, 422, { detail: 'unprocessable' }),
+    }).catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(SunoInvalidRequestError);
+    expect((err as SunoInvalidRequestError).status).toBe(422);
+    expect((err as SunoInvalidRequestError).endpoint).toBe(PLAYLIST_URL);
+    expect(err).not.toBeInstanceOf(SunoNotFoundError);
+  });
+
   it('appends ?page= when opts.page is set', async () => {
     const body = loadFixture('playlist-detail.json');
     let calledUrl = '';
@@ -52,23 +70,5 @@ describe('fetchPlaylist', () => {
     });
     expect(calledUrl).toBe(`${PLAYLIST_URL}?page=2`);
     expect(pl.name).toBe("Chan's Creation");
-  });
-});
-
-describe('fetchTrending', () => {
-  it('returns the Explore editorial playlist with source=trending', async () => {
-    const body = loadFixture('trending.json');
-    const pl = await fetchTrending({
-      fetchImpl: mockFetchJson(TRENDING_URL, 200, body),
-    });
-
-    expect(pl.id).toBeTruthy();
-    expect(pl.name).toBe('Explore');
-    expect(pl.isDiscover).toBe(false); // server sets is_discover_playlist=false for Explore
-    expect(pl.owner).toBeNull(); // trending has no user_handle
-    expect(pl.source).toBe('trending');
-    expect(pl.numTotalTracks).toBeGreaterThan(0);
-    expect(pl.clips.length).toBeGreaterThan(0);
-    for (const c of pl.clips) expect(c.source).toBe('trending');
   });
 });
