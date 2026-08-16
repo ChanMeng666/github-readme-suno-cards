@@ -20309,7 +20309,7 @@ var init_fetcher = __esm({
   "../packages/parser/src/fetcher.ts"() {
     "use strict";
     init_errors();
-    USER_AGENT = "github-readme-suno-cards/0.2.0 (+https://github.com/ChanMeng666/github-readme-suno-cards)";
+    USER_AGENT = "github-readme-suno-cards/0.2.1 (+https://github.com/ChanMeng666/github-readme-suno-cards)";
   }
 });
 
@@ -21053,7 +21053,14 @@ var init_schema = __esm({
        * as "wrong serializer shape".
        */
       model_badges: optional(nullable(ModelBadgesSchema)),
-      /** See {@link SecondaryBadgeSchema} — also present on the shelf shape. */
+      /**
+       * See {@link SecondaryBadgeSchema} — also present on the shelf shape.
+       *
+       * Presence additionally depends on the **request's User-Agent**: 12 of 22 on
+       * the Staff Picks shelf for ordinary User-Agents, but omitted entirely (0 of
+       * 22) when the User-Agent begins with `suno` — measured 2026-08-16. See the
+       * note in `fetcher.ts`.
+       */
       secondary_badges: optional(array(SecondaryBadgeSchema)),
       /**
        * Points at a Persona entity. A different namespace from the clip-parent
