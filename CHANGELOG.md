@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-08-16
+
+### Fixed
+- **0.2.0 claimed "Suno's public API does not gate on User-Agent". That is wrong.** Suno does not *block* on User-Agent, but it does *vary the response shape* by one: a User-Agent beginning with `suno` (case-insensitive) receives a variant with `metadata.secondary_badges` omitted on every clip. Measured 2026-08-16 over 20 anonymous GETs of one editorial-shelf playlist (n=22 clips each time, `cf-cache-status: DYNAMIC`, so origin responses rather than cache artefacts): `suno`-prefixed User-Agents got `secondary_badges` on 0 of 22 clips; every other User-Agent tried — real browsers, `curl/8.0`, `Googlebot/2.1`, and this project's own string — got it on 12 of 22. Nothing else in the payload differed. Inferred, not confirmed: the server treats a `suno`-prefixed User-Agent as one of Suno's own native clients and serves that client's serializer variant.
+- No behaviour change in this release: the parser's User-Agent does not begin with `suno`, so 0.2.0 was already receiving the ordinary variant. This corrects the claim, documents the measurement in `fetcher.ts`, adds the presence caveat to the `secondary_badges` declaration in `schema.ts`, and warns anyone renaming the User-Agent to keep the `suno` prefix free.
+
 ## [0.2.0] - 2026-08-16
 
 ### Added

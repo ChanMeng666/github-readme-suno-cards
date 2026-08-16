@@ -1,15 +1,30 @@
 import { SunoNetworkError } from './errors.js';
 
 /**
- * A single, honest User-Agent that names this project and links to it.
+ * A single, honest User-Agent that names this project and links to it. A tool
+ * reading a public API should say what it is, and there is nothing to gain by
+ * pretending to be a browser.
  *
- * Suno's `studio-api-prod.suno.com` host does not gate on User-Agent, so there
- * is nothing to be gained by pretending to be a browser — and a tool that reads
- * a public API should say what it is. Keep the version in step with the latest
- * release heading in `CHANGELOG.md`.
+ * **Do not start this string with `suno`.** v0.2.0 of this file claimed Suno's
+ * host "does not gate on User-Agent". That is wrong, and the correction is more
+ * interesting than the original claim: Suno does not *block* on User-Agent, but
+ * it does *vary the serializer* by one. Measured 2026-08-16 over 20 anonymous
+ * GETs of a single editorial-shelf playlist (n=22 clips every time,
+ * `cf-cache-status: DYNAMIC`, so these are origin responses and not cache
+ * artefacts), a User-Agent beginning with `suno` (case-insensitive) gets a
+ * response with `metadata.secondary_badges` omitted on all 22 clips. Every
+ * other User-Agent tried — real browsers, `curl/8.0`, `Googlebot/2.1`, and the
+ * string below — gets it on 12 of 22. Nothing else in the payload differed.
+ *
+ * Inferred, not confirmed: the server reads a `suno`-prefixed User-Agent as one
+ * of Suno's own native clients and serves that client's serializer variant. The
+ * string below does not start with `suno`, so this parser sees the ordinary
+ * variant — but anyone renaming it should keep that prefix free.
+ *
+ * Keep the version in step with the latest release heading in `CHANGELOG.md`.
  */
 const USER_AGENT =
-  'github-readme-suno-cards/0.2.0 (+https://github.com/ChanMeng666/github-readme-suno-cards)';
+  'github-readme-suno-cards/0.2.1 (+https://github.com/ChanMeng666/github-readme-suno-cards)';
 
 export type FetchJsonOptions = {
   /** Override fetch implementation (test injection). */

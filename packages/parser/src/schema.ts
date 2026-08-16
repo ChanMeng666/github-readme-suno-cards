@@ -186,7 +186,14 @@ const ClipMetadataSchema = v.object({
    * as "wrong serializer shape".
    */
   model_badges: v.optional(v.nullable(ModelBadgesSchema)),
-  /** See {@link SecondaryBadgeSchema} — also present on the shelf shape. */
+  /**
+   * See {@link SecondaryBadgeSchema} — also present on the shelf shape.
+   *
+   * Presence additionally depends on the **request's User-Agent**: 12 of 22 on
+   * the Staff Picks shelf for ordinary User-Agents, but omitted entirely (0 of
+   * 22) when the User-Agent begins with `suno` — measured 2026-08-16. See the
+   * note in `fetcher.ts`.
+   */
   secondary_badges: v.optional(v.array(SecondaryBadgeSchema)),
 
   /**
