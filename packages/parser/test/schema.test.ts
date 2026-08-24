@@ -94,3 +94,90 @@ describe('PlaylistDetailSchema — archived Explore capture', () => {
     expect(result.output.playlist_clips.length).toBeGreaterThan(0);
   });
 });
+
+// ---------------------------------------------------------------------------
+// `fixtures/editorial-shelf.json` — Suno's live curated Explore surface.
+//
+// A TRIMMED capture of the public "Staff Picks" playlist (2026-08-23). The
+// upstream shelf carried 22 clips; this fixture keeps **one clip per distinct
+// shape combination** of (`metadata.type`, has `model_badges`, has
+// `secondary_badges`), which is the property under test. It deliberately does
+// NOT preserve the upstream k/N ratios — assert *kinds* here, never counts.
+//
+// A curated shelf is the one place Suno ships a genuinely heterogeneous clip
+// array: alongside ordinary generations it carries human uploads and studio
+// exports, which have a much smaller `metadata` and no model badge at all. Any
+// tool that samples element [0] of such an array and calls it "the shape" will
+// eventually report a pile of fields as removed. That is not hypothetical — it
+// is why this fixture exists.
+// ---------------------------------------------------------------------------
+describe('PlaylistDetailSchema — editorial shelf (heterogeneous)', () => {
+  const raw = loadFixture<{ playlist_clips: { clip: Record<string, unknown> }[] }>(
+    'editorial-shelf.json',
+  );
+
+  it('parses the shelf shape with no schema errors', () => {
+    const result = v.safeParse(PlaylistDetailSchema, raw);
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+    expect(result.output.playlist_clips.length).toBeGreaterThan(0);
+  });
+
+  it('is heterogeneous — more than one clip shape in a single array', () => {
+    const shapes = new Set(
+      raw.playlist_clips.map((pc) => Object.keys(pc.clip.metadata as object).length),
+    );
+    // If this ever collapses to one, the fixture stopped testing what it is for.
+    expect(shapes.size).toBeGreaterThan(1);
+  });
+
+  it('omits model_badges exactly when no model generated the clip', () => {
+    const clips = raw.playlist_clips.map((pc) => pc.clip);
+    const without = clips.filter((c) => !('model_badges' in (c.metadata as object)));
+    const withBadges = clips.filter((c) => 'model_badges' in (c.metadata as object));
+    expect(without.length).toBeGreaterThan(0);
+    expect(withBadges.length).toBeGreaterThan(0);
+
+    // Key on the ABSENCE OF A GENERATING MODEL, never on `metadata.type`. An
+    // earlier revision asserted `type === 'upload'` here and a later sample
+    // falsified it: `studio_export` clips have no model badge either, because
+    // they are user-arranged audio. `type` was a proxy for the real invariant.
+    for (const c of without) {
+      expect(c.model_name).toBe('chirp-chirp');
+      expect(c.major_model_version).toBe('');
+    }
+    for (const c of withBadges) {
+      expect(c.model_name).not.toBe('chirp-chirp');
+      expect(c.major_model_version).not.toBe('');
+    }
+  });
+
+  it('treats secondary_badges as a property of the clip, not of the shape', () => {
+    const clips = raw.playlist_clips.map((pc) => pc.clip);
+    const withSecondary = clips.filter((c) => 'secondary_badges' in (c.metadata as object));
+    // Present on some and absent on others *within one response* — so an absence
+    // is ordinary heterogeneity, not a truncated serializer. (It is also the one
+    // field Suno varies by User-Agent; see the note on the schema field.)
+    expect(withSecondary.length).toBeGreaterThan(0);
+    expect(withSecondary.length).toBeLessThan(clips.length);
+  });
+
+  it('carries the media_urls delivery manifest on every clip', () => {
+    const result = v.safeParse(PlaylistDetailSchema, raw);
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+
+    for (const pc of result.output.playlist_clips) {
+      const tiers = pc.clip.media_urls;
+      expect(tiers, `clip ${pc.clip.id} has no media_urls`).toBeDefined();
+      const types = (tiers ?? []).map((t) => t.content_type).sort();
+      expect(types).toEqual(['m4a-opus', 'mp3']);
+
+      // The mp3 entry is exactly `audio_url` — nothing new to store. This is the
+      // assertion that keeps anyone from "upgrading" a player to the opus tier:
+      // that payload is opaque and will not decode. See the schema comment.
+      const mp3 = (tiers ?? []).find((t) => t.content_type === 'mp3');
+      expect(mp3?.url).toBe(pc.clip.audio_url);
+    }
+  });
+});

@@ -1,5 +1,5 @@
 import { fetchSong } from '@suno-cards/parser';
-import { renderSingleSongSvg } from '@suno-cards/render';
+import { COVER_SIZE, PLAYER_COVER_SIZE, renderSingleSongSvg } from '@suno-cards/render';
 import type { NextRequest } from 'next/server';
 
 import { errorToSvg, svgResponse } from '@/lib/errorSvg';
@@ -34,7 +34,11 @@ export async function GET(req: NextRequest): Promise<Response> {
 
   try {
     const song = await fetchSong(q.id);
-    const coverDataUri = await fetchAsDataUri(song.coverUrl);
+    // Cards draw the cover at COVER_SIZE (or PLAYER_COVER_SIZE); ask Suno for a
+    // matching render instead of the full-size original.
+    const coverDataUri = await fetchAsDataUri(song.coverUrl, {
+      renderWidth: q.layout === 'player' ? PLAYER_COVER_SIZE : COVER_SIZE,
+    });
 
     const svg = renderSingleSongSvg(song, {
       coverDataUri,

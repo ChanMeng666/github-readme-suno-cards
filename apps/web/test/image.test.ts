@@ -49,3 +49,40 @@ describe('fetchAsDataUri', () => {
     expect(result).toMatch(/^data:image\/jpeg;base64,/);
   });
 });
+
+describe('fetchAsDataUri — renderWidth', () => {
+  const COVER = 'https://cdn2.suno.ai/image_a885e43c-6918-456f-a5f0-0e8e29e61066.jpeg';
+
+  function spyFetch() {
+    const seen: string[] = [];
+    const fetchImpl = (async (url: string | URL | Request) => {
+      seen.push(typeof url === 'string' ? url : url.toString());
+      return new Response(new Uint8Array([1, 2, 3]), {
+        status: 200,
+        headers: { 'content-type': 'image/jpeg' },
+      });
+    }) as unknown as typeof fetch;
+    return { seen, fetchImpl };
+  }
+
+  it('asks Suno for a card-sized cover instead of the original', async () => {
+    const { seen, fetchImpl } = spyFetch();
+    // 120 logical px at 2x = 240, which snaps UP to the allowed 256. Requesting
+    // 240 directly would be a 403, not a smaller image.
+    await fetchAsDataUri(COVER, { fetchImpl, renderWidth: 120 });
+    expect(seen).toEqual([`${COVER}?width=256`]);
+  });
+
+  it('leaves the URL alone when no renderWidth is given', async () => {
+    const { seen, fetchImpl } = spyFetch();
+    await fetchAsDataUri(COVER, { fetchImpl });
+    expect(seen).toEqual([COVER]);
+  });
+
+  it('does not rewrite non-Suno asset hosts', async () => {
+    const { seen, fetchImpl } = spyFetch();
+    const foreign = 'https://example.com/avatar.png';
+    await fetchAsDataUri(foreign, { fetchImpl, renderWidth: 60 });
+    expect(seen).toEqual([foreign]);
+  });
+});

@@ -40,6 +40,35 @@ const SecondaryBadgeSchema = v.object({
 });
 
 /**
+ * One entry in the clip-level `media_urls[]` array — Suno's per-clip delivery
+ * manifest, first observed 2026-08-24. Two entries on every clip measured
+ * (149/149 across the clip, profile, playlist and editorial-shelf endpoints).
+ *
+ * Both URLs are exactly derivable from the clip id (120/120 checked), so there
+ * is nothing here a consumer could not already construct:
+ *   - the `mp3` entry's `url` IS the clip's own `audio_url`
+ *   - the `m4a-opus` entry is `d2lwuy8qc234o3.cloudfront.net/1/clip/{id}.m4a`
+ *
+ * `content_type` is a SUNO-SUPPLIED LABEL, not a verified property of the
+ * bytes. The `m4a-opus` payload is opaque: measured 2026-08-24 in Chrome 148 it
+ * will not decode in an `<audio>` element (`MediaError.code = 4`) even when
+ * fetched whole and re-wrapped in a correctly-typed Blob, and the leading bytes
+ * of three clips carried no container marker at ~7.95 bits/byte entropy.
+ *
+ * Practical consequence for anything rendering audio: **use `audio_url`.** A
+ * two-`<source>` list with the opus tier first is worse than useless — the
+ * browser reports the codec as supported, selects it confidently, and fails.
+ */
+const MediaUrlEntrySchema = v.object({
+  url: v.optional(v.string()),
+  content_type: v.optional(v.string()),
+  /** `"progressive"` on every entry observed so far. */
+  delivery: v.optional(v.string()),
+  /** Absent on the mp3 entry; `"1.0.0"` on the m4a-opus entry. */
+  encoding: v.optional(v.string()),
+});
+
+/**
  * One entry in `metadata.concat_history[]` — for clips of type `"concat"`, the
  * array describes the chain of prior generation steps that were stitched
  * together. Recursive in principle (a concat of concats) but we only model
@@ -179,20 +208,39 @@ const ClipMetadataSchema = v.object({
   /**
    * Model badge theming. **NOT full-shape-only** — corrected 2026-08-16.
    * `model_badges` is on the medium profile shape (20 of 20 clips) and on the
-   * editorial-shelf shape (18 of 22 Staff Picks, 23 of 23 "Best of v5.5"). The
-   * four Staff Picks clips without it are human uploads (`metadata.type:
-   * "upload"`, `model_name: "chirp-chirp"`, empty `major_model_version`) —
-   * there is no model to badge. Read absence as "not a Suno generation", not
-   * as "wrong serializer shape".
+   * editorial-shelf shape (18 of 22 Staff Picks, 23 of 23 "Best of v5.5").
+   *
+   * Absence means **no model generated the clip** — `model_name:
+   * "chirp-chirp"` with an empty `major_model_version`. Read it as "not a Suno
+   * generation", not as "wrong serializer shape".
+   *
+   * **Corrected 2026-08-24: do not key this on `metadata.type`.** An earlier
+   * revision of this comment said the clips without a badge are human
+   * `upload`s. A later sample falsified that: 8 of 22 Staff Picks clips lacked
+   * `model_badges` — 6 `upload` **and 2 `studio_export`**. A studio export is
+   * user-arranged audio, so no model produced it either. `type` was a proxy for
+   * the real invariant, and a curated shelf eventually broke it.
    */
   model_badges: v.optional(v.nullable(ModelBadgesSchema)),
   /**
    * See {@link SecondaryBadgeSchema} — also present on the shelf shape.
    *
-   * Presence additionally depends on the **request's User-Agent**: 12 of 22 on
-   * the Staff Picks shelf for ordinary User-Agents, but omitted entirely (0 of
-   * 22) when the User-Agent begins with `suno` — measured 2026-08-16. See the
-   * note in `fetcher.ts`.
+   * **Presence is a property of the CLIP, not of the response shape.** The key
+   * is sent when the clip actually carries a badge (uploaded, cover, …) and
+   * omitted when it does not, so a k/N below N/N is ordinary heterogeneity, not
+   * a truncated serializer.
+   *
+   * **Except** that it is also the one field Suno varies by User-Agent. A
+   * request whose UA *begins with* `suno` (case-insensitive) receives a variant
+   * with this key omitted entirely — 0 of 22 on the Staff Picks shelf, against
+   * 12–13 of 22 for every other UA tested, including `curl` and ordinary bot
+   * strings. Measured 2026-08-16 and re-verified 2026-08-24. Prefix, not
+   * substring: `xSuno/1.0` gets the normal variant.
+   *
+   * Practical rule: **attach the User-Agent to every presence claim.** "Field X
+   * is present on k of N clips" is not a complete statement about this API. See
+   * the note in `fetcher.ts` for why this package sends exactly one UA, and why
+   * it must never begin with `suno`.
    */
   secondary_badges: v.optional(v.array(SecondaryBadgeSchema)),
 
@@ -312,6 +360,13 @@ export const ClipSchema = v.object({
   image_large_url: v.string(),
   audio_url: v.string(),
   video_url: v.optional(v.string()),
+  /**
+   * Per-clip delivery manifest (added 2026-08-24). Present on every clip
+   * measured, and — unlike `metadata.secondary_badges` — NOT User-Agent-variant.
+   * `v.optional` regardless: it is new, and every clip field here is optional so
+   * one schema validates all response variants.
+   */
+  media_urls: v.optional(v.array(MediaUrlEntrySchema)),
   // Short-form / hook media variants. Sparse: `hook_preview_thumbnail_url`
   // travels with `has_hook` (8 of 22 Staff Picks clips, measured 2026-08-16).
   preview_url: v.optional(v.nullable(v.string())),

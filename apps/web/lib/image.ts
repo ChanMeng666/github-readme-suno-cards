@@ -1,3 +1,5 @@
+import { resizeSunoCover } from '@suno-cards/parser';
+
 /**
  * Fetch a remote image and return it as a base64 data URI, suitable for
  * embedding directly in an <image> element inside an SVG.
@@ -14,9 +16,27 @@ export type FetchImageOptions = {
   timeoutMs?: number;
   /** Optional fetch impl override (for tests). */
   fetchImpl?: typeof fetch;
+  /**
+   * The width this asset will actually be RENDERED at, in CSS pixels. When set,
+   * a Suno cover URL is rewritten to request a matching size instead of the
+   * full-size original — cards draw covers at 120-130px, so fetching the
+   * original was pure wasted bytes on every cold request.
+   *
+   * Pass the logical size; `resizeSunoCover` handles the 2x and the snapping to
+   * Suno's whitelist (an arbitrary `?width=` is a 403, not a smaller image).
+   * Non-Suno URLs are unaffected.
+   */
+  renderWidth?: number;
 };
 
 const FALLBACK_CONTENT_TYPE = 'image/jpeg';
+
+/**
+ * Kept in step with the parser's User-Agent. Honest identification, correct
+ * URL, and deliberately NOT beginning with `suno` — see packages/parser/src/fetcher.ts.
+ */
+const SUNO_CARDS_USER_AGENT =
+  'github-readme-suno-cards/0.2.1 (+https://github.com/ChanMeng666/github-readme-suno-cards)';
 
 /**
  * Fetch `url` and return a `data:*;base64,*` URI, or `null` if the asset
@@ -27,6 +47,7 @@ export async function fetchAsDataUri(
   opts: FetchImageOptions = {},
 ): Promise<string | null> {
   if (!url) return null;
+  const target = opts.renderWidth ? resizeSunoCover(url, opts.renderWidth * 2) : url;
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), opts.timeoutMs ?? 6000);
@@ -39,13 +60,17 @@ export async function fetchAsDataUri(
       signal: controller.signal,
       headers: {
         Accept: 'image/*,*/*',
-        'User-Agent':
-          'Mozilla/5.0 (compatible; SunoCardsBot/1.0; +https://github.com/chanmeng/github-readme-suno-cards)',
+        // One project-identifying User-Agent, matching the parser's (see the
+        // note in packages/parser/src/fetcher.ts). Previously this was a
+        // second, undocumented string whose URL pointed at the wrong GitHub
+        // org and therefore 404'd — an asset fetch should still say honestly
+        // who is asking, and say it correctly.
+        'User-Agent': SUNO_CARDS_USER_AGENT,
       },
       next: { revalidate: opts.revalidate ?? 3600 },
     };
 
-    const res = await fetchImpl(url, init);
+    const res = await fetchImpl(target, init);
     if (!res.ok) return null;
 
     const contentType = res.headers.get('content-type') ?? FALLBACK_CONTENT_TYPE;

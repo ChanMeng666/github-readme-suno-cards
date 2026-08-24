@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **`media_urls` on the clip schema.** Suno now attaches a per-clip delivery manifest to every clip on every endpoint (present on 149 of 149 clips sampled 2026-08-24), listing two audio tiers: the familiar `mp3` on `cdn1.suno.ai` and an `m4a-opus` tier on a separate host. Modelled with every field optional, like the rest of the clip shape.
+- **`resizeSunoCover()`, exported from `@suno-cards/parser`.** Suno's cover CDN accepts `?width=N` only for `{100, 256, 360, 720}` — any other number is a **403**, not a smaller image — so this snaps a requested size up to the nearest allowed one and passes non-Suno URLs through untouched. Now applied on every cover and avatar fetch in the web service and the Action: cards draw covers at ~120px and avatars at 60px, and until now every cold render downloaded the full-size original.
+- **`editorial-shelf.json` test fixture** — a trimmed capture of Suno's live curated Explore shelf, kept because it is the one place Suno ships a genuinely heterogeneous clip array. It carries one clip per distinct shape combination, so the tests assert *kinds* rather than counts.
+
+### Fixed
+- **Corrected: the clips without `model_badges` are not "human uploads".** An earlier note said absence tracked `metadata.type: "upload"`. A later sample falsified it — 8 of 22 shelf clips lacked the badge: 6 `upload` **and 2 `studio_export`**. The explanation was right ("nothing generated them"), the predicate was wrong. The invariant is the absence of a generating model (`model_name: "chirp-chirp"` with an empty `major_model_version`), and the tests now assert that rather than the proxy, so a new no-model `type` passes instead of breaking.
+- **Corrected: `secondary_badges` absence is a property of the clip, not of the response shape.** The previous note framed it as a shape/UA rule. Presence tracks whether the clip actually carries a badge; the User-Agent prefix rule is a separate, additional effect, and both are now documented on the field.
+- **Two asset-fetch User-Agents pointed at the wrong GitHub org** (`chanmeng` rather than `ChanMeng666`), so the `+` URL a curious server operator would follow returned a 404. Both now use one project-identifying string kept in step with the parser's.
+- Dropped a stale "Known Issues" entry from `CONTRIBUTING.md`: `playlist.ts` already maps HTTP `422` to `SunoInvalidRequestError` (fixed in 0.2.0).
+
+### Notes
+- **Do not build a player on the `m4a-opus` tier — use `audio_url`.** Measured 2026-08-24 in Chrome 148: `canPlayType("audio/mp4; codecs=opus")` returns `"probably"`, so the codec is not the obstacle, yet the payload fails with `MediaError.code = 4` both from its URL and re-wrapped whole in a correctly-typed Blob; the first 4 KB of three clips from three different years carried no `ftyp`/`moov`/`mdat`/`OggS`/`OpusHead`/`ID3`/`fLaC`/`RIFF`/`EBML` marker, shared no opening bytes, and measured 7.949–7.962 bits per byte of entropy against a maximum of 8. `content_type` is Suno's label; we did not verify it, and we did not attempt to decode the payload. A two-`<source>` list with the opus tier first is worse than useless — the browser selects it confidently and fails every time.
+
 ## [0.2.1] - 2026-08-16
 
 ### Fixed
