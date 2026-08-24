@@ -49,13 +49,13 @@ export type SongCardOptions = {
 
 export const SONG_CARD_DEFAULT_WIDTH = 480;
 export const SONG_CARD_DEFAULT_HEIGHT = 140;
-const COVER_SIZE = 120;
+export const COVER_SIZE = 120;
 const COVER_PADDING = 10;
 
 // Player layout constants
 export const PLAYER_CARD_DEFAULT_WIDTH = 640;
 export const PLAYER_CARD_DEFAULT_HEIGHT = 160;
-const PLAYER_COVER_SIZE = 130;
+export const PLAYER_COVER_SIZE = 130;
 const PLAYER_COVER_PADDING = 15;
 const PLAYER_COVER_RADIUS = 12;
 

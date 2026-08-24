@@ -1,5 +1,7 @@
 import { fetchAllClips } from '@suno-cards/parser';
 import {
+  AVATAR_SIZE,
+  COVER_SIZE,
   type CardStackItem,
   PLAYER_CARD_DEFAULT_HEIGHT,
   PLAYER_CARD_DEFAULT_WIDTH,
@@ -58,8 +60,10 @@ export async function GET(req: NextRequest): Promise<Response> {
     });
 
     const [avatarDataUri, ...coverDataUris] = await Promise.all([
-      showProfileCard ? fetchAsDataUri(result.profile.avatarUrl) : Promise.resolve(null),
-      ...result.clips.map((c) => fetchAsDataUri(c.coverUrl)),
+      showProfileCard
+        ? fetchAsDataUri(result.profile.avatarUrl, { renderWidth: AVATAR_SIZE })
+        : Promise.resolve(null),
+      ...result.clips.map((c) => fetchAsDataUri(c.coverUrl, { renderWidth: COVER_SIZE })),
     ]);
 
     const items: CardStackItem[] = [];

@@ -1,7 +1,9 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
-import type { SunoProfile, SunoSong } from '@suno-cards/parser';
+import { type SunoProfile, type SunoSong, resizeSunoCover } from '@suno-cards/parser';
 import {
+  AVATAR_SIZE,
+  COVER_SIZE,
   type CardLayout,
   type PresetName,
   type ThemeMode,
@@ -50,13 +52,31 @@ export type LocalRenderResult = {
   writtenFiles: string[];
 };
 
-async function fetchAsDataUri(url: string | null | undefined): Promise<string | null> {
+/**
+ * Kept in step with the parser's User-Agent. Honest identification, correct
+ * URL, and deliberately NOT beginning with `suno` — see the note in
+ * packages/parser/src/fetcher.ts. (This previously pointed at the wrong GitHub
+ * org, so the `+` URL a curious server operator would follow 404'd.)
+ */
+const ASSET_USER_AGENT =
+  'github-readme-suno-cards/0.2.1 (+https://github.com/ChanMeng666/github-readme-suno-cards)';
+
+/**
+ * `renderWidth` is the size the asset will actually be drawn at. Suno's cover
+ * CDN only accepts a whitelist of `?width=` values (anything else is a 403),
+ * which is what `resizeSunoCover` handles — cards draw covers at ~120px, so
+ * fetching the full-size original was wasted bytes on every run.
+ */
+async function fetchAsDataUri(
+  url: string | null | undefined,
+  renderWidth?: number,
+): Promise<string | null> {
   if (!url) return null;
+  const target = renderWidth ? resizeSunoCover(url, renderWidth * 2) : url;
   try {
-    const res = await fetch(url, {
+    const res = await fetch(target, {
       headers: {
-        'User-Agent':
-          'Mozilla/5.0 (compatible; SunoCardsAction/1.0; +https://github.com/chanmeng/github-readme-suno-cards)',
+        'User-Agent': ASSET_USER_AGENT,
         Accept: 'image/*,*/*',
       },
     });
@@ -80,7 +100,7 @@ async function writeSongSvgs(
   absCardsDir: string,
   opts: LocalRenderOptions,
 ): Promise<{ dark?: string; light?: string; single?: string }> {
-  const coverDataUri = await fetchAsDataUri(song.coverUrl);
+  const coverDataUri = await fetchAsDataUri(song.coverUrl, COVER_SIZE);
   const baseName = `song-${safeFileId(song.id)}`;
 
   const songOpts = {
@@ -118,7 +138,7 @@ async function writeProfileSvgs(
   absCardsDir: string,
   opts: LocalRenderOptions,
 ): Promise<{ dark?: string; light?: string; single?: string }> {
-  const avatarDataUri = await fetchAsDataUri(profile.avatarUrl);
+  const avatarDataUri = await fetchAsDataUri(profile.avatarUrl, AVATAR_SIZE);
   const baseName = `profile-${profile.handle}`;
 
   if (opts.theme === 'auto') {

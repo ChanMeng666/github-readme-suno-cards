@@ -20,6 +20,7 @@ export { normalizeInput } from './normalize.js';
 export { resolveShortCode } from './resolver.js';
 export { fetchProfilePage } from './profile.js';
 export { mapClipToSong } from './mapping.js';
+export { resizeSunoCover, SUNO_CDN_ALLOWED_WIDTHS } from './cdn.js';
 export { fetchPlaylist, fetchPlaylistDetailUrl, type FetchPlaylistOptions } from './playlist.js';
 // NOTE: there is no trending fetcher. Suno removed the `/api/trending` route on
 // 2026-07-24. The playlist object it aliased is still public and still returns

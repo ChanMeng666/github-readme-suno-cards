@@ -24,14 +24,17 @@ export { renderModelBadgeHtml } from './modelBadge.js';
 export { renderNewBadge } from './newBadge.js';
 export { renderProgressBar, type ProgressBarOptions } from './progressBar.js';
 export {
+  AVATAR_SIZE,
   PROFILE_CARD_DEFAULT_HEIGHT,
   PROFILE_CARD_DEFAULT_WIDTH,
   renderProfileCard,
   type ProfileCardOptions,
 } from './profileCard.js';
 export {
+  COVER_SIZE,
   PLAYER_CARD_DEFAULT_HEIGHT,
   PLAYER_CARD_DEFAULT_WIDTH,
+  PLAYER_COVER_SIZE,
   SONG_CARD_DEFAULT_HEIGHT,
   SONG_CARD_DEFAULT_WIDTH,
   renderSongCard,

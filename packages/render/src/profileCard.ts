@@ -18,7 +18,7 @@ export type ProfileCardOptions = {
 
 export const PROFILE_CARD_DEFAULT_WIDTH = 480;
 export const PROFILE_CARD_DEFAULT_HEIGHT = 90;
-const AVATAR_SIZE = 60;
+export const AVATAR_SIZE = 60;
 const PADDING = 15;
 
 /**

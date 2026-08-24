@@ -1,5 +1,5 @@
 import { fetchProfile } from '@suno-cards/parser';
-import { renderSingleProfileSvg } from '@suno-cards/render';
+import { AVATAR_SIZE, renderSingleProfileSvg } from '@suno-cards/render';
 import type { NextRequest } from 'next/server';
 
 import { errorToSvg, svgResponse } from '@/lib/errorSvg';
@@ -33,7 +33,9 @@ export async function GET(req: NextRequest): Promise<Response> {
 
   try {
     const profile = await fetchProfile(q.handle);
-    const avatarDataUri = await fetchAsDataUri(profile.avatarUrl);
+    const avatarDataUri = await fetchAsDataUri(profile.avatarUrl, {
+      renderWidth: AVATAR_SIZE,
+    });
 
     const svg = renderSingleProfileSvg(profile, {
       avatarDataUri,

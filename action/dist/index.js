@@ -20912,7 +20912,7 @@ var init_mapping = __esm({
 });
 
 // ../packages/parser/src/schema.ts
-var ModelBadgeSideSchema, ModelBadgesSchema, SecondaryBadgeSchema, ConcatHistoryEntrySchema, ClipMetadataSchema, ActionConfigEntrySchema, ActionConfigSchema, ClipSchema, PersonaSchema, ProfileInlinePlaylistSchema, ProfileResponseSchema, OEmbedResponseSchema, PlaylistClipWrapperSchema, PlaylistDetailSchema;
+var ModelBadgeSideSchema, ModelBadgesSchema, SecondaryBadgeSchema, MediaUrlEntrySchema, ConcatHistoryEntrySchema, ClipMetadataSchema, ActionConfigEntrySchema, ActionConfigSchema, ClipSchema, PersonaSchema, ProfileInlinePlaylistSchema, ProfileResponseSchema, OEmbedResponseSchema, PlaylistClipWrapperSchema, PlaylistDetailSchema;
 var init_schema = __esm({
   "../packages/parser/src/schema.ts"() {
     "use strict";
@@ -20936,6 +20936,14 @@ var init_schema = __esm({
       icon_key: optional(string()),
       light: optional(ModelBadgeSideSchema),
       dark: optional(ModelBadgeSideSchema)
+    });
+    MediaUrlEntrySchema = object({
+      url: optional(string()),
+      content_type: optional(string()),
+      /** `"progressive"` on every entry observed so far. */
+      delivery: optional(string()),
+      /** Absent on the mp3 entry; `"1.0.0"` on the m4a-opus entry. */
+      encoding: optional(string())
     });
     ConcatHistoryEntrySchema = object({
       id: optional(string()),
@@ -21046,20 +21054,39 @@ var init_schema = __esm({
       /**
        * Model badge theming. **NOT full-shape-only** — corrected 2026-08-16.
        * `model_badges` is on the medium profile shape (20 of 20 clips) and on the
-       * editorial-shelf shape (18 of 22 Staff Picks, 23 of 23 "Best of v5.5"). The
-       * four Staff Picks clips without it are human uploads (`metadata.type:
-       * "upload"`, `model_name: "chirp-chirp"`, empty `major_model_version`) —
-       * there is no model to badge. Read absence as "not a Suno generation", not
-       * as "wrong serializer shape".
+       * editorial-shelf shape (18 of 22 Staff Picks, 23 of 23 "Best of v5.5").
+       *
+       * Absence means **no model generated the clip** — `model_name:
+       * "chirp-chirp"` with an empty `major_model_version`. Read it as "not a Suno
+       * generation", not as "wrong serializer shape".
+       *
+       * **Corrected 2026-08-24: do not key this on `metadata.type`.** An earlier
+       * revision of this comment said the clips without a badge are human
+       * `upload`s. A later sample falsified that: 8 of 22 Staff Picks clips lacked
+       * `model_badges` — 6 `upload` **and 2 `studio_export`**. A studio export is
+       * user-arranged audio, so no model produced it either. `type` was a proxy for
+       * the real invariant, and a curated shelf eventually broke it.
        */
       model_badges: optional(nullable(ModelBadgesSchema)),
       /**
        * See {@link SecondaryBadgeSchema} — also present on the shelf shape.
        *
-       * Presence additionally depends on the **request's User-Agent**: 12 of 22 on
-       * the Staff Picks shelf for ordinary User-Agents, but omitted entirely (0 of
-       * 22) when the User-Agent begins with `suno` — measured 2026-08-16. See the
-       * note in `fetcher.ts`.
+       * **Presence is a property of the CLIP, not of the response shape.** The key
+       * is sent when the clip actually carries a badge (uploaded, cover, …) and
+       * omitted when it does not, so a k/N below N/N is ordinary heterogeneity, not
+       * a truncated serializer.
+       *
+       * **Except** that it is also the one field Suno varies by User-Agent. A
+       * request whose UA *begins with* `suno` (case-insensitive) receives a variant
+       * with this key omitted entirely — 0 of 22 on the Staff Picks shelf, against
+       * 12–13 of 22 for every other UA tested, including `curl` and ordinary bot
+       * strings. Measured 2026-08-16 and re-verified 2026-08-24. Prefix, not
+       * substring: `xSuno/1.0` gets the normal variant.
+       *
+       * Practical rule: **attach the User-Agent to every presence claim.** "Field X
+       * is present on k of N clips" is not a complete statement about this API. See
+       * the note in `fetcher.ts` for why this package sends exactly one UA, and why
+       * it must never begin with `suno`.
        */
       secondary_badges: optional(array(SecondaryBadgeSchema)),
       /**
@@ -21149,6 +21176,13 @@ var init_schema = __esm({
       image_large_url: string(),
       audio_url: string(),
       video_url: optional(string()),
+      /**
+       * Per-clip delivery manifest (added 2026-08-24). Present on every clip
+       * measured, and — unlike `metadata.secondary_badges` — NOT User-Agent-variant.
+       * `v.optional` regardless: it is new, and every clip field here is optional so
+       * one schema validates all response variants.
+       */
+      media_urls: optional(array(MediaUrlEntrySchema)),
       // Short-form / hook media variants. Sparse: `hook_preview_thumbnail_url`
       // travels with `has_hook` (8 of 22 Staff Picks clips, measured 2026-08-16).
       preview_url: optional(nullable(string())),
@@ -29007,6 +29041,30 @@ init_errors();
 init_schema();
 init_tags();
 init_mapping();
+
+// ../packages/parser/src/cdn.ts
+var ALLOWED_WIDTHS = [100, 256, 360, 720];
+var SUNO_IMAGE_HOST_RE = /^cdn2\.suno\.ai$/i;
+var SUNO_IMAGE_PATH_RE = /^\/image(?:_large)?_[0-9a-f-]+\.(?:jpeg|jpg|png|webp)$/i;
+function resizeSunoCover(url, targetWidth) {
+  if (!url) return "";
+  if (targetWidth >= 720 || !Number.isFinite(targetWidth) || targetWidth <= 0) return url;
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return url;
+  }
+  if (!SUNO_IMAGE_HOST_RE.test(parsed.hostname)) return url;
+  if (!SUNO_IMAGE_PATH_RE.test(parsed.pathname)) return url;
+  const target = Math.ceil(targetWidth);
+  const chosen = ALLOWED_WIDTHS.find((w) => w >= target);
+  if (chosen == null) return url;
+  parsed.searchParams.set("width", String(chosen));
+  return parsed.toString();
+}
+
+// ../packages/parser/src/index.ts
 init_playlist();
 async function fetchSong(input, opts = {}) {
   const normalized = normalizeInput(input);
@@ -30074,12 +30132,14 @@ function renderSingleProfileSvg(profile, opts = {}) {
 }
 
 // src/localRender.ts
-async function fetchAsDataUri(url) {
+var ASSET_USER_AGENT = "github-readme-suno-cards/0.2.1 (+https://github.com/ChanMeng666/github-readme-suno-cards)";
+async function fetchAsDataUri(url, renderWidth) {
   if (!url) return null;
+  const target = renderWidth ? resizeSunoCover(url, renderWidth * 2) : url;
   try {
-    const res = await fetch(url, {
+    const res = await fetch(target, {
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; SunoCardsAction/1.0; +https://github.com/chanmeng/github-readme-suno-cards)",
+        "User-Agent": ASSET_USER_AGENT,
         Accept: "image/*,*/*"
       }
     });
@@ -30095,7 +30155,7 @@ function safeFileId(id) {
   return id.toLowerCase().replace(/[^0-9a-f-]/g, "");
 }
 async function writeSongSvgs(song, absCardsDir, opts) {
-  const coverDataUri = await fetchAsDataUri(song.coverUrl);
+  const coverDataUri = await fetchAsDataUri(song.coverUrl, COVER_SIZE);
   const baseName = `song-${safeFileId(song.id)}`;
   const songOpts = {
     coverDataUri,
@@ -30125,7 +30185,7 @@ async function writeSongSvgs(song, absCardsDir, opts) {
   return { single: outPath };
 }
 async function writeProfileSvgs(profile, absCardsDir, opts) {
-  const avatarDataUri = await fetchAsDataUri(profile.avatarUrl);
+  const avatarDataUri = await fetchAsDataUri(profile.avatarUrl, AVATAR_SIZE);
   const baseName = `profile-${profile.handle}`;
   if (opts.theme === "auto") {
     const dark = renderSingleProfileSvg(profile, {
