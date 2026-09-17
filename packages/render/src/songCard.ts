@@ -163,13 +163,17 @@ export function renderSongCard(song: SunoSong, opts: SongCardOptions = {}): stri
     const rel = formatRelativeTime(song.createdAt, lang);
     if (rel) statItems.push(`<span class="stat">${escapeXml(rel)}</span>`);
   }
-  const statsRow = statItems.length > 0 ? `<div class="stats-row">${statItems.join('')}</div>` : '';
-
+  // Badges share the stats line (as in the anatomy above) rather than taking a
+  // row of their own. Every row in the text panel has a fixed one-line budget,
+  // so the panel can never grow past the cover height: a long title, three rows
+  // of tag chips or a pile of secondary badges used to push the stats and the
+  // model badge below the foreignObject, where they were silently clipped.
+  // Stats come first in the row, so it is a badge that drops when space runs out.
   const modelBadge = showModelBadge ? renderModelBadgeHtml(song) : '';
   const secondaryBadges = showSecondaryBadges ? renderSecondaryBadgesHtml(song) : '';
-  const metaFooter =
-    modelBadge || secondaryBadges
-      ? `<div class="meta-footer" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;align-items:center">${modelBadge}${secondaryBadges}</div>`
+  const statsRow =
+    statItems.length > 0 || modelBadge || secondaryBadges
+      ? `<div class="stats-row">${statItems.join('')}${modelBadge}${secondaryBadges}</div>`
       : '';
 
   const foreignObject = `<foreignObject x="${textX}" y="${textY}" width="${textWidth}" height="${textHeight}">
@@ -178,7 +182,6 @@ export function renderSongCard(song: SunoSong, opts: SongCardOptions = {}): stri
       ${authorLine}
       ${chipsHtml}
       ${statsRow}
-      ${metaFooter}
     </div>
   </foreignObject>`;
 

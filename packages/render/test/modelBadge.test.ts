@@ -51,6 +51,11 @@ describe('renderModelBadgeHtml', () => {
   it('falls back to theme tokens when the clip has no badge colours', () => {
     expect(renderModelBadgeHtml(withTheme(null))).toContain('badge-model-fallback');
   });
+
+  it('renders no badge for a clip no model generated (chirp-chirp, empty version)', () => {
+    const upload = { ...base, modelVersion: '', modelName: 'chirp-chirp', modelBadgeTheme: null };
+    expect(renderModelBadgeHtml(upload)).toBe('');
+  });
 });
 
 describe('badge CSS follows the card theme', () => {
@@ -105,7 +110,7 @@ describe('secondary badges', () => {
   it('still renders the chips when the model badge is hidden', () => {
     const song = { ...base, secondaryBadges: badges };
     const svg = renderSongCard(song, { showSecondaryBadges: true, showModelBadge: false });
-    expect(svg).toContain('meta-footer');
+    expect(svg).toContain('badge-secondary');
     expect(svg).not.toContain('badge-model');
   });
 });

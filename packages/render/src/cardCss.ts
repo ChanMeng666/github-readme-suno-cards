@@ -48,11 +48,13 @@ export const CARD_CSS = `
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    max-height: 37.5px;
     overflow: hidden;
     word-break: break-word;
   }
   .song-by {
     font-size: 11px;
+    line-height: 1.35;
     color: var(--c-subtext);
     margin: 2px 0 0 0;
     display: block;
@@ -60,11 +62,16 @@ export const CARD_CSS = `
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  /* The text panel has a fixed height (the cover), so each row below gets a
+     one-line budget. Chips that do not fit wrap onto a second line that is
+     clipped away whole, instead of pushing the stats row out of the panel. */
   .chips {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
     margin-top: 7px;
+    max-height: 18px;
+    overflow: hidden;
   }
   .chip {
     display: inline-block;
@@ -77,6 +84,10 @@ export const CARD_CSS = `
     color: var(--c-chip-text);
     border: 1px solid var(--c-chip-border);
     white-space: nowrap;
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .stats-row {
     display: flex;
@@ -87,6 +98,12 @@ export const CARD_CSS = `
     margin-top: 7px;
     font-weight: 500;
     line-height: 1.4;
+    max-height: 16px;
+    overflow: hidden;
+  }
+  .stats-row > * + .badge-model,
+  .stats-row > * + .badge-secondary {
+    margin-left: 6px;
   }
   .stat {
     display: inline-block;

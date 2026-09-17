@@ -1,5 +1,6 @@
 import { mapClipToSong } from '@suno-cards/parser';
 import { describe, expect, it } from 'vitest';
+import { CARD_CSS } from '../src/cardCss.js';
 import { renderSingleSongSvg } from '../src/cardStack.js';
 import { PLAYER_CARD_DEFAULT_WIDTH, renderSongCard } from '../src/songCard.js';
 import { loadClipResponse } from './_helpers.js';
@@ -78,6 +79,51 @@ describe('renderSongCard', () => {
     const svg = renderSongCard(song, { coverDataUri: null });
     expect(svg).toContain('cover-placeholder');
     expect(svg).toContain('♪');
+  });
+});
+
+// The text panel is a fixed-height foreignObject. Long tags used to wrap into
+// extra rows and push the stats and model badge out of it, where they were
+// clipped without a trace. Each row now has a one-line budget.
+describe('renderSongCard — text panel never overflows', () => {
+  const song = mapClipToSong(loadClipResponse(), 'clip');
+  const crowded = {
+    ...song,
+    title: 'A Very Long Song Title That Definitely Wraps Onto A Second Line In The Card',
+    classifiedTags: {
+      ...song.classifiedTags,
+      genre: [
+        'dry close percussion and wide textured electronics; sparse mechanical opening',
+        'Electro-jazz with dark experimental club energy: syncopated broken-beat drums',
+        'crisp analog drum-machine hits',
+      ],
+    },
+    secondaryBadges: [
+      { key: 'cover', label: 'Cover' },
+      { key: 'part', label: 'Extend 1' },
+    ],
+  };
+
+  it('puts the model and secondary badges on the stats line, after the stats', () => {
+    const svg = renderSongCard(crowded, { showSecondaryBadges: true });
+    const row = svg.match(/<div class="stats-row">(.*?)<\/div>/s)?.[1] ?? '';
+    expect(row).toContain('plays');
+    expect(row).toContain('badge-model');
+    expect(row).toContain('badge-secondary');
+    expect(row.indexOf('plays')).toBeLessThan(row.indexOf('badge-model'));
+    expect(svg).not.toContain('meta-footer');
+  });
+
+  it('still emits a stats row when only badges are shown', () => {
+    const svg = renderSongCard(song, { showPlays: false, showLikes: false });
+    expect(svg).toContain('<div class="stats-row">');
+  });
+
+  it('gives chips and the stats line a one-line budget, and ellipsises a long chip', () => {
+    expect(CARD_CSS).toMatch(/\.chips\s*\{[^}]*max-height: 18px;[^}]*overflow: hidden/);
+    expect(CARD_CSS).toMatch(/\.stats-row\s*\{[^}]*max-height: 16px;[^}]*overflow: hidden/);
+    expect(CARD_CSS).toMatch(/\.chip\s*\{[^}]*max-width: 100%;[^}]*text-overflow: ellipsis/);
+    expect(CARD_CSS).toMatch(/\.song-title\s*\{[^}]*max-height: 37.5px/);
   });
 });
 

@@ -21,6 +21,9 @@ function gradientCss(side: BadgeTheme): string | null {
  * theme-variable colours when a clip carries no badge tokens at all.
  */
 export function renderModelBadgeHtml(song: SunoSong): string {
+  // `chirp-chirp` with no version is how Suno marks a clip no model generated
+  // (uploads, studio exports) — there is no model to badge.
+  if (!song.modelVersion && song.modelName === 'chirp-chirp') return '';
   const version = song.modelVersion || song.modelName || '';
   if (!version) return '';
 

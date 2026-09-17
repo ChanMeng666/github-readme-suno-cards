@@ -29439,11 +29439,13 @@ var CARD_CSS = `
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    max-height: 37.5px;
     overflow: hidden;
     word-break: break-word;
   }
   .song-by {
     font-size: 11px;
+    line-height: 1.35;
     color: var(--c-subtext);
     margin: 2px 0 0 0;
     display: block;
@@ -29451,11 +29453,16 @@ var CARD_CSS = `
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  /* The text panel has a fixed height (the cover), so each row below gets a
+     one-line budget. Chips that do not fit wrap onto a second line that is
+     clipped away whole, instead of pushing the stats row out of the panel. */
   .chips {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
     margin-top: 7px;
+    max-height: 18px;
+    overflow: hidden;
   }
   .chip {
     display: inline-block;
@@ -29468,6 +29475,10 @@ var CARD_CSS = `
     color: var(--c-chip-text);
     border: 1px solid var(--c-chip-border);
     white-space: nowrap;
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .stats-row {
     display: flex;
@@ -29478,6 +29489,12 @@ var CARD_CSS = `
     margin-top: 7px;
     font-weight: 500;
     line-height: 1.4;
+    max-height: 16px;
+    overflow: hidden;
+  }
+  .stats-row > * + .badge-model,
+  .stats-row > * + .badge-secondary {
+    margin-left: 6px;
   }
   .stat {
     display: inline-block;
@@ -29871,6 +29888,7 @@ function gradientCss(side) {
   return `linear-gradient(90deg, ${stops.join(", ")})`;
 }
 function renderModelBadgeHtml(song) {
+  if (!song.modelVersion && song.modelName === "chirp-chirp") return "";
   const version = song.modelVersion || song.modelName || "";
   if (!version) return "";
   const safe = escapeXml(version);
@@ -30051,17 +30069,15 @@ function renderSongCard(song, opts = {}) {
     const rel = formatRelativeTime(song.createdAt, lang);
     if (rel) statItems.push(`<span class="stat">${escapeXml(rel)}</span>`);
   }
-  const statsRow = statItems.length > 0 ? `<div class="stats-row">${statItems.join("")}</div>` : "";
   const modelBadge = showModelBadge ? renderModelBadgeHtml(song) : "";
   const secondaryBadges = showSecondaryBadges ? renderSecondaryBadgesHtml(song) : "";
-  const metaFooter = modelBadge || secondaryBadges ? `<div class="meta-footer" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;align-items:center">${modelBadge}${secondaryBadges}</div>` : "";
+  const statsRow = statItems.length > 0 || modelBadge || secondaryBadges ? `<div class="stats-row">${statItems.join("")}${modelBadge}${secondaryBadges}</div>` : "";
   const foreignObject = `<foreignObject x="${textX}" y="${textY}" width="${textWidth}" height="${textHeight}">
     <div xmlns="http://www.w3.org/1999/xhtml" class="text-panel">
       <p class="song-title">${escapeXml(title)}</p>
       ${authorLine}
       ${chipsHtml}
       ${statsRow}
-      ${metaFooter}
     </div>
   </foreignObject>`;
   return `<g class="song-card" transform="translate(${x}, ${y})">
