@@ -8,7 +8,15 @@
   "id": "a885e43c-6918-456f-a5f0-0e8e29e61066",
   "entity_type": "song_schema",
   "video_url": "https://cdn1.suno.ai/a885e43c-6918-456f-a5f0-0e8e29e61066.mp4",
-  "audio_url": "https://cdn1.suno.ai/a885e43c-6918-456f-a5f0-0e8e29e61066.mp3",
+  "audio_url": "https://studio-api.prod.suno.com/api/forbidden",
+  "media_urls": [
+    {
+      "url": "https://d2lwuy8qc234o3.cloudfront.net/1/clip/a885e43c-6918-456f-a5f0-0e8e29e61066.m4a",
+      "content_type": "m4a-opus",
+      "delivery": "progressive",
+      "encoding": "1.0.0"
+    }
+  ],
   "image_url": "https://cdn2.suno.ai/image_a885e43c-6918-456f-a5f0-0e8e29e61066.jpeg",
   "image_large_url": "https://cdn2.suno.ai/image_large_a885e43c-6918-456f-a5f0-0e8e29e61066.jpeg",
   "major_model_version": "v4.5-all",
@@ -28,17 +36,22 @@
     "video_is_stale": false,
     "uses_latest_model": false,
     "model_badges": {
-      "songrow": {
-        "display_name": "v4.5-all",
+      "songcard": {
+        "display_name": "V4.5-ALL",
         "light": {
-          "text_color": "7D7C83",
-          "background_color": "00000000",
-          "border_color": "0000001A"
+          "text_color": "A3A3A3"
         },
         "dark": {
-          "text_color": "A3A3A3",
-          "background_color": "00000000",
-          "border_color": "FFFFFF1A"
+          "text_color": "A3A3A3"
+        }
+      },
+      "songrow": {
+        "display_name": "V4.5-ALL",
+        "light": {
+          "text_color": "A3A3A3"
+        },
+        "dark": {
+          "text_color": "A3A3A3"
         }
       }
     },
@@ -92,6 +105,16 @@
       },
       {
         "action_type": "remove_from_playlist",
+        "disabled": false,
+        "visible": true
+      },
+      {
+        "action_type": "play_next",
+        "disabled": false,
+        "visible": true
+      },
+      {
+        "action_type": "add_to_queue",
         "disabled": false,
         "visible": true
       },

@@ -6,41 +6,36 @@
     {
       "clip": {
         "status": "complete",
-        "title": "in the dust",
-        "play_count": 124537,
-        "upvote_count": 1934,
+        "title": "LONELY",
+        "play_count": 27651,
+        "upvote_count": 314,
         "allow_comments": true,
-        "is_verified": true,
-        "id": "9bab7d28-44d2-42bc-bf92-a060adad43c1",
+        "is_verified": false,
+        "id": "465f7c3c-9ad0-43cd-8688-4e4d1786e7c3",
         "entity_type": "song_schema",
-        "video_url": "https://cdn1.suno.ai/9bab7d28-44d2-42bc-bf92-a060adad43c1.mp4",
-        "audio_url": "https://cdn1.suno.ai/9bab7d28-44d2-42bc-bf92-a060adad43c1.mp3",
+        "video_url": "https://cdn1.suno.ai/465f7c3c-9ad0-43cd-8688-4e4d1786e7c3.mp4",
+        "audio_url": "https://studio-api.prod.suno.com/api/forbidden",
         "media_urls": [
           {
-            "url": "https://d2lwuy8qc234o3.cloudfront.net/1/clip/9bab7d28-44d2-42bc-bf92-a060adad43c1.m4a",
+            "url": "https://d2lwuy8qc234o3.cloudfront.net/1/clip/465f7c3c-9ad0-43cd-8688-4e4d1786e7c3.m4a",
             "content_type": "m4a-opus",
             "delivery": "progressive",
             "encoding": "1.0.0"
-          },
-          {
-            "url": "https://cdn1.suno.ai/9bab7d28-44d2-42bc-bf92-a060adad43c1.mp3",
-            "content_type": "mp3",
-            "delivery": "progressive"
           }
         ],
-        "image_url": "https://cdn2.suno.ai/image_6fea8335-7aa6-4fa7-a016-077b851aeaa2.jpeg",
-        "image_large_url": "https://cdn2.suno.ai/image_large_6fea8335-7aa6-4fa7-a016-077b851aeaa2.jpeg",
+        "image_url": "https://cdn2.suno.ai/465f7c3c-9ad0-43cd-8688-4e4d1786e7c3_60daf0e0.jpeg",
+        "image_large_url": "https://cdn2.suno.ai/465f7c3c-9ad0-43cd-8688-4e4d1786e7c3_60daf0e0.jpeg",
         "major_model_version": "",
         "model_name": "chirp-chirp",
         "metadata": {
-          "tags": "grayybird",
-          "user_corrected_description": "grayybird",
-          "prompt": "[Intro]\n[acoustic guitar strumming, light percussion]\n\n[Verse 1]\n[tenor male vocals]\nFor your sake don't need the migraine\nLovin' on me is like speedin' on a highway\nYou're bound to crash red bottoms on the gas\nAnd she five foot three but she never did need a man\nGot a pocket full of kush on me\nGot a little clock but she got a crush on me\nBut I know how the game works it's human nature\nShe fascinated by the mind of a stranger\nGirl I'm not twenty anymore\nThere's nothing you could show me I ain't seen before\nGot a PhD in human psyche you think you like me\nBut you don't\nYou're in love with the way I make you feel\nKissin' on me like we sat and cut a deal\nDone all the drugs tried every line\nI know you did that eyes on light\nYou're a lady with the baggage keep all your baggage\nTellin' all the men that you was savage\nWho are you look for love you dropped\nDon't you keep your fingers crossed\n\n[Chorus]\n[full band enters, distorted electric guitar, driving drums]\n'Cause I already lost the one that I love\nIf you come come close I'll leave you in the dust\nI already lost the one that I love\nIf you come come close I'll leave you in the dust\n\n[Verse 2]\n[drums drop to kick and hi-hat, acoustic guitar continues]\nLately I watch what I say\nIf I'm the creator this is my game\nI'm scannin' my mind like a bird on my shoulder\nNegative thought loops heavy and then bolder\nLivin' up in Trenton buildin' my momentum\nI miss my friends but I know it's just a symptom\nSong after song for eight years long\nPops told me I wouldn't go far\nBut I crave to prove them wrong\nI like my way as I like my bar\nAnd man being gifted's a harder existence\nSlowly I can feel it all shifting\nGot some money in my pocket now\nAnd I saw gifts and tears I drowned\nThrough seasons of pain but lessons were gained\nSearchin' Vancouver for shows I could play\nI'm a tired singer-songwriter look in my eyes closely you'll see a fire\nEveryone who met me along my path would always ask it where's your dad?\nSo I shattered my heart in two\nBy choice I left the girl I knew\nWas all for the craft I never realized\nThousands of hours I'll never get back\nWent on a tour in us got a thing for Lena\nOnly girl that ever would believe us\nWho are we look for love we dropped\nDon't you keep your fingers crossed\n\n[Chorus]\n[full band, high energy]\n'Cause I already lost the one that I love\nIf you come come close I'll leave you in the dust\nI already lost the one that I love\nIf you come come close I'll leave you in the dust\nI already lost the one that I love",
+          "tags": "A hip-hop song with rapped English vocals by a solo male vocalist, featuring synthesizer and electronic drums; energetic.",
+          "prompt": "[Intro]\nKill, kill, kill, bitch, I'm back\nI just put my team on the map\nI turn up the city, grab my baseball bat\nI was running the city by my lonely\n\n[Chorus]\nKill, kill, kill, bitch, I'm back\nI just put my team on the map\nI turn up the city, grab my baseball bat\nI was running the city by my lonely\nFelt like a motherfucking rock star\nBitch, I'm way too heartless, I know\nBaby, I'm a star on a roll\nWhoa, whoa, bitch, I'm blowing up in the cold\nThere's two sides to the story\n\n[Verse 1]\nFuck, I thought you were for me\nDon't try to ignore me\nI swear to you, say that you know me\nKill, kill, kill, bitch, I'm back\nShe said that I'm bringing it back\nBefore I just lit up the match, bro\nI'm money and the team star\nAnything I die for\nPlease don't call on my phone\nYou are all alone\nSwear you were the fuck going\nThink I better fucking blow it\n\n[Chorus]\nFelt like a motherfucking rock star\nBitch, I'm way too heartless, I know\nBaby, I'm a star on a roll\nWhoa, whoa, bitch, I'm blowing up in the cold\nThere's two sides to the story\nFuck, I thought you were for me\nDon't try to ignore me\nI swear to you, say that you know me",
           "type": "upload",
-          "duration": 166.33333333333334,
+          "duration": 110.86366666666666,
           "has_vocal": true,
           "can_publish_with_vocal": true,
           "is_audio_upload_tos_accepted": true,
+          "vox_render_mode": "strict",
           "can_remix": true,
           "is_remix": false,
           "has_stem": false,
@@ -48,42 +43,37 @@
           "uses_latest_model": false,
           "secondary_badges": [
             {
-              "display_name": "Upload",
+              "display_name": "UPLOAD",
               "icon_key": "uploaded",
               "light": {
-                "text_color": "7D7C83",
-                "background_color": "1C1C1F0A",
-                "border_color": "00000000"
+                "text_color": "A3A3A3"
               },
               "dark": {
-                "text_color": "A3A3A3",
-                "background_color": "FFFFFF0C",
-                "border_color": "00000000"
+                "text_color": "A3A3A3"
               }
             }
           ]
         },
-        "caption": "if you have trouble with love, listen tot this",
         "is_liked": false,
-        "user_id": "5b33b659-a81f-4559-ba6b-c58a420449b4",
-        "display_name": "grayybird",
-        "handle": "grayybird",
-        "is_handle_updated": false,
-        "avatar_image_url": "https://cdn2.suno.ai/ab309f66-8fa5-440a-ac93-cdfddd355703.jpeg",
+        "user_id": "9388b360-39e3-408f-a908-8a0a6d8e2237",
+        "display_name": "sahxl506",
+        "handle": "sahxl506",
+        "is_handle_updated": true,
+        "avatar_image_url": "https://cdn1.suno.ai/a69e029a.webp",
         "is_trashed": false,
         "is_hidden": false,
-        "created_at": "2026-08-12T16:01:39.528Z",
+        "created_at": "2026-09-07T11:37:36.133Z",
         "is_public": true,
         "is_persona_root": false,
         "is_following_creator": false,
         "albums": [],
         "explicit": false,
-        "comment_count": 205,
-        "flag_count": 1031,
-        "display_tags": "rnb pop",
+        "comment_count": 30,
+        "flag_count": 7,
+        "display_tags": "hip-hop, energetic, male vocals, synthesizer",
         "is_contest_clip": false,
         "has_hook": true,
-        "hook_preview_thumbnail_url": "https://cdn2.suno.ai/video_upload_3a13c7bb-0037-4970-a50c-f4fe2c2e8e68_video_upload_3a13c7bb-0037-4970-a50c-f4fe2c2e8e68_cover_snapshot_0s_1786553354_image.jpeg",
+        "hook_preview_thumbnail_url": "https://cdn2.suno.ai/video_upload_3ff92840-a9ae-4bfd-9b8f-53958a2e0918_video_upload_3ff92840-a9ae-4bfd-9b8f-53958a2e0918_cover_snapshot_0s_1788782140_image.jpeg",
         "batch_index": 0,
         "action_config": {
           "actions": [
@@ -114,6 +104,16 @@
             },
             {
               "action_type": "remove_from_playlist",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "play_next",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "add_to_queue",
               "disabled": false,
               "visible": true
             },
@@ -136,65 +136,61 @@
         }
       },
       "relative_index": 1,
-      "created_at": "2026-08-19T14:52:25.059Z"
+      "created_at": "2026-09-16T13:38:07.140Z"
     },
     {
       "clip": {
         "status": "complete",
-        "title": "HOSTAGE",
-        "play_count": 42774,
-        "upvote_count": 848,
+        "title": "Blueprint Hours",
+        "play_count": 12154,
+        "upvote_count": 219,
         "allow_comments": true,
         "is_verified": false,
-        "id": "3658f8a4-5645-4459-96ae-2b2005664c5b",
+        "id": "9a1aaed2-70c1-49ff-804c-111f0c9b5415",
         "entity_type": "song_schema",
-        "video_url": "https://cdn1.suno.ai/3658f8a4-5645-4459-96ae-2b2005664c5b.mp4",
-        "audio_url": "https://cdn1.suno.ai/3658f8a4-5645-4459-96ae-2b2005664c5b.mp3",
+        "video_url": "https://cdn1.suno.ai/9a1aaed2-70c1-49ff-804c-111f0c9b5415.mp4",
+        "audio_url": "https://studio-api.prod.suno.com/api/forbidden",
         "media_urls": [
           {
-            "url": "https://d2lwuy8qc234o3.cloudfront.net/1/clip/3658f8a4-5645-4459-96ae-2b2005664c5b.m4a",
+            "url": "https://d2lwuy8qc234o3.cloudfront.net/1/clip/9a1aaed2-70c1-49ff-804c-111f0c9b5415.m4a",
             "content_type": "m4a-opus",
             "delivery": "progressive",
             "encoding": "1.0.0"
-          },
-          {
-            "url": "https://cdn1.suno.ai/3658f8a4-5645-4459-96ae-2b2005664c5b.mp3",
-            "content_type": "mp3",
-            "delivery": "progressive"
           }
         ],
-        "image_url": "https://cdn2.suno.ai/3658f8a4-5645-4459-96ae-2b2005664c5b_e31e8d3a.jpeg",
-        "image_large_url": "https://cdn2.suno.ai/3658f8a4-5645-4459-96ae-2b2005664c5b_e31e8d3a.jpeg",
-        "major_model_version": "v5.5",
-        "model_name": "chirp-fenix",
+        "image_url": "https://cdn2.suno.ai/e6928f7d-5ee1-4ba9-9a37-13bc48dcb69c.jpeg",
+        "image_large_url": "https://cdn2.suno.ai/e6928f7d-5ee1-4ba9-9a37-13bc48dcb69c.jpeg",
+        "major_model_version": "v6",
+        "model_name": "chirp-hawk",
         "metadata": {
-          "tags": "Smooth male baritone vocals with a deep, warm and intimate tone. Melodic introspective R&B with a dark, emotional atmosphere and a strong low-end presence. Deep sub-bass, warm bassline, atmospheric synthesizers, subtle electronic textures and spacious production. Slow, hypnotic groove with expressive melodies and emotional phrasing. Keep the vocals clean and controlled, with subtle reverb, gentle autotune and tasteful background harmonies. Modern, sensual and melancholic, balancing vulnerability with confidence. Minimal verses that build into an emotional, memorable chorus.",
-          "prompt": "[Instrumental]\n\n[Intro]\n[staccato synth bell melody, low-pass filtered pad]\n\n[Section A]\n[distorted 808 bass enters, syncopated pattern]\n[dry snare on beat 3]\n[rapid hi-hat rolls with 32nd-note triplets]\n\n[Section B]\n[808 bass continues]\n[synth bell melody repeats]\n[hi-hats become more complex with pitch slides]\n\nPlease say something\nDon’t hang up without telling me what happened\nBetween you and me\n\nPlease express something\nAnger or a smile that fell asleep\nAnd if you’re still you and me\n\nAll I want is for you to want me like before\nThat burning fire that melts me to the core\nYour piercing eyes that make me forget\n\n[Chorus]\n\nWhen we’re together, I know that we’re alright\nWhen we’re apart, we’re nobody at all\nTwo crazy lovers losing our minds inside a prison\nAn open love that keeps me as its hostage (hostage)\n\n[Instrumental]\n\n[Verse]\n\nPlease say something\nDon’t hang up without telling me what happened\nBetween you and me\n\nPlease express something\nAnger or a smile that fell asleep\nAnd if you’re still you and me\n\nAll I want is for you to want me like before\nThat burning fire that melts me to the core\nYour piercing eyes that make me forget\n\n[Instrumental]\n\n[staccato synth bell melody, low-pass filtered pad]\n\n[Section A]\n[distorted 808 bass enters, syncopated pattern]\n[dry snare on beat 3]\n[rapid hi-hat rolls with 32nd-note triplets]\n\n[Section B]\n[808 bass continues]\n[synth bell melody repeats]\n[hi-hats become more complex with pitch slides]\n\n[Bridge]\n\nTake me away, anywhere but here\nSex, money, addiction, passion\nThat’s all we have left\nRun, disappear, just fade away\nAll I wanna do is speed away with you\n\n[Chorus]\n\nWhen we’re together, I know that we’re alright\nWhen we’re apart, we’re nobody at all\nTwo crazy lovers losing our minds inside a prison\nAn open love that keeps me as its hostage (hostage)\n\nWhen we’re together, I know that we’re alright\nWhen we’re apart, we’re nobody at all\nTwo crazy lovers losing our minds inside a prison\nAn open love that keeps me as its hostage (hostage)",
+          "tags": "Electro-jazz with dark experimental club energy: syncopated broken-beat drums, crisp analog drum-machine hits, walking electric bass against sequenced synth bass, angular clean electric piano and warm Rhodes voicings, muted trumpet improvisations, talking-drum-inspired polyrhythms, granular vocal fragments, tense male spoken-to-sung English delivery with call-and-response phrasing, dry close percussion and wide textured electronics; sparse mechanical opening grows into a dense late-night climax through unusual harmonies and layered repetition.",
+          "prompt": "\nTwo AM, lamp low, city’s asleep outside my window. Coffee cold, headphones on, pen moving but I don’t know where it’s going. Just the hum of my speakers and the thoughts I’m trying to free, room getting colder but my focus getting warmer when I breathe. Pages scattered on the floor, crossing out, rewriting, finding what’s true. This the hour when the noise dies, when I build something that’s mine to use. Hands cramping but I can’t stop, muscle memory taking over now. Every line’s a brick I’m laying, foundation getting stronger, I can feel it when it’s.\nReal, real, this is real. Two AM, this is when I feel. Line by line, brick by brick. This is real, this is it. Real, real, signal’s clear. Two AM, nobody here. What I make tonight won’t fade. This is real, this is where I stay.\nReplay, replay, looping sections ‘til they sound right in my ear. Bass knocking through the room, feel it rattle in my chest, getting near. Not chasing what they want, just building what feels honest in my hands. Pen to page, conductor to the current, that’s the only way I understand. Rhodes keys warm, filling up the space between the silence and the beat. Stack the syllables like scaffolding, precision in the way I speak. Corner store won’t open for another four hours, but I got what I need. Everything I need is right here in these four walls, just me.\nReal, real, this is real. Two AM, this is when I feel. Line by line, brick by brick. This is real, this is it. Real, real, signal’s clear. Two AM, nobody here. What I make tonight won’t fade. This is real, this is where I stay.\nWhen the sun comes up, this will still be standing. What I built in dark keeps expanding. Every word’s a witness, every bar’s a place, for the ones who listen after I’m erased. Two AM architect, this is where I’m found.\nReal, real, this is real. Two AM, this is when I feel. Line by line, brick by brick. This is real, this is it. Real, real, signal’s clear. Two AM, nobody here. What I make tonight won’t fade. This is real, this is where I stay.\nBlueprint hours, where I build. Blueprint hours, where I feel. Blueprint hours, make it real. Blueprint hours, this is real.",
           "edited_clip_id": "00000000-0000-0000-0000-000000000000",
           "type": "gen",
-          "duration": 229.68,
+          "duration": 247.64,
           "refund_credits": false,
           "stream": true,
-          "has_vocal": true,
+          "has_vocal": false,
           "can_publish_with_vocal": true,
           "make_instrumental": false,
           "control_sliders": {
-            "audio_weight": 0.9,
-            "style_weight": 0.8,
-            "weirdness_constraint": 0.1
+            "audio_weight": 0.39,
+            "style_weight": 0.7,
+            "aug_creativity": 1
           },
           "cover_clip_id": "00000000-0000-0000-0000-000000000000",
+          "vox_render_mode": "strict",
           "task": "cover",
           "can_remix": true,
           "show_remix": false,
           "is_remix": true,
           "priority": 10,
           "has_stem": false,
-          "video_is_stale": true,
+          "video_is_stale": false,
           "uses_latest_model": true,
           "model_badges": {
             "songcard": {
-              "display_name": "v5.5",
+              "display_name": "V6",
               "light": {
                 "text_color": "FD429C",
                 "background_color": "0000004D",
@@ -207,453 +203,58 @@
               }
             },
             "songrow": {
-              "display_name": "v5.5",
+              "display_name": "V6",
               "light": {
                 "text_color": "FD429C",
-                "background_color": "FD429C1A",
-                "border_color": "00000000"
+                "text_color_gradient": [
+                  "FD429C",
+                  "FF5126"
+                ]
               },
               "dark": {
                 "text_color": "FD429C",
-                "background_color": "FD429C40",
-                "border_color": "00000000"
+                "text_color_gradient": [
+                  "FD429C",
+                  "FF5126"
+                ]
               }
             }
           },
           "secondary_badges": [
             {
-              "display_name": "Cover",
+              "display_name": "COVER",
               "light": {
-                "text_color": "7D7C83",
-                "background_color": "1C1C1F0A",
-                "border_color": "00000000"
+                "text_color": "A3A3A3"
               },
               "dark": {
-                "text_color": "A3A3A3",
-                "background_color": "FFFFFF0C",
-                "border_color": "00000000"
+                "text_color": "A3A3A3"
               }
             }
           ],
           "image_config": {
             "use_image_config_template": true,
-            "id": "renaissance",
+            "id": "polaroid",
             "default_cover_style": "brand_refresh"
           },
           "is_mumble": false
         },
-        "caption": "#dark #r&b #alt-r&b #pop",
         "is_liked": false,
-        "user_id": "038a692d-6acd-4f48-b60e-9866095e4f40",
-        "display_name": "O.RAH",
-        "handle": "oorah",
-        "is_handle_updated": false,
-        "avatar_image_url": "https://cdn1.suno.ai/370ed03e.webp",
-        "is_trashed": false,
-        "is_hidden": false,
-        "created_at": "2026-08-10T20:47:01.107Z",
-        "is_public": true,
-        "is_persona_root": false,
-        "is_following_creator": false,
-        "albums": [],
-        "explicit": false,
-        "comment_count": 78,
-        "flag_count": 29,
-        "display_tags": "R&B, Alt-R&B, Pop, Dark",
-        "is_contest_clip": false,
-        "has_hook": true,
-        "hook_preview_thumbnail_url": "https://cdn2.suno.ai/video_upload_4b9c5d94-3c5e-4547-8b6a-43013f5585b3_video_upload_4b9c5d94-3c5e-4547-8b6a-43013f5585b3_cover_snapshot_0s_1787196360_image.jpeg",
-        "batch_index": 0,
-        "action_config": {
-          "actions": [
-            {
-              "action_type": "add_to_playlist",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "like_song",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "share_song",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "dislike_song",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "report_song",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "remove_from_playlist",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "remix_extend",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "remix_cover",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "remix_reuse_style",
-              "disabled": false,
-              "visible": true
-            }
-          ]
-        }
-      },
-      "relative_index": 3,
-      "created_at": "2026-08-19T14:52:35.679Z"
-    },
-    {
-      "clip": {
-        "status": "complete",
-        "title": "It's Fine (I'm Fine)",
-        "play_count": 26223,
-        "upvote_count": 646,
-        "allow_comments": true,
-        "is_verified": false,
-        "id": "2334e1cd-6dbe-4023-8691-5c1b52d8902a",
-        "entity_type": "song_schema",
-        "video_url": "https://cdn1.suno.ai/2334e1cd-6dbe-4023-8691-5c1b52d8902a.mp4",
-        "audio_url": "https://cdn1.suno.ai/2334e1cd-6dbe-4023-8691-5c1b52d8902a.mp3",
-        "media_urls": [
-          {
-            "url": "https://d2lwuy8qc234o3.cloudfront.net/1/clip/2334e1cd-6dbe-4023-8691-5c1b52d8902a.m4a",
-            "content_type": "m4a-opus",
-            "delivery": "progressive",
-            "encoding": "1.0.0"
-          },
-          {
-            "url": "https://cdn1.suno.ai/2334e1cd-6dbe-4023-8691-5c1b52d8902a.mp3",
-            "content_type": "mp3",
-            "delivery": "progressive"
-          }
-        ],
-        "image_url": "https://cdn2.suno.ai/a2c225b8-d76e-4050-b046-753f46670e4f.jpeg",
-        "image_large_url": "https://cdn2.suno.ai/a2c225b8-d76e-4050-b046-753f46670e4f.jpeg",
-        "major_model_version": "",
-        "model_name": "chirp-chirp",
-        "metadata": {
-          "tags": "",
-          "negative_tags": "",
-          "prompt": "I’m tired of waiting for people to change,\nbuilding them up just to watch them cave.\nI can feel in my bones what’s possible,\nbut you keep turning away.\n\nYou make it sound like it’s everyone’s fault,\nbut I’ve tuned that noise out for good.\nThere’s only so long you can mourn someone\nwho’s still in the room.\n\nAnd you say it’s fine\nAnd I say, it’s fine.\n\nYou fade into the silence,\nI’m guilty of compliance,\nguarding every motion,\ncraving that oxytocin.\nLike tears from my child’s eye\nbut I haven’t cried since.\n\nThere’s nothing left to do,\njust wait outside the bar,\nstaring at my phone,\nhoping it lights when I’m alone.\nAll those years now wasted\nso near and yet so far.\n\nYou keep saying the world’s unfair,\nlike the world ever promised it’d care.\nI’ve been holding the line for both of us,\nbut the rope burned through somewhere.\n\nMaybe you’ll die inside your quiet,\nand I’ll just keep sweeping the floor.\nFunny how grief becomes routine\nwhen love’s not work anymore.\n\nAnd you say it’s fine\nAnd I say, it’s fine.\n\nYou fade into the silence,\nI’m guilty of compliance,\nguarding every motion,\ncraving that oxytocin.\nLike tears from my child’s eye\nbut I haven’t cried since.\n\nThere’s nothing left to do,\njust wait outside the bar,\nstaring at my phone,\nhoping it lights when I’m alone.\nAll those years now wasted\nso near and yet so far.\n\nI think I already buried you\nsomewhere between guilt and grace.\nThis one’s just the last funeral\nI’ll hold in your name.\n\nYou fade into the silence,\nI’m guilty of compliance,\nguarding every motion,\ncraving that oxytocin.\nLike tears from my child’s eye\nbut I haven’t cried since.\n\nThere’s nothing left to do,\njust wait outside the bar,\nstaring at my phone,\nhoping it lights when I’m alone.\nAll those years now wasted\nso near and yet so far.\n\n---\n\nLyrics written by SED NO1",
-          "type": "studio_export",
-          "duration": 224.84,
-          "has_vocal": false,
-          "can_publish_with_vocal": true,
-          "can_remix": true,
-          "is_remix": false,
-          "has_stem": false,
-          "video_is_stale": false,
-          "uses_latest_model": false
-        },
-        "caption": "Drift Evans",
-        "is_liked": false,
-        "user_id": "7514b31b-2cf5-4c4b-a0f9-d9fe754b66fa",
-        "display_name": "SED NO1///diskrot",
-        "handle": "sedno1",
+        "user_id": "c82995a8-388a-4d3c-bc73-5655d8d68043",
+        "display_name": "Sonic",
+        "handle": "sonicprod85",
         "is_handle_updated": true,
-        "avatar_image_url": "https://cdn1.suno.ai/a2efa106.webp",
+        "avatar_image_url": "https://cdn2.suno.ai/3b3b8c9d-1a52-4f4d-84c7-56f04957aa36.jpeg",
         "is_trashed": false,
         "is_hidden": false,
-        "created_at": "2025-11-09T03:52:40.050Z",
+        "created_at": "2026-09-11T01:17:52.335Z",
         "is_public": true,
         "is_persona_root": false,
         "is_following_creator": false,
         "albums": [],
         "explicit": false,
-        "comment_count": 69,
-        "flag_count": 2,
-        "display_tags": "country, heartfelt, americana, indie folk, bedroom pop, emotional",
-        "is_contest_clip": false,
-        "has_hook": false,
-        "batch_index": 0,
-        "action_config": {
-          "actions": [
-            {
-              "action_type": "add_to_playlist",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "like_song",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "share_song",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "dislike_song",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "report_song",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "remove_from_playlist",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "remix_extend",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "remix_cover",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "remix_reuse_style",
-              "disabled": false,
-              "visible": true
-            }
-          ]
-        }
-      },
-      "relative_index": 5,
-      "created_at": "2026-08-19T14:52:39.961Z"
-    },
-    {
-      "clip": {
-        "status": "complete",
-        "title": "Shoot Me Down (double tap)",
-        "play_count": 291151,
-        "upvote_count": 3288,
-        "allow_comments": true,
-        "is_verified": false,
-        "id": "d65bd590-6586-4727-931b-0d6f673c5897",
-        "entity_type": "song_schema",
-        "video_url": "https://cdn1.suno.ai/d65bd590-6586-4727-931b-0d6f673c5897.mp4",
-        "audio_url": "https://cdn1.suno.ai/d65bd590-6586-4727-931b-0d6f673c5897.mp3",
-        "media_urls": [
-          {
-            "url": "https://d2lwuy8qc234o3.cloudfront.net/1/clip/d65bd590-6586-4727-931b-0d6f673c5897.m4a",
-            "content_type": "m4a-opus",
-            "delivery": "progressive",
-            "encoding": "1.0.0"
-          },
-          {
-            "url": "https://cdn1.suno.ai/d65bd590-6586-4727-931b-0d6f673c5897.mp3",
-            "content_type": "mp3",
-            "delivery": "progressive"
-          }
-        ],
-        "image_url": "https://cdn2.suno.ai/image_d65bd590-6586-4727-931b-0d6f673c5897.jpeg",
-        "image_large_url": "https://cdn2.suno.ai/image_large_d65bd590-6586-4727-931b-0d6f673c5897.jpeg",
-        "major_model_version": "v4.5+",
-        "model_name": "chirp-bluejay",
-        "metadata": {
-          "tags": "sultry alternative bedroom pop, Sample-driven, Strong looping sample at the center of the track, The sample should dominate the arrangement, Dusty drums, bass, layered textures, Vocals sit inside the mix rather than on top of it, Multiple overlapping vocal melodies woven into the instrumental, hypnotic, vocals, No acoustic guitar, No bright energy, No intro",
-          "prompt": "Check out ‘On and On’ out now!",
-          "edited_clip_id": "00000000-0000-0000-0000-000000000000",
-          "type": "edit_crop",
-          "duration": 169.84,
-          "can_publish_with_vocal": true,
-          "can_remix": false,
-          "is_remix": true,
-          "has_stem": false,
-          "video_is_stale": true,
-          "uses_latest_model": false,
-          "model_badges": {
-            "songrow": {
-              "display_name": "v4.5+",
-              "light": {
-                "text_color": "7D7C83",
-                "background_color": "00000000",
-                "border_color": "0000001A"
-              },
-              "dark": {
-                "text_color": "A3A3A3",
-                "background_color": "00000000",
-                "border_color": "FFFFFF1A"
-              }
-            }
-          }
-        },
-        "is_liked": false,
-        "user_id": "96aa6dd1-17af-43aa-a271-4c91e4d785c5",
-        "display_name": "Kato",
-        "handle": "kato",
-        "is_handle_updated": true,
-        "avatar_image_url": "https://cdn2.suno.ai/a7dc7db9-c0e8-4084-967e-aef6c7cd7c09.jpeg",
-        "is_trashed": false,
-        "is_hidden": false,
-        "created_at": "2026-07-04T09:30:47.743Z",
-        "is_public": true,
-        "is_persona_root": false,
-        "is_following_creator": false,
-        "albums": [],
-        "explicit": false,
-        "comment_count": 327,
-        "flag_count": 70,
-        "is_contest_clip": false,
-        "has_hook": false,
-        "batch_index": 0,
-        "action_config": {
-          "actions": [
-            {
-              "action_type": "add_to_playlist",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "like_song",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "share_song",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "dislike_song",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "report_song",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "remove_from_playlist",
-              "disabled": false,
-              "visible": true
-            },
-            {
-              "action_type": "remix_extend",
-              "disabled": true,
-              "visible": false,
-              "action_override": {
-                "type": "toast",
-                "text": "This user disabled remixes for this song."
-              }
-            },
-            {
-              "action_type": "remix_cover",
-              "disabled": true,
-              "visible": false,
-              "action_override": {
-                "type": "toast",
-                "text": "This user disabled remixes for this song."
-              }
-            },
-            {
-              "action_type": "remix_reuse_style",
-              "disabled": true,
-              "visible": false,
-              "action_override": {
-                "type": "toast",
-                "text": "This user disabled remixes for this song."
-              }
-            }
-          ]
-        }
-      },
-      "relative_index": 10,
-      "created_at": "2026-08-04T22:22:58.288Z"
-    },
-    {
-      "clip": {
-        "status": "complete",
-        "title": "West Wind",
-        "play_count": 130773,
-        "upvote_count": 2527,
-        "allow_comments": true,
-        "is_verified": false,
-        "id": "3aadbfaf-b9c8-498c-a5d1-29c12576ae24",
-        "entity_type": "song_schema",
-        "video_url": "https://cdn1.suno.ai/3aadbfaf-b9c8-498c-a5d1-29c12576ae24.mp4",
-        "audio_url": "https://cdn1.suno.ai/3aadbfaf-b9c8-498c-a5d1-29c12576ae24.mp3",
-        "media_urls": [
-          {
-            "url": "https://d2lwuy8qc234o3.cloudfront.net/1/clip/3aadbfaf-b9c8-498c-a5d1-29c12576ae24.m4a",
-            "content_type": "m4a-opus",
-            "delivery": "progressive",
-            "encoding": "1.0.0"
-          },
-          {
-            "url": "https://cdn1.suno.ai/3aadbfaf-b9c8-498c-a5d1-29c12576ae24.mp3",
-            "content_type": "mp3",
-            "delivery": "progressive"
-          }
-        ],
-        "image_url": "https://cdn2.suno.ai/157cf87a-1ce7-470d-a715-efe9e6ed824f.jpeg",
-        "image_large_url": "https://cdn2.suno.ai/157cf87a-1ce7-470d-a715-efe9e6ed824f.jpeg",
-        "major_model_version": "v5",
-        "model_name": "chirp-crow",
-        "metadata": {
-          "tags": "World fusion minimalism with off-beat percussion, kaba-style hand drums, rubbery bass pulses, and vocal percussion woven like an instrument; verse stays sparse and hypnotic, pre-chorus opens with stacked chant swells, chorus lands on a short spell-like refrain with group responses. Add sand-shaker ticks, frame-drum accents, and reversed breathy swells. Gunky-funky, dry and intimate mix with warm room bloom., world fusion, funky",
-          "prompt": "[Verse 1]\nBy the Hill it rose\nGrey on grey on grey\nA body left to dust\nA shape that would not stay\nWe stood there stunned and still\nThe air went thin and cold\nThen the mist began to climb\nLike stories being told\n\n[Pre-Chorus]\nOh ah\nIt leaned to the West\nOh ah\nThen it turned its face\n\n[Chorus]\nWest wind take it\nWest wind break it\nWest wind shake it\nGone gone gone\nWest wind take it\nWest wind break it\nWest wind shake it\nGone gone gone\n\n[Verse 2]\nIt wore a pale disguise\nA shroud of moving ash\nFor one breath it looked alive\nThen folded into hush\nThe wind came sharp and clean\nA cut across the bone\nThe figure lost its name\nAnd faded on its own\n\n[Pre-Chorus]\nOh ah\nIt leaned to the West\nOh ah\nThen it turned to rest\n\n[Chorus]\nWest wind take it\nWest wind break it\nWest wind shake it\nGone gone gone\nWest wind take it\nWest wind break it\nWest wind shake it\nGone gone gone\n\n[Bridge]\nNo hand could keep it here\nNo vow could make it last\nJust breath against the sky\nAnd nothing held it fast\nAh ah\nA little sigh\nAh ah\nAnd the Hill went quiet\n\n[Chorus]\nWest wind take it\nWest wind break it\nWest wind shake it\nGone gone gone\nWest wind take it\nWest wind break it\nWest wind shake it\nGone gone gone",
-          "gpt_description_prompt": "To the dismay of those that stood by, about the body of Saruman a grey mist gathered, and rising slowly to a great height like smoke from a fire, as a pale shrouded figure it loomed over the Hill. For a moment it wavered, looking to the West; but out of the West came a cold wind, and it bent away, and with a sigh dissolved into nothing.\n\nGenre: minimalistic, world fusion, kabla, off-beat percussion, too gunky because it’s funky, the voice is used as an instrument itself",
-          "type": "gen",
-          "duration": 194.88,
-          "refund_credits": false,
-          "stream": true,
-          "make_instrumental": false,
-          "task": "",
-          "can_remix": true,
-          "is_remix": false,
-          "priority": 10,
-          "has_stem": false,
-          "video_is_stale": true,
-          "uses_latest_model": false,
-          "model_badges": {
-            "songrow": {
-              "display_name": "v5",
-              "light": {
-                "text_color": "7D7C83",
-                "background_color": "00000000",
-                "border_color": "0000001A"
-              },
-              "dark": {
-                "text_color": "A3A3A3",
-                "background_color": "00000000",
-                "border_color": "FFFFFF1A"
-              }
-            }
-          },
-          "is_mumble": false
-        },
-        "is_liked": false,
-        "user_id": "f48809e0-ec98-4126-9688-20a8d72271a0",
-        "display_name": "john",
-        "handle": "johntherevelator",
-        "is_handle_updated": true,
-        "avatar_image_url": "https://cdn2.suno.ai/5aaf9c31-5372-403c-8948-25cec305cd60.jpeg",
-        "is_trashed": false,
-        "is_hidden": false,
-        "created_at": "2026-06-25T08:03:19.956Z",
-        "is_public": true,
-        "is_persona_root": false,
-        "is_following_creator": false,
-        "albums": [],
-        "explicit": false,
-        "comment_count": 221,
-        "flag_count": 1022,
-        "display_tags": "world fusion, minimalism, gunky-funky",
+        "comment_count": 24,
+        "flag_count": 6,
+        "display_tags": "electro-jazz, experimental club",
         "is_contest_clip": false,
         "has_hook": false,
         "batch_index": 1,
@@ -690,6 +291,16 @@
               "visible": true
             },
             {
+              "action_type": "play_next",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "add_to_queue",
+              "disabled": false,
+              "visible": true
+            },
+            {
               "action_type": "remix_extend",
               "disabled": false,
               "visible": true
@@ -707,12 +318,739 @@
           ]
         }
       },
-      "relative_index": 11,
-      "created_at": "2026-08-04T22:22:58.288Z"
+      "relative_index": 2,
+      "created_at": "2026-09-16T13:40:26.351Z"
+    },
+    {
+      "clip": {
+        "status": "complete",
+        "title": " Pretend",
+        "play_count": 8371,
+        "upvote_count": 189,
+        "allow_comments": true,
+        "is_verified": false,
+        "id": "bbb1ca55-4f8f-47de-8ad0-9199f4a65ab4",
+        "entity_type": "song_schema",
+        "video_url": "https://cdn1.suno.ai/bbb1ca55-4f8f-47de-8ad0-9199f4a65ab4.mp4",
+        "audio_url": "https://studio-api.prod.suno.com/api/forbidden",
+        "media_urls": [
+          {
+            "url": "https://d2lwuy8qc234o3.cloudfront.net/1/clip/bbb1ca55-4f8f-47de-8ad0-9199f4a65ab4.m4a",
+            "content_type": "m4a-opus",
+            "delivery": "progressive",
+            "encoding": "1.0.0"
+          }
+        ],
+        "image_url": "https://cdn2.suno.ai/bbb1ca55-4f8f-47de-8ad0-9199f4a65ab4_1b77c870.jpeg",
+        "image_large_url": "https://cdn2.suno.ai/bbb1ca55-4f8f-47de-8ad0-9199f4a65ab4_1b77c870.jpeg",
+        "major_model_version": "v6",
+        "model_name": "chirp-goose",
+        "metadata": {
+          "tags": "Cinematic Instagram Reel, lonely person walking through a rainy city at night, neon reflections, emotional eyes, fake smile fading in a mirror, dreamy moody atmosphere, slow motion, film grain, soft bokeh, raw heartbreak aesthetic, viral Gen-Z music video, 9:16 vertical, instantly captivating.",
+          "prompt": "PRETEND\n\nAll i is to do pretend\nthat I dont care anyone\ncause thats the way I can live a run\n\ndays of love in these confused feelings\nmade up lies, I'm allowed to do sin\nbut I dont oh I don't cause I don't\ndon't pretend to be alright\ninfront of everyone\ncause it drains all the mood\nthat I'm having all alone\n\ndon't pretend to be everyone's favorite\nploting twists in stories\noh that's no my job\nholding to good hiding so good\nAnd maybe I'm tired of running away\nfrom all of the things I don't know how to say\nI smile when they look, then I fade when they're gone\npretending I'm right when I know that I'm wrong\n\n[Chorus]\nOh, I don't wanna pretend anymore\nI don't wanna hide what I'm feeling inside\nI've been closing every door\njust to keep the pieces of me alive\nIf I cry, let me cry\nif I fall, let me fall\nI don't need to be somebody's favorite at all\nOh, maybe someday I'll learn\nI don't have to pretend to be someone I’m not\n\n[Verse 2]\nI keep my secrets underneath my skin\nwhere nobody knows where the hurt begins\nI laugh at the jokes, I play along\nthen I go home and wonder where I belong\n\nEverybody wants a perfect face\na perfect heart in a perfect place\nbut I'm just trying to breathe tonight\nwithout turning all my wrongs into right\n\n[Pre-Chorus]\nAnd maybe I'm scared of being seen\nof letting somebody know what I really mean\nSo I paint my smile and I carry on\nbut the colors disappear when everyone is gone\n\n[Chorus]\nOh, I don't wanna pretend anymore\nI don't wanna hide what I'm feeling inside\nI've been closing every door\njust to keep the pieces of me alive\nIf I cry, let me cry\nif I fall, let me fall\nI don't need to be somebody's favorite at all\nOh, maybe someday I'll learn\nI don't have to pretend to be someone I’m not\n\n[Bridge]\nMaybe I'm not broken\nmaybe I'm just tired\nmaybe all these feelings\nare the things that make me human\n\nAnd if I lose somebody\nfor showing who I am\nthen maybe they were never meant\nto understand\n\n[Breakdown]\noh oh oh uh uh uh\noh oh oh uh uh uh\ncause I do pretend to pretend i pretend\n\noh oh oh uh uh uh\noh oh oh uh uh uh\nbut underneath it all\nI'm still trying to understand\n\n[Final Chorus]\nI don't wanna pretend anymore\nlet the whole world see me as I am\nI don't wanna smile just to hide the storm\nI don't wanna live inside somebody else's plan\n\nIf I cry, let me cry\nif I fall, let me fall\nI don't need to be everyone's favorite at all\nAnd if tomorrow comes\nI'll face it on my own\nmaybe I was never meant\nto feel at home in everyone\n\n[Outro]\nAll i is to do pretend\nthat I dont care anyone\ncause thats the way I can live a run\n\nBut maybe I don't have to run\nmaybe I don't have to hide\nmaybe I can let myself\nfeel everything inside\n\noh oh oh uh uh uh\noh oh oh uh uh uh\ncause I do pretend to pretend i pretend\n\nbut tonight...\nI don't wanna pretend.",
+          "type": "gen",
+          "duration": 277.96,
+          "refund_credits": false,
+          "stream": true,
+          "make_instrumental": false,
+          "vox_render_mode": "strict",
+          "can_remix": false,
+          "is_remix": false,
+          "priority": 0,
+          "has_stem": false,
+          "video_is_stale": false,
+          "uses_latest_model": true,
+          "model_badges": {
+            "songcard": {
+              "display_name": "V6",
+              "light": {
+                "text_color": "FD429C",
+                "background_color": "0000004D",
+                "border_color": "00000000"
+              },
+              "dark": {
+                "text_color": "FD429C",
+                "background_color": "0000004D",
+                "border_color": "00000000"
+              }
+            },
+            "songrow": {
+              "display_name": "V6-MINI",
+              "light": {
+                "text_color": "C2C2C2",
+                "text_color_gradient": [
+                  "C2C2C2",
+                  "C2C2C2",
+                  "ADADAD",
+                  "989898",
+                  "838383",
+                  "6E6E6E"
+                ]
+              },
+              "dark": {
+                "text_color": "C2C2C2",
+                "text_color_gradient": [
+                  "C2C2C2",
+                  "C2C2C2",
+                  "ADADAD",
+                  "989898",
+                  "838383",
+                  "6E6E6E"
+                ]
+              }
+            }
+          },
+          "image_config": {
+            "use_image_config_template": true,
+            "id": "minimal_album_art",
+            "default_cover_style": "brand_refresh"
+          },
+          "is_mumble": false
+        },
+        "is_liked": false,
+        "user_id": "f42a97d5-a3a3-4251-b69c-f6669e2f549e",
+        "display_name": " GRACEY JOHNS",
+        "handle": "acejon",
+        "is_handle_updated": true,
+        "avatar_image_url": "https://cdn1.suno.ai/d49d1d45.webp",
+        "is_trashed": false,
+        "is_hidden": false,
+        "created_at": "2026-09-13T11:53:37.885Z",
+        "is_public": true,
+        "is_persona_root": false,
+        "is_following_creator": false,
+        "albums": [],
+        "explicit": false,
+        "comment_count": 12,
+        "flag_count": 5,
+        "is_contest_clip": false,
+        "has_hook": false,
+        "batch_index": 1,
+        "action_config": {
+          "actions": [
+            {
+              "action_type": "add_to_playlist",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "like_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "share_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "dislike_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "report_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "remove_from_playlist",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "play_next",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "add_to_queue",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "remix_extend",
+              "disabled": true,
+              "visible": false,
+              "action_override": {
+                "type": "toast",
+                "text": "This user disabled remixes for this song."
+              }
+            },
+            {
+              "action_type": "remix_cover",
+              "disabled": true,
+              "visible": false,
+              "action_override": {
+                "type": "toast",
+                "text": "This user disabled remixes for this song."
+              }
+            },
+            {
+              "action_type": "remix_reuse_style",
+              "disabled": true,
+              "visible": false,
+              "action_override": {
+                "type": "toast",
+                "text": "This user disabled remixes for this song."
+              }
+            }
+          ]
+        }
+      },
+      "relative_index": 3,
+      "created_at": "2026-09-16T13:40:40.841Z"
+    },
+    {
+      "clip": {
+        "status": "complete",
+        "title": "A ROOM WITH THREE MIRRORS",
+        "play_count": 12776,
+        "upvote_count": 255,
+        "allow_comments": true,
+        "is_verified": false,
+        "id": "d6197fc9-39db-484d-9c15-ba06521c1d96",
+        "entity_type": "song_schema",
+        "video_url": "https://cdn1.suno.ai/d6197fc9-39db-484d-9c15-ba06521c1d96.mp4",
+        "video_cover_url": "https://cdn1.suno.ai/video_upload_c452df40-953f-4564-98cb-a9f5e818aada_processed_video.mp4",
+        "audio_url": "https://studio-api.prod.suno.com/api/forbidden",
+        "media_urls": [
+          {
+            "url": "https://d2lwuy8qc234o3.cloudfront.net/1/clip/d6197fc9-39db-484d-9c15-ba06521c1d96.m4a",
+            "content_type": "m4a-opus",
+            "delivery": "progressive",
+            "encoding": "1.0.0"
+          }
+        ],
+        "image_url": "https://cdn2.suno.ai/video_upload_c452df40-953f-4564-98cb-a9f5e818aada_video_upload_c452df40-953f-4564-98cb-a9f5e818aada_cover_snapshot_0s_1788988953_image.jpeg",
+        "image_large_url": "https://cdn2.suno.ai/video_upload_c452df40-953f-4564-98cb-a9f5e818aada_video_upload_c452df40-953f-4564-98cb-a9f5e818aada_cover_snapshot_0s_1788988953_image.jpeg",
+        "major_model_version": "v6",
+        "model_name": "chirp-hawk",
+        "metadata": {
+          "tags": "ambient, sci-fi, post-industrial",
+          "prompt": "A ROOM WITH THREE MIRRORS\n\n\n\nA room with three mirrors\nTwo that reflect\nOne that reminds you\nOf your own transparency\n\nSubstance is what we crave\nOr claim as such\nWe want the canvas\nPainted\nThe atmosphere\nAlive\n\nBut what we learn\nFrom the start\nIs that part of desire\nNever satisfied\n\nWhat we feel\nIs the effect\nOf flesh and flood\nThe sinful snide\nOur guiltiness wears\n\nRetribution\nFor what?\nNo answer\n\nStop expecting God\nTo apologize\nHis greatest weakness\nIs his inability\nTo communicate\n\nSystems\nA row of yellow tulips\nBurning moist lips\nBeneath the sun\n\nLight consumes\nBurns\nFeeds\nAnd fails to reveal\nAnything oblique\n\nOnly enough time\nTo remember\nOur weakness\nAnd realize\nRecognition\nIs found only through flame\n\nLike revelation\nIts lessons finalize\nAnd fix the problem\nBy exterminating\nAll opposition\n\nThen, a child\nI learned\nMy seat in weather\n\nThe rain clearing\nThe stagnant stank\nOf quicker transportation\n\nWhisper your last words\nNow\nSo we know when\nTo cry\n\nSo we know\nWhen to cry\nWhen to cry\nWhen to cry\n\n\n\nA ROOM WITH THREE MIRRORS\n\nCopyright © 2025-2026 X3NDRAKAN\n//Ae Production Company\nAll Rights Reserved",
+          "concat_history": [
+            {
+              "source_is_webview": false,
+              "infill": false,
+              "id": "00000000-0000-0000-0000-000000000000",
+              "source": "ios",
+              "type": "concat",
+              "continue_at": 288.06008810342
+            },
+            {
+              "id": "00000000-0000-0000-0000-000000000000"
+            }
+          ],
+          "type": "concat",
+          "duration": 343.24,
+          "has_vocal": false,
+          "can_publish_with_vocal": true,
+          "vox_render_mode": "strict",
+          "video_upload_width": 1080,
+          "video_upload_height": 1920,
+          "can_remix": false,
+          "show_remix": false,
+          "is_remix": true,
+          "has_stem": false,
+          "video_is_stale": true,
+          "uses_latest_model": true,
+          "model_badges": {
+            "songcard": {
+              "display_name": "V6",
+              "light": {
+                "text_color": "FD429C",
+                "background_color": "0000004D",
+                "border_color": "00000000"
+              },
+              "dark": {
+                "text_color": "FD429C",
+                "background_color": "0000004D",
+                "border_color": "00000000"
+              }
+            },
+            "songrow": {
+              "display_name": "V6",
+              "light": {
+                "text_color": "FD429C",
+                "text_color_gradient": [
+                  "FD429C",
+                  "FF5126"
+                ]
+              },
+              "dark": {
+                "text_color": "FD429C",
+                "text_color_gradient": [
+                  "FD429C",
+                  "FF5126"
+                ]
+              }
+            }
+          },
+          "secondary_badges": [
+            {
+              "display_name": "FULL SONG",
+              "icon_key": "full_song",
+              "light": {
+                "text_color": "A3A3A3"
+              },
+              "dark": {
+                "text_color": "A3A3A3"
+              }
+            }
+          ]
+        },
+        "caption": "the third one is watching",
+        "is_liked": false,
+        "user_id": "a993e4f3-92c5-45ab-9f51-61f89aed0ff0",
+        "display_name": "X3NDRAKAN",
+        "handle": "x3ndrakan",
+        "is_handle_updated": true,
+        "avatar_image_url": "https://cdn2.suno.ai/f9508226-cf69-4dcd-9053-048620b7b611.jpeg",
+        "is_trashed": false,
+        "is_hidden": false,
+        "created_at": "2026-09-09T19:06:40.003Z",
+        "is_public": true,
+        "is_persona_root": false,
+        "is_following_creator": false,
+        "albums": [],
+        "explicit": false,
+        "comment_count": 20,
+        "flag_count": 8,
+        "display_tags": "Experimental Art Pop, Dark Ambient, Trip-Hop,\nPost-Industrial",
+        "is_contest_clip": false,
+        "has_hook": false,
+        "batch_index": 0,
+        "action_config": {
+          "actions": [
+            {
+              "action_type": "add_to_playlist",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "like_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "share_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "dislike_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "report_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "remove_from_playlist",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "play_next",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "add_to_queue",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "remix_extend",
+              "disabled": true,
+              "visible": false,
+              "action_override": {
+                "type": "toast",
+                "text": "This user disabled remixes for this song."
+              }
+            },
+            {
+              "action_type": "remix_cover",
+              "disabled": true,
+              "visible": false,
+              "action_override": {
+                "type": "toast",
+                "text": "This user disabled remixes for this song."
+              }
+            },
+            {
+              "action_type": "remix_reuse_style",
+              "disabled": true,
+              "visible": false,
+              "action_override": {
+                "type": "toast",
+                "text": "This user disabled remixes for this song."
+              }
+            }
+          ]
+        }
+      },
+      "relative_index": 16,
+      "created_at": "2026-09-10T17:32:35.790Z"
+    },
+    {
+      "clip": {
+        "status": "complete",
+        "title": "falling.",
+        "play_count": 129164,
+        "upvote_count": 2303,
+        "allow_comments": true,
+        "is_verified": false,
+        "id": "c2462082-8439-4f8f-8c1f-afbcba78bce8",
+        "entity_type": "song_schema",
+        "video_url": "https://cdn1.suno.ai/c2462082-8439-4f8f-8c1f-afbcba78bce8.mp4",
+        "audio_url": "https://studio-api.prod.suno.com/api/forbidden",
+        "media_urls": [
+          {
+            "url": "https://d2lwuy8qc234o3.cloudfront.net/1/clip/c2462082-8439-4f8f-8c1f-afbcba78bce8.m4a",
+            "content_type": "m4a-opus",
+            "delivery": "progressive",
+            "encoding": "1.0.0"
+          }
+        ],
+        "image_url": "https://cdn2.suno.ai/2bce39d0-0648-4f9a-aaae-a499d3cf0c06.jpeg",
+        "image_large_url": "https://cdn2.suno.ai/2bce39d0-0648-4f9a-aaae-a499d3cf0c06.jpeg",
+        "major_model_version": "v5.5",
+        "model_name": "chirp-flounder",
+        "metadata": {
+          "tags": "ambient house, uk garage",
+          "prompt": "[Verse]\nOh no\nNo\nIt's 4 AM and I can't sleep\nMy heart's on fire and I'm on my knees\nBut you told me so\nYou told me so\nYou're making the rules up as you go\n\n[Pre-Chorus]\nI don't think I like this\nI don't think I like this\nIt's okay if you feel nervous\nLet me hold you close to me\nLet me hold you close to me\n\n[Chorus]\nFalling\nFalling\nFalling\nFalling\nFalling\nFalling\nFalling\nFalling\nFalling\nFalling\nFalling\nFalling\n\n[Verse 2]\nOh no\nNo\nYou won't let me walk away\nKeep me around just to watch me break\nI think you like it\nI think you like it\nYou love it when you watch me fight it\n\n[Pre-Chorus]\nI don't think I like this\nI don't think I like this\nIn my room\nIt's nothin' new\nIn the dark\nIs where you are\n\n[Chorus]\nFallin'\nFallin'\nFallin'\nFallin'",
+          "edited_clip_id": "00000000-0000-0000-0000-000000000000",
+          "type": "upsample",
+          "duration": 173.76,
+          "refund_credits": false,
+          "stream": false,
+          "has_vocal": false,
+          "can_publish_with_vocal": true,
+          "persona_id": "4279572c-3e93-46ca-8614-38d12d9fc910",
+          "vox_render_mode": "strict",
+          "upsample_clip_id": "00000000-0000-0000-0000-000000000000",
+          "task": "upsample",
+          "can_remix": false,
+          "show_remix": false,
+          "is_remix": true,
+          "priority": 10,
+          "has_stem": false,
+          "video_is_stale": false,
+          "uses_latest_model": false,
+          "model_badges": {
+            "songcard": {
+              "display_name": "V5.5",
+              "light": {
+                "text_color": "A3A3A3"
+              },
+              "dark": {
+                "text_color": "A3A3A3"
+              }
+            },
+            "songrow": {
+              "display_name": "V5.5",
+              "light": {
+                "text_color": "A3A3A3"
+              },
+              "dark": {
+                "text_color": "A3A3A3"
+              }
+            }
+          },
+          "variation_category": "normal",
+          "is_mumble": false
+        },
+        "caption": "Thank You For The Support and the Staff Pick!!!! 🔥😍🙌🙌",
+        "is_liked": false,
+        "user_id": "1190736a-1584-44bd-93a3-1c7556db2632",
+        "display_name": "SONGMKR",
+        "handle": "sunosongmkr",
+        "is_handle_updated": true,
+        "avatar_image_url": "https://cdn2.suno.ai/82dfe03c-db43-45bc-a305-ae6fbb47f48f.jpeg",
+        "is_trashed": false,
+        "is_hidden": false,
+        "created_at": "2026-08-30T22:44:46.420Z",
+        "is_public": true,
+        "persona": {
+          "id": "4279572c-3e93-46ca-8614-38d12d9fc910",
+          "name": "falling. Vocals",
+          "image_s3_id": "https://cdn2.suno.ai/image_74d1a458-d453-4530-aad9-9530300b926c.jpeg",
+          "root_clip_id": "74d1a458-d453-4530-aad9-9530300b926c",
+          "user_handle": "sunosongmkr",
+          "user_display_name": "SONGMKR",
+          "user_image_url": "https://cdn2.suno.ai/82dfe03c-db43-45bc-a305-ae6fbb47f48f.jpeg",
+          "user_is_verified": false,
+          "is_owned": false,
+          "is_public": true,
+          "is_trashed": false,
+          "is_hidden": false,
+          "is_voice_persona": false,
+          "persona_type": "vox"
+        },
+        "is_persona_root": false,
+        "is_following_creator": false,
+        "albums": [],
+        "explicit": false,
+        "comment_count": 216,
+        "flag_count": 43,
+        "display_tags": "emotional sampling, ambient house, uk garage, soft bass, euphoric build-ups, intimate textures",
+        "is_contest_clip": false,
+        "has_hook": false,
+        "batch_index": 0,
+        "action_config": {
+          "actions": [
+            {
+              "action_type": "add_to_playlist",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "like_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "share_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "dislike_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "report_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "remove_from_playlist",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "play_next",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "add_to_queue",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "remix_extend",
+              "disabled": true,
+              "visible": false,
+              "action_override": {
+                "type": "toast",
+                "text": "This user disabled remixes for this song."
+              }
+            },
+            {
+              "action_type": "remix_cover",
+              "disabled": true,
+              "visible": false,
+              "action_override": {
+                "type": "toast",
+                "text": "This user disabled remixes for this song."
+              }
+            },
+            {
+              "action_type": "remix_reuse_style",
+              "disabled": true,
+              "visible": false,
+              "action_override": {
+                "type": "toast",
+                "text": "This user disabled remixes for this song."
+              }
+            }
+          ]
+        }
+      },
+      "relative_index": 19,
+      "created_at": "2026-09-02T14:43:38.301Z"
+    },
+    {
+      "clip": {
+        "status": "complete",
+        "title": "Effortless Flow",
+        "play_count": 59977,
+        "upvote_count": 1132,
+        "allow_comments": true,
+        "is_verified": false,
+        "id": "5bcff4c0-b73b-4a81-9d9d-fd257d713adf",
+        "entity_type": "song_schema",
+        "video_url": "https://cdn1.suno.ai/5bcff4c0-b73b-4a81-9d9d-fd257d713adf.mp4",
+        "audio_url": "https://studio-api.prod.suno.com/api/forbidden",
+        "media_urls": [
+          {
+            "url": "https://d2lwuy8qc234o3.cloudfront.net/1/clip/5bcff4c0-b73b-4a81-9d9d-fd257d713adf.m4a",
+            "content_type": "m4a-opus",
+            "delivery": "progressive",
+            "encoding": "1.0.0"
+          }
+        ],
+        "image_url": "https://cdn2.suno.ai/5bcff4c0-b73b-4a81-9d9d-fd257d713adf_8cce9452.jpeg",
+        "image_large_url": "https://cdn2.suno.ai/5bcff4c0-b73b-4a81-9d9d-fd257d713adf_8cce9452.jpeg",
+        "major_model_version": "v5.5",
+        "model_name": "chirp-fenix",
+        "metadata": {
+          "tags": "Progressive neo-soul electronica, 7/8 time signature, 128 BPM, Steinway grand piano overtones, deep syncopated sub-bass, contrabass bassoon, weeping theremin lead, wide 3D binaural panning, organic groove, duets, smooth laid-back baritone male vocal, sultry enchanting alto female harmonies, hypnotic pitch-bending melody, zero intro, dynamic spatial contrast",
+          "prompt": "Remixed from Open Melody \nhttps://suno.com/s/2LUgObG5NF9T9jeY\n\n———\nBlank canvas….\n\n———\nLet the noise fade to zero.\n\nIt’s not about the fear of where this goes, \nor the friction of the process.\n\nIt is about clarity.\n\nThe moment the hand touches the key, potential energy, flowing straight into the sound.\n\n\n———-\nA canvas left untouched is just silence in the dark...\n\nDon't let the time slip away.\n\n——-\nTurn the quiet into shape and form.\nUnshakable by the wind.\n\nThis music is for the listeners, \nthe poets, \nthe architects,\n\nfor those who know... \n\nand for those who are still searching.\n\nToday, we let the soul lead the hand.\n\n\n————\nEffortless flow is what we know!\n\nClear mind, clear heart, let it go.\n\nWatch the vision grow, \none step further today.\nEffortless flow is all we'll ever know…..\n\n———\nLa la tititi dum dom...\nTell me how much light can fit in our hand?\n\nLa la tititi dum dom...\nTell me how much light can fit in our hand?\n\nLa la tititi dum dom...\nTell me how much light can fit in our hand?\n\nStack it up... let it pass...\nReplayed... replayed.\n\n———-\nThey ask if we fit in a box not yet made,\nwith glass walls or a welded blade\n\nDo we belong beneath the dirt, unfound, unmarked?\n\nNo...\n\nWe don't belong to the ground at all.\n\nWe belong inside the sound.\n\nBecause:\n“What is inside was meant to be shared.”\n\n——\n86,400 seconds in a day...\nNo pressure. No fear.\n\nJust a quiet space to breathe before the melody returns.\n\n———-\nI don't need the power, \nI am grateful for the praise...\nJust the spirit moving through the keys we raise!\n\nNever mind the noise... listen to the Soul.\n\nTHE DISTANCE TRAVELED WHEN WE FINALLY HEAR IT!\n\n———\nEffortless flow is what we know!\nClear mind, clear heart...\n\nBring birth to the vision unknown.\n\nOne step further today.\n\nEffortless flow is all we'll ever know.\n\n——-\nFrom the hand, to the sky, \nfor all of us.\n\nYou are light... \n“Shine brighter at the darkest hour.”",
+          "edited_clip_id": "00000000-0000-0000-0000-000000000000",
+          "type": "gen",
+          "duration": 237.48,
+          "refund_credits": false,
+          "stream": true,
+          "has_vocal": false,
+          "can_publish_with_vocal": true,
+          "make_instrumental": false,
+          "control_sliders": {
+            "audio_weight": 0.6,
+            "style_weight": 0.73,
+            "weirdness_constraint": 0.23
+          },
+          "cover_clip_id": "89c6777c-50dc-476c-bee6-b160c36c86f4",
+          "vox_render_mode": "strict",
+          "task": "cover",
+          "can_remix": true,
+          "show_remix": true,
+          "is_remix": true,
+          "priority": 10,
+          "has_stem": false,
+          "video_is_stale": false,
+          "uses_latest_model": false,
+          "model_badges": {
+            "songcard": {
+              "display_name": "V5.5",
+              "light": {
+                "text_color": "A3A3A3"
+              },
+              "dark": {
+                "text_color": "A3A3A3"
+              }
+            },
+            "songrow": {
+              "display_name": "V5.5",
+              "light": {
+                "text_color": "A3A3A3"
+              },
+              "dark": {
+                "text_color": "A3A3A3"
+              }
+            }
+          },
+          "secondary_badges": [
+            {
+              "display_name": "COVER",
+              "light": {
+                "text_color": "A3A3A3"
+              },
+              "dark": {
+                "text_color": "A3A3A3"
+              }
+            }
+          ],
+          "image_config": {
+            "use_image_config_template": true,
+            "id": "film_strip",
+            "default_cover_style": "brand_refresh"
+          },
+          "is_mumble": false
+        },
+        "caption": "Effortless Flow © 2026 Ramarti. All Rights Reserved. Remixed from Open Melody ",
+        "is_liked": false,
+        "user_id": "1bdae050-4f4c-4a67-8248-fc4c14ef506c",
+        "display_name": "Ramarti",
+        "handle": "ramarti",
+        "is_handle_updated": true,
+        "avatar_image_url": "https://cdn1.suno.ai/df965056.webp",
+        "is_trashed": false,
+        "is_hidden": false,
+        "created_at": "2026-08-20T19:24:11.474Z",
+        "is_public": true,
+        "is_persona_root": false,
+        "is_following_creator": false,
+        "albums": [],
+        "explicit": false,
+        "comment_count": 118,
+        "flag_count": 7,
+        "display_tags": "neo-soul, electronica",
+        "is_contest_clip": false,
+        "has_hook": false,
+        "batch_index": 1,
+        "action_config": {
+          "actions": [
+            {
+              "action_type": "add_to_playlist",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "like_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "share_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "dislike_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "report_song",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "remove_from_playlist",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "play_next",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "add_to_queue",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "remix_extend",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "remix_cover",
+              "disabled": false,
+              "visible": true
+            },
+            {
+              "action_type": "remix_reuse_style",
+              "disabled": false,
+              "visible": true
+            }
+          ]
+        }
+      },
+      "relative_index": 20,
+      "created_at": "2026-09-02T14:43:46.159Z"
     }
   ],
-  "image_url": "https://cdn2.suno.ai/image_65835fb6-2845-4b1f-bc90-44d0246ae7aa.jpeg",
-  "num_total_results": 5,
+  "image_url": "https://cdn2.suno.ai/image_ad7004ce-e865-4393-869d-aa9d59386257.jpeg",
+  "num_total_results": 22,
   "current_page": 1,
   "is_owned": false,
   "is_trashed": false,
@@ -722,14 +1060,14 @@
   "user_handle": "suno",
   "user_avatar_image_url": "https://cdn2.suno.ai/e2e26a1b-372d-4316-a820-487262757d60.jpeg",
   "user_is_verified": true,
-  "description": "What we're playing on repeat. Cover: grayybird",
+  "description": "What we're playing on repeat. Cover: SAHXL",
   "reaction": "",
-  "upvote_count": 13712,
+  "upvote_count": 32659,
   "dislike_count": 0,
   "flag_count": 0,
   "skip_count": 0,
   "play_count": 0,
   "song_count": 0,
-  "total_duration": 4320.724416666666,
+  "total_duration": 4684.603770833333,
   "is_discover_playlist": false
 }

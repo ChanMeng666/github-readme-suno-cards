@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { SunoHandleNotFoundError, SunoInvalidRequestError } from '../src/errors.js';
+import {
+  SunoHandleNotFoundError,
+  SunoInvalidRequestError,
+  SunoSchemaError,
+  formatIssuePath,
+} from '../src/errors.js';
 import { fetchProfile, fetchProfilePage } from '../src/profile.js';
 import { loadFixture, mockFetchJson } from './_helpers.js';
 
@@ -46,6 +51,65 @@ describe('fetchProfilePage', () => {
         fetchImpl: mockFetchJson(/api\/profiles/, 422, { detail: 'missing sort params' }),
       }),
     ).rejects.not.toBeInstanceOf(SunoHandleNotFoundError);
+  });
+});
+
+// One clip in a shape Suno has just changed must cost that clip, not the page.
+// This is the failure that put an error card on every profile in September 2026.
+describe('fetchProfilePage — per-clip validation', () => {
+  type Page = { clips: Array<Record<string, unknown>> };
+
+  it('keeps the valid clips and counts the one that fails', async () => {
+    const body = loadFixture<Page>('profile-page1.json');
+    const clips = body.clips.map((c) => ({ ...c }));
+    const total = clips.length;
+    clips[3] = { ...clips[3], play_count: 'lots' };
+    const result = await fetchProfilePage('chanmeng', {
+      fetchImpl: mockFetchJson(/api\/profiles\/chanmeng/, 200, { ...body, clips }),
+    });
+
+    expect(result.clips).toHaveLength(total - 1);
+    expect(result.skippedClips).toBe(1);
+    expect(result.skippedIssues).toEqual(['clips.3.play_count']);
+  });
+
+  it('reports zero skipped clips for a clean page', async () => {
+    const body = loadFixture('profile-page1.json');
+    const result = await fetchProfilePage('chanmeng', {
+      fetchImpl: mockFetchJson(/api\/profiles\/chanmeng/, 200, body),
+    });
+    expect(result.skippedClips).toBe(0);
+    expect(result.skippedIssues).toEqual([]);
+  });
+
+  it('still throws SunoSchemaError when every clip fails', async () => {
+    const body = loadFixture<Page>('profile-page1.json');
+    const clips = body.clips.map((c) => ({ ...c, id: 'not-a-uuid' }));
+    const err: unknown = await fetchProfilePage('chanmeng', {
+      fetchImpl: mockFetchJson(/api\/profiles\/chanmeng/, 200, { ...body, clips }),
+    }).catch((e: unknown) => e);
+
+    expect(err).toBeInstanceOf(SunoSchemaError);
+    const issues = (err as SunoSchemaError).issues as unknown[];
+    expect(formatIssuePath(issues[0])).toBe('clips.0.id');
+  });
+
+  it('still throws SunoSchemaError when the envelope itself fails', async () => {
+    const body = loadFixture<Page>('profile-page1.json');
+    await expect(
+      fetchProfilePage('chanmeng', {
+        fetchImpl: mockFetchJson(/api\/profiles\/chanmeng/, 200, { ...body, handle: 42 }),
+      }),
+    ).rejects.toBeInstanceOf(SunoSchemaError);
+  });
+
+  it('does not throw for an empty clip list', async () => {
+    const body = loadFixture<Page>('profile-page1.json');
+    const result = await fetchProfilePage('chanmeng', {
+      fetchImpl: mockFetchJson(/api\/profiles\/chanmeng/, 200, { ...body, clips: [] }),
+    });
+    expect(result.clips).toEqual([]);
+    expect(result.skippedClips).toBe(0);
   });
 });
 

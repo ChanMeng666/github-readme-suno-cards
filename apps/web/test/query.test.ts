@@ -57,6 +57,17 @@ describe('readProfileQuery', () => {
   });
 });
 
+describe('show_secondary_badges', () => {
+  it('is undefined unless set, on both card routes', () => {
+    expect(readCardQuery(p('id=x')).showSecondaryBadges).toBeUndefined();
+    expect(readCardsQuery(p('handle=x')).showSecondaryBadges).toBeUndefined();
+  });
+  it('coerces like every other toggle', () => {
+    expect(readCardQuery(p('id=x&show_secondary_badges=true')).showSecondaryBadges).toBe(true);
+    expect(readCardsQuery(p('handle=x&show_secondary_badges=1')).showSecondaryBadges).toBe(true);
+  });
+});
+
 describe('readCardsQuery', () => {
   it('parses filters and sort', () => {
     const q = readCardsQuery(

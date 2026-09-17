@@ -54,6 +54,7 @@ export async function GET(req: NextRequest): Promise<Response> {
       showAuthor: q.showAuthor,
       showEqualizer: q.showEqualizer,
       showModelBadge: q.showModelBadge,
+      showSecondaryBadges: q.showSecondaryBadges,
       showNewBadge: q.showNewBadge,
       showTags: q.showTags,
       showProgress: q.showProgress,

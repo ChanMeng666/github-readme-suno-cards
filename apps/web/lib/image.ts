@@ -4,14 +4,12 @@ import { resizeSunoCover } from '@suno-cards/parser';
  * Fetch a remote image and return it as a base64 data URI, suitable for
  * embedding directly in an <image> element inside an SVG.
  *
- * Runs on Vercel Edge runtime — uses native fetch with Next.js's Vercel
- * Data Cache hint (`next.revalidate`) so warm requests are served from
- * Vercel's shared edge cache instead of re-hitting Suno's CDN every time.
+ * Runs on Vercel Edge runtime with native fetch. Not routed through Next's
+ * data cache — see the note on `cache: 'no-store'` below; the finished SVG is
+ * what gets cached, at the CDN.
  */
 
 export type FetchImageOptions = {
-  /** Revalidation window in seconds. Default 1 hour. */
-  revalidate?: number;
   /** Abort the fetch after N ms. Default 6s — images are the slow path. */
   timeoutMs?: number;
   /** Optional fetch impl override (for tests). */
@@ -36,7 +34,7 @@ const FALLBACK_CONTENT_TYPE = 'image/jpeg';
  * URL, and deliberately NOT beginning with `suno` — see packages/parser/src/fetcher.ts.
  */
 const SUNO_CARDS_USER_AGENT =
-  'github-readme-suno-cards/0.2.1 (+https://github.com/ChanMeng666/github-readme-suno-cards)';
+  'github-readme-suno-cards/0.3.0 (+https://github.com/ChanMeng666/github-readme-suno-cards)';
 
 /**
  * Fetch `url` and return a `data:*;base64,*` URI, or `null` if the asset
@@ -49,38 +47,61 @@ export async function fetchAsDataUri(
   if (!url) return null;
   const target = opts.renderWidth ? resizeSunoCover(url, opts.renderWidth * 2) : url;
 
+  const timeoutMs = opts.timeoutMs ?? 6000;
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), opts.timeoutMs ?? 6000);
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  // The abort signal alone was not enough: a hung body read outlived it, so the
+  // whole operation also races a timer that settles to `null` (placeholder
+  // cover) instead of letting the route run into Vercel's 25s Edge limit.
+  const timedOut = new Promise<null>((resolve) => {
+    timer = setTimeout(() => {
+      controller.abort();
+      resolve(null);
+    }, timeoutMs);
+  });
   const fetchImpl = opts.fetchImpl ?? fetch;
 
   try {
-    // The extra `next` key is Next.js-specific and ignored by plain fetch.
-    const init: RequestInit & { next?: { revalidate?: number; tags?: string[] } } = {
-      method: 'GET',
-      signal: controller.signal,
-      headers: {
-        Accept: 'image/*,*/*',
-        // One project-identifying User-Agent, matching the parser's (see the
-        // note in packages/parser/src/fetcher.ts). Previously this was a
-        // second, undocumented string whose URL pointed at the wrong GitHub
-        // org and therefore 404'd — an asset fetch should still say honestly
-        // who is asking, and say it correctly.
-        'User-Agent': SUNO_CARDS_USER_AGENT,
-      },
-      next: { revalidate: opts.revalidate ?? 3600 },
-    };
-
-    const res = await fetchImpl(target, init);
-    if (!res.ok) return null;
-
-    const contentType = res.headers.get('content-type') ?? FALLBACK_CONTENT_TYPE;
-    const buffer = await res.arrayBuffer();
-    const base64 = bufferToBase64(buffer);
-    return `data:${contentType};base64,${base64}`;
-  } catch {
-    return null;
+    return await Promise.race([load(), timedOut]);
   } finally {
     clearTimeout(timer);
+  }
+
+  async function load(): Promise<string | null> {
+    try {
+      const init: RequestInit = {
+        method: 'GET',
+        signal: controller.signal,
+        headers: {
+          Accept: 'image/*,*/*',
+          // One project-identifying User-Agent, matching the parser's (see the
+          // note in packages/parser/src/fetcher.ts). Previously this was a
+          // second, undocumented string whose URL pointed at the wrong GitHub
+          // org and therefore 404'd — an asset fetch should still say honestly
+          // who is asking, and say it correctly.
+          'User-Agent': SUNO_CARDS_USER_AGENT,
+        },
+        // Deliberately NOT cached in Next's data cache. Measured 2026-09-17 on
+        // Vercel Edge (production and preview alike): the first render of a card
+        // succeeded in ~1s and every repeat request for the same cover hung until
+        // the platform's 25s limit and returned 504 — a cold cover URL (player
+        // layout, different ?width) worked exactly once, then failed the same
+        // way. The rendered SVG is already CDN-cached via s-maxage (see
+        // `svgResponse`), and a resized cover is ~20-50 KB, so the data cache
+        // bought little here and cost every warm request.
+        cache: 'no-store',
+      };
+
+      const res = await fetchImpl(target, init);
+      if (!res.ok) return null;
+
+      const contentType = res.headers.get('content-type') ?? FALLBACK_CONTENT_TYPE;
+      const buffer = await res.arrayBuffer();
+      const base64 = bufferToBase64(buffer);
+      return `data:${contentType};base64,${base64}`;
+    } catch {
+      return null;
+    }
   }
 }
 

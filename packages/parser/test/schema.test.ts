@@ -21,7 +21,62 @@ describe('ClipSchema', () => {
     expect(result.output.play_count).toBeGreaterThanOrEqual(0);
     expect(result.output.metadata.duration).toBeCloseTo(124.96, 1);
     expect(result.output.metadata.tags).toContain('Minimalist Piano');
-    expect(result.output.metadata.model_badges?.songrow?.light?.text_color).toBe('7D7C83');
+    // Live capture: text colour only — background/border were removed ~2026-09-10.
+    const light = result.output.metadata.model_badges?.songrow?.light;
+    expect(light?.text_color).toMatch(/^[0-9A-Fa-f]{6,8}$/);
+    expect(light?.background_color).toBeUndefined();
+    expect(light?.border_color).toBeUndefined();
+    expect(result.output.audio_url).toBe('https://studio-api.prod.suno.com/api/forbidden');
+  });
+
+  // Fixtures are refreshed from live captures, so the retired badge shape needs
+  // its own test: a clip captured before 2026-09 must still parse.
+  it('still parses the pre-2026-09 badge shape (background_color + border_color)', () => {
+    const raw = loadFixture<Record<string, unknown> & { metadata: Record<string, unknown> }>(
+      'clip-complete.json',
+    );
+    const side = { text_color: '7D7C83', background_color: '00000000', border_color: '0000001A' };
+    const old = {
+      ...raw,
+      audio_url: `https://cdn1.suno.ai/${raw.id}.mp3`,
+      metadata: {
+        ...raw.metadata,
+        model_badges: { songrow: { display_name: 'v4.5-all', light: side, dark: side } },
+        secondary_badges: [{ display_name: 'Cover', light: side, dark: side }],
+      },
+    };
+    const result = v.safeParse(ClipSchema, old);
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+    expect(result.output.metadata.model_badges?.songrow?.light?.background_color).toBe('00000000');
+  });
+
+  it('parses the 2026-09 gradient badge and the songcard variant', () => {
+    const raw = loadFixture<Record<string, unknown> & { metadata: Record<string, unknown> }>(
+      'clip-complete.json',
+    );
+    const side = { text_color: 'FD429C', text_color_gradient: ['FD429C', 'FF5126'] };
+    const result = v.safeParse(ClipSchema, {
+      ...raw,
+      metadata: {
+        ...raw.metadata,
+        model_badges: {
+          songcard: {
+            display_name: 'V6',
+            light: { text_color: 'FD429C', background_color: '0000004D', border_color: '00000000' },
+            dark: { text_color: 'FD429C', background_color: '0000004D', border_color: '00000000' },
+          },
+          songrow: { display_name: 'V6', light: side, dark: side },
+        },
+      },
+    });
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+    expect(result.output.metadata.model_badges?.songrow?.dark?.text_color_gradient).toEqual([
+      'FD429C',
+      'FF5126',
+    ]);
+    expect(result.output.metadata.model_badges?.songcard?.light?.background_color).toBe('0000004D');
   });
 
   it('rejects missing required fields', () => {
@@ -162,7 +217,7 @@ describe('PlaylistDetailSchema — editorial shelf (heterogeneous)', () => {
     expect(withSecondary.length).toBeLessThan(clips.length);
   });
 
-  it('carries the media_urls delivery manifest on every clip', () => {
+  it('carries a single m4a-opus entry and no public mp3 on every clip', () => {
     const result = v.safeParse(PlaylistDetailSchema, raw);
     expect(result.success).toBe(true);
     if (!result.success) return;
@@ -170,14 +225,24 @@ describe('PlaylistDetailSchema — editorial shelf (heterogeneous)', () => {
     for (const pc of result.output.playlist_clips) {
       const tiers = pc.clip.media_urls;
       expect(tiers, `clip ${pc.clip.id} has no media_urls`).toBeDefined();
-      const types = (tiers ?? []).map((t) => t.content_type).sort();
-      expect(types).toEqual(['m4a-opus', 'mp3']);
-
-      // The mp3 entry is exactly `audio_url` — nothing new to store. This is the
-      // assertion that keeps anyone from "upgrading" a player to the opus tier:
-      // that payload is opaque and will not decode. See the schema comment.
-      const mp3 = (tiers ?? []).find((t) => t.content_type === 'mp3');
-      expect(mp3?.url).toBe(pc.clip.audio_url);
+      // Two entries (mp3 + m4a-opus) until early September 2026; the mp3 entry
+      // then left the list. The remaining payload is opaque and is not decoded
+      // here — see the schema comment.
+      expect((tiers ?? []).map((t) => t.content_type)).toEqual(['m4a-opus']);
+      expect(tiers?.[0]?.url).toContain(`/1/clip/${pc.clip.id}.m4a`);
+      // And `audio_url` is no longer a media URL at all.
+      expect(new URL(pc.clip.audio_url).pathname).toBe('/api/forbidden');
     }
+  });
+
+  it('carries gradient model badges and upper-cased secondary badges', () => {
+    const result = v.safeParse(PlaylistDetailSchema, raw);
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+    const metas = result.output.playlist_clips.map((pc) => pc.clip.metadata);
+    expect(metas.some((m) => m.model_badges?.songrow?.light?.text_color_gradient)).toBe(true);
+    const names = metas.flatMap((m) => (m.secondary_badges ?? []).map((b) => b.display_name));
+    expect(names.length).toBeGreaterThan(0);
+    for (const name of names) expect(name).toBe(name?.toUpperCase());
   });
 });

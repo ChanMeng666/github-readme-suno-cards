@@ -13,7 +13,7 @@ function makeSong(overrides: Partial<SunoSong> = {}): SunoSong {
     author: { displayName: 'Test', handle: 'test', avatarUrl: null, userId: 'u1' },
     coverUrl: '',
     coverLargeUrl: '',
-    audioUrl: '',
+    audioUrl: null,
     videoUrl: null,
     tags: [],
     classifiedTags: {
@@ -37,6 +37,7 @@ function makeSong(overrides: Partial<SunoSong> = {}): SunoSong {
     modelVersion: 'v4.5-all',
     modelName: 'chirp-auk',
     modelBadgeTheme: null,
+    secondaryBadges: null,
     shareUrl: '',
     embedUrl: '',
     source: 'profile',

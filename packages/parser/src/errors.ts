@@ -64,6 +64,25 @@ export class SunoSchemaError extends SunoError {
   }
 }
 
+/**
+ * Render a Valibot issue's location as a dotted path — `clips.3.metadata.type`.
+ * Accepts `unknown` because {@link SunoSchemaError.issues} is untyped (it also
+ * carries `{ status }` for non-2xx responses); returns `''` when there is no path.
+ */
+export function formatIssuePath(issue: unknown): string {
+  if (issue == null || typeof issue !== 'object') return '';
+  const path = (issue as { path?: unknown }).path;
+  if (!Array.isArray(path)) return '';
+  return path
+    .map((item) =>
+      item != null && typeof item === 'object' && 'key' in item
+        ? String((item as { key: unknown }).key)
+        : '',
+    )
+    .filter((key) => key !== '')
+    .join('.');
+}
+
 export class SunoNetworkError extends SunoError {
   public readonly endpoint: string;
   public override readonly cause: unknown;

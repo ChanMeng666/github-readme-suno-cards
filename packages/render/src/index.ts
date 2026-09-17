@@ -20,7 +20,7 @@ export {
   type LocaleKey,
 } from './i18n/index.js';
 export { renderLinkIcon } from './linkIcon.js';
-export { renderModelBadgeHtml } from './modelBadge.js';
+export { renderModelBadgeHtml, renderSecondaryBadgesHtml } from './modelBadge.js';
 export { renderNewBadge } from './newBadge.js';
 export { renderProgressBar, type ProgressBarOptions } from './progressBar.js';
 export {

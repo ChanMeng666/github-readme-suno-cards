@@ -30,7 +30,10 @@ export function renderRootSvg(innerContent: string, opts: SvgRootOptions): strin
   const css = `${themeCss(theme)}${CARD_CSS}${ANIMATION_CSS}`;
   const titleTag = opts.title ? `<title>${escapeForTitle(opts.title)}</title>` : '';
 
-  const rootClass = theme.mode === 'auto' ? 'card-root theme-auto' : 'card-root';
+  // `theme-auto` switches on prefers-color-scheme; `theme-dark`/`theme-light`
+  // let CSS that does not read the `--c-*` tokens (the Suno badge) follow a
+  // pinned theme too.
+  const rootClass = `card-root theme-${theme.mode}`;
   return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${opts.width}" height="${opts.height}" viewBox="0 0 ${opts.width} ${opts.height}" role="img" class="${rootClass}">
   ${titleTag}
   <defs>

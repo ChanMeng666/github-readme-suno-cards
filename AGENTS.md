@@ -48,11 +48,25 @@ written-down claim turned out to be wrong. Expect to be the next one.
   fixture is trimmed and deliberately does not preserve upstream ratios).
 - **`model_badges` absence means no model generated the clip** — `model_name: "chirp-chirp"` with an
   empty `major_model_version`. Do **not** key it on `metadata.type`; that proxy was tried and broke.
-- **`media_urls` lists two tiers; use `audio_url`.** Both URLs are exactly derivable from the clip
-  id, so there is nothing new to store, and the `m4a-opus` tier is **not playable** — the browser
-  reports the codec as supported and then fails to decode, and the payload carries no container
-  header. A two-`<source>` list with the opus tier first is worse than useless. See the schema
-  comment for the measurement.
+- **There is no public, playable audio URL. Do not build on one.** `cdn1.suno.ai/{id}.mp3` answers
+  403 (since late August 2026), the `mp3` entry left `media_urls` in early September, and
+  `audio_url` is now the literal placeholder `https://studio-api.prod.suno.com/api/forbidden` — on
+  every clip sampled 2026-09-17, under every User-Agent tried. `mapClipToSong` maps it to
+  `audioUrl: null` via `normalizeMediaUrl()`; the oEmbed fallback returns `null` too instead of
+  inventing a `cdn1` URL. What remains is a single `m4a-opus` entry whose payload is **opaque** — the
+  browser reports the codec as supported and then fails to decode, and the bytes carry no container
+  header. We observe that and stop there: **no code that decodes, unwraps or works around it.**
+  Covers (`cdn2`) and the mp4 on `cdn1` still answer.
+- **Badges carry text colour only.** Since ~2026-09-10 `model_badges.songrow.{light,dark}` and
+  `secondary_badges[].{light,dark}` send just `text_color` (plus `text_color_gradient` on V6);
+  `background_color`/`border_color` stay optional so older captures parse. `songcard` is an artwork-overlay
+  sibling used only as a fallback, with its bg/border dropped. `BadgeTheme.bg`/`border`/`gradient` are nullable, and the renderer maps
+  null to `transparent`.
+- **Validation is per clip, not per page.** `profile.ts` and `playlist.ts` validate the envelope with
+  clips as `unknown`, then each clip on its own (`clipList.ts`). A failing clip is dropped and
+  counted (`skippedClips`, `skippedIssues`); `SunoSchemaError` is thrown only when the envelope fails
+  or *every* clip does. This is why one reshaped clip no longer blanks a profile card — don't "simplify"
+  it back to one `safeParse` over the page.
 
 ## Compliance posture
 
@@ -68,7 +82,8 @@ build nothing time-sensitive on it.
 
 ## CDN details worth knowing
 
-- `cdn1.suno.ai` — audio (`{uuid}.mp3`), video, avatars. S3-backed.
+- `cdn1.suno.ai` — video (`{uuid}.mp4`) and avatars. S3-backed. It used to serve audio
+  (`{uuid}.mp3`); that has answered **403** since late August 2026.
 - `cdn2.suno.ai` — cover art (`image_{uuid}.jpeg`, `image_large_{uuid}.jpeg`).
 - **`?width=N` on a cover works only for `{100, 256, 360, 720}`.** Any other value is a **403**, not
   a smaller image. Always go through `resizeSunoCover()` (`packages/parser/src/cdn.ts`), which snaps

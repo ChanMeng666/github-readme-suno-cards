@@ -4,7 +4,7 @@ import { escapeAttr, escapeXml } from './escape.js';
 import { formatCount, formatDuration } from './format.js';
 import { type Lang, formatRelativeTime, t } from './i18n/index.js';
 import { renderLinkIcon } from './linkIcon.js';
-import { renderModelBadgeHtml } from './modelBadge.js';
+import { renderModelBadgeHtml, renderSecondaryBadgesHtml } from './modelBadge.js';
 import { renderNewBadge } from './newBadge.js';
 import { renderProgressBar } from './progressBar.js';
 import { renderSunoLogo } from './sunoLogo.js';
@@ -29,6 +29,11 @@ export type SongCardOptions = {
   showAuthor?: boolean;
   showEqualizer?: boolean;
   showModelBadge?: boolean;
+  /**
+   * Show Suno's secondary badges ("Cover", "Upload", "Full Song") as chips
+   * beside the model badge. Classic layout only. Default `false`.
+   */
+  showSecondaryBadges?: boolean;
   showNewBadge?: boolean;
   showTags?: boolean;
   /** Show progress bar with play button and time labels. Default depends on layout. */
@@ -95,6 +100,7 @@ export function renderSongCard(song: SunoSong, opts: SongCardOptions = {}): stri
   const showModelBadge = opts.showModelBadge ?? true;
   const showNewBadge = opts.showNewBadge ?? true;
   const showTags = opts.showTags ?? true;
+  const showSecondaryBadges = opts.showSecondaryBadges ?? false;
 
   // ---------- Cover panel ---------------------------------------------------
   const coverX = COVER_PADDING;
@@ -157,12 +163,18 @@ export function renderSongCard(song: SunoSong, opts: SongCardOptions = {}): stri
     const rel = formatRelativeTime(song.createdAt, lang);
     if (rel) statItems.push(`<span class="stat">${escapeXml(rel)}</span>`);
   }
-  const statsRow = statItems.length > 0 ? `<div class="stats-row">${statItems.join('')}</div>` : '';
-
+  // Badges share the stats line (as in the anatomy above) rather than taking a
+  // row of their own. Every row in the text panel has a fixed one-line budget,
+  // so the panel can never grow past the cover height: a long title, three rows
+  // of tag chips or a pile of secondary badges used to push the stats and the
+  // model badge below the foreignObject, where they were silently clipped.
+  // Stats come first in the row, so it is a badge that drops when space runs out.
   const modelBadge = showModelBadge ? renderModelBadgeHtml(song) : '';
-  const metaFooter = modelBadge
-    ? `<div class="meta-footer" style="display:flex;gap:6px;margin-top:7px;align-items:center">${modelBadge}</div>`
-    : '';
+  const secondaryBadges = showSecondaryBadges ? renderSecondaryBadgesHtml(song) : '';
+  const statsRow =
+    statItems.length > 0 || modelBadge || secondaryBadges
+      ? `<div class="stats-row">${statItems.join('')}${modelBadge}${secondaryBadges}</div>`
+      : '';
 
   const foreignObject = `<foreignObject x="${textX}" y="${textY}" width="${textWidth}" height="${textHeight}">
     <div xmlns="http://www.w3.org/1999/xhtml" class="text-panel">
@@ -170,7 +182,6 @@ export function renderSongCard(song: SunoSong, opts: SongCardOptions = {}): stri
       ${authorLine}
       ${chipsHtml}
       ${statsRow}
-      ${metaFooter}
     </div>
   </foreignObject>`;
 

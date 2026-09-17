@@ -17,6 +17,7 @@ export type CardConfig = {
   showAuthor: boolean;
   showDuration: boolean;
   showModelBadge: boolean;
+  showSecondaryBadges: boolean;
   showNewBadge: boolean;
   showProgress: boolean;
   showLogo: boolean;
@@ -36,6 +37,7 @@ const CLASSIC_DEFAULTS: ToggleDefaults = {
   showAuthor: true,
   showDuration: true,
   showModelBadge: true,
+  showSecondaryBadges: false,
   showNewBadge: true,
   showProgress: false,
   showLogo: false,
@@ -50,6 +52,7 @@ const PLAYER_DEFAULTS: ToggleDefaults = {
   showAuthor: false,
   showDuration: false,
   showModelBadge: false,
+  showSecondaryBadges: false,
   showNewBadge: false,
   showProgress: true,
   showLogo: true,
@@ -81,6 +84,7 @@ const TOGGLE_MAP: Record<string, keyof ToggleDefaults> = {
   show_author: 'showAuthor',
   show_duration: 'showDuration',
   show_model_badge: 'showModelBadge',
+  show_secondary_badges: 'showSecondaryBadges',
   show_new_badge: 'showNewBadge',
   show_progress: 'showProgress',
   show_logo: 'showLogo',

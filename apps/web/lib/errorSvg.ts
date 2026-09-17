@@ -6,6 +6,8 @@ import {
   SunoNotFoundError,
   SunoNotReadyError,
   SunoPrivateError,
+  SunoSchemaError,
+  formatIssuePath,
 } from '@suno-cards/parser';
 import {
   type ErrorKind,
@@ -53,6 +55,9 @@ export function classifyError(err: unknown): { kind: ErrorKind; detail: string }
   if (err instanceof SunoInvalidRequestError) {
     return { kind: 'error', detail: err.message };
   }
+  if (err instanceof SunoSchemaError) {
+    return { kind: 'error', detail: schemaErrorDetail(err) };
+  }
   if (err instanceof SunoError) {
     return { kind: 'error', detail: err.message };
   }
@@ -60,6 +65,31 @@ export function classifyError(err: unknown): { kind: ErrorKind; detail: string }
     return { kind: 'error', detail: err.message };
   }
   return { kind: 'error', detail: String(err) };
+}
+
+/**
+ * A schema failure's full message is a long URL with a query string — it was
+ * unreadable on a 480px card. Show the endpoint path and where validation
+ * failed instead: `/api/profiles/chanmeng · clips.3.metadata.model_badges`.
+ */
+function schemaErrorDetail(err: SunoSchemaError): string {
+  let path: string;
+  try {
+    path = new URL(err.endpoint).pathname;
+  } catch {
+    path = err.endpoint.split('?')[0] ?? err.endpoint;
+  }
+  const first = Array.isArray(err.issues) ? formatIssuePath(err.issues[0]) : '';
+  return first ? `${path} · ${first}` : path;
+}
+
+/**
+ * Report clips the parser dropped for failing validation on their own. The
+ * card still renders; the header makes the loss visible to anyone debugging.
+ */
+export function withSkippedClips(res: Response, skippedClips: number): Response {
+  if (skippedClips > 0) res.headers.set('x-suno-skipped-clips', String(skippedClips));
+  return res;
 }
 
 /**

@@ -19,7 +19,7 @@ export { classifyTags, splitTags } from './tags.js';
 export { normalizeInput } from './normalize.js';
 export { resolveShortCode } from './resolver.js';
 export { fetchProfilePage } from './profile.js';
-export { mapClipToSong } from './mapping.js';
+export { mapClipToSong, normalizeMediaUrl } from './mapping.js';
 export { resizeSunoCover, SUNO_CDN_ALLOWED_WIDTHS } from './cdn.js';
 export { fetchPlaylist, fetchPlaylistDetailUrl, type FetchPlaylistOptions } from './playlist.js';
 // NOTE: there is no trending fetcher. Suno removed the `/api/trending` route on
@@ -115,7 +115,12 @@ export type FetchAllClipsCombinedOptions = FetchAllClipsOptions & FilterRankOpti
 export async function fetchAllClips(
   handle: string,
   opts: FetchAllClipsCombinedOptions = {},
-): Promise<{ profile: SunoProfile; clips: SunoSong[] }> {
+): Promise<{
+  profile: SunoProfile;
+  clips: SunoSong[];
+  skippedClips: number;
+  skippedIssues: string[];
+}> {
   const raw = await fetchAllClipsRaw(handle, {
     ...opts,
     // Fetch enough to survive filtering: request 2× the cap (or all if smaller)
@@ -124,5 +129,10 @@ export async function fetchAllClips(
   });
 
   const clips = filterAndRank(raw.clips, opts);
-  return { profile: raw.profile, clips };
+  return {
+    profile: raw.profile,
+    clips,
+    skippedClips: raw.skippedClips,
+    skippedIssues: raw.skippedIssues,
+  };
 }

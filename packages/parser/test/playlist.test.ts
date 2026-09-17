@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SunoInvalidRequestError, SunoNotFoundError } from '../src/errors.js';
+import { SunoInvalidRequestError, SunoNotFoundError, SunoSchemaError } from '../src/errors.js';
 import { fetchPlaylist } from '../src/playlist.js';
 import { loadFixture, mockFetchJson } from './_helpers.js';
 
@@ -26,6 +26,34 @@ describe('fetchPlaylist', () => {
     for (const c of pl.clips) expect(c.source).toBe('playlist');
     expect(pl.source).toBe('playlist');
     expect(pl.shareUrl).toContain(PLAYLIST_ID);
+  });
+
+  it('drops a clip that fails validation and counts it', async () => {
+    type Body = {
+      playlist_clips: Array<{ clip: Record<string, unknown>; relative_index: number }>;
+    };
+    const body = loadFixture<Body>('playlist-detail.json');
+    const wrappers = body.playlist_clips.map((w) => ({ ...w }));
+    wrappers[0] = { ...wrappers[0]!, clip: { ...wrappers[0]!.clip, status: 7 } };
+    const pl = await fetchPlaylist(PLAYLIST_ID, {
+      fetchImpl: mockFetchJson(PLAYLIST_URL, 200, { ...body, playlist_clips: wrappers }),
+    });
+    expect(pl.skippedClips).toBe(1);
+    expect(pl.skippedIssues).toEqual(['playlist_clips.0.clip.status']);
+    expect(pl.clips.map((c) => c.id)).not.toContain(wrappers[0]!.clip.id);
+  });
+
+  it('throws SunoSchemaError when every clip fails', async () => {
+    type Body = {
+      playlist_clips: Array<{ clip: Record<string, unknown>; relative_index: number }>;
+    };
+    const body = loadFixture<Body>('playlist-detail.json');
+    const wrappers = body.playlist_clips.map((w) => ({ ...w, clip: { ...w.clip, id: 'nope' } }));
+    await expect(
+      fetchPlaylist(PLAYLIST_ID, {
+        fetchImpl: mockFetchJson(PLAYLIST_URL, 200, { ...body, playlist_clips: wrappers }),
+      }),
+    ).rejects.toBeInstanceOf(SunoSchemaError);
   });
 
   it('forwards 404 as SunoNotFoundError', async () => {

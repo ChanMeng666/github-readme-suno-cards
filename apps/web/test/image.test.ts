@@ -85,4 +85,26 @@ describe('fetchAsDataUri — renderWidth', () => {
     await fetchAsDataUri(foreign, { fetchImpl, renderWidth: 60 });
     expect(seen).toEqual([foreign]);
   });
+
+  // On Vercel Edge a hung body read outlived the abort signal and ran the route
+  // into the 25s platform limit (504). The timeout must settle regardless.
+  it('resolves null on timeout even when the body never finishes and ignores abort', async () => {
+    const fetchImpl: typeof fetch = async () =>
+      new Response(new ReadableStream({ start() {} }), { status: 200 });
+    const started = Date.now();
+    const result = await fetchAsDataUri('https://example.com/x.jpg', { fetchImpl, timeoutMs: 50 });
+    expect(result).toBeNull();
+    expect(Date.now() - started).toBeLessThan(2000);
+  });
+
+  it('bypasses the Next data cache for image fetches', async () => {
+    let init: RequestInit | undefined;
+    const fetchImpl: typeof fetch = async (_url, i) => {
+      init = i;
+      return new Response(new Uint8Array([1]), { status: 200 });
+    };
+    await fetchAsDataUri('https://example.com/x.jpg', { fetchImpl });
+    expect(init?.cache).toBe('no-store');
+    expect((init as { next?: unknown }).next).toBeUndefined();
+  });
 });

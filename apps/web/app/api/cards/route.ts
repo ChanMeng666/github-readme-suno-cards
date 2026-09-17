@@ -12,7 +12,7 @@ import {
 } from '@suno-cards/render';
 import type { NextRequest } from 'next/server';
 
-import { errorToSvg, svgResponse } from '@/lib/errorSvg';
+import { errorToSvg, svgResponse, withSkippedClips } from '@/lib/errorSvg';
 import { fetchAsDataUri } from '@/lib/image';
 import { QueryError, readCardsQuery } from '@/lib/query';
 
@@ -86,9 +86,10 @@ export async function GET(req: NextRequest): Promise<Response> {
         showProgress: q.showProgress,
         showLogo: q.showLogo,
         showLinkIcon: q.showLinkIcon,
+        showSecondaryBadges: q.showSecondaryBadges,
       },
     });
-    return svgResponse(svg, 600);
+    return withSkippedClips(svgResponse(svg, 600), result.skippedClips);
   } catch (err) {
     const isPlayer = (q.layout ?? 'classic') === 'player';
     const songH = isPlayer ? PLAYER_CARD_DEFAULT_HEIGHT : SONG_CARD_DEFAULT_HEIGHT;

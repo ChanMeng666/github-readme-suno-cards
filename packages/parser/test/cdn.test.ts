@@ -33,6 +33,19 @@ describe('resizeSunoCover', () => {
     expect(resizeSunoCover(LARGE, 200)).toBe(`${LARGE}?width=256`);
   });
 
+  // Custom/uploaded covers use other paths on the same host and honour the same
+  // whitelist (measured 2026-09-17) — and they are the multi-megabyte originals.
+  it('resizes custom and uploaded cover paths on cdn2 too', () => {
+    for (const path of [
+      'e6928f7d-5ee1-4ba9-9a37-13bc48dcb69c.jpeg',
+      'bbb1ca55-4f8f-47de-8ad0-9199f4a65ab4_1b77c870.jpeg',
+      'video_upload_1885bc24-b2be-4755-b117-35b60b34aa88_video_upload_1885bc24-b2be-4755-b117-35b60b34aa88_cover_snapshot_0s_1789062305_image.jpeg',
+    ]) {
+      const url = `https://cdn2.suno.ai/${path}`;
+      expect(resizeSunoCover(url, 120)).toBe(`${url}?width=256`);
+    }
+  });
+
   it('passes non-Suno URLs through untouched', () => {
     // oEmbed can return a thumbnail on someone else's host; adding ?width= there
     // would be meaningless at best and cache-busting at worst.

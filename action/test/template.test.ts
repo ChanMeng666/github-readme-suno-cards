@@ -17,7 +17,7 @@ function makeSong(overrides: Partial<SunoSong> = {}): SunoSong {
     author: { displayName: 'Chan', handle: 'chanmeng', avatarUrl: null, userId: 'u1' },
     coverUrl: '',
     coverLargeUrl: '',
-    audioUrl: '',
+    audioUrl: null,
     videoUrl: null,
     tags: [],
     classifiedTags: {
@@ -41,6 +41,7 @@ function makeSong(overrides: Partial<SunoSong> = {}): SunoSong {
     modelVersion: 'v4.5-all',
     modelName: 'chirp-auk',
     modelBadgeTheme: null,
+    secondaryBadges: null,
     shareUrl: 'https://suno.com/song/a885e43c-6918-456f-a5f0-0e8e29e61066',
     embedUrl: 'https://suno.com/embed/a885e43c-6918-456f-a5f0-0e8e29e61066',
     source: 'clip',
@@ -94,6 +95,21 @@ describe('renderServiceSongLine', () => {
     expect(line).toContain('media="(prefers-color-scheme: dark)"');
     expect(line).toContain('theme=dark');
     expect(line).toContain('theme=light');
+  });
+
+  it('adds show_secondary_badges only when enabled', () => {
+    const base = {
+      baseUrl: 'https://github-readme-suno-cards.vercel.app',
+      theme: 'dark' as const,
+      outputType: 'markdown' as const,
+    };
+    expect(renderServiceSongLine(makeSong(), base)).not.toContain('show_secondary_badges');
+    expect(
+      renderServiceSongLine(makeSong(), { ...base, showSecondaryBadges: false }),
+    ).not.toContain('show_secondary_badges');
+    expect(renderServiceSongLine(makeSong(), { ...base, showSecondaryBadges: true })).toContain(
+      '&show_secondary_badges=true',
+    );
   });
 
   it('escapes brackets in titles for markdown safety', () => {

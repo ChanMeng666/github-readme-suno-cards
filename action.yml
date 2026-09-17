@@ -79,6 +79,10 @@ inputs:
   show_link_icon:
     description: 'Show link icon in top-right.'
     required: false
+  show_secondary_badges:
+    description: 'Show Suno secondary badges (Cover, Upload, Full Song) beside the model badge. Classic layout only.'
+    required: false
+    default: 'false'
 
   # ──── Output ───────────────────────────────────────────────────────────────
   render_mode:

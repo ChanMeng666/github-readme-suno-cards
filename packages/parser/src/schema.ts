@@ -4,21 +4,43 @@ import * as v from 'valibot';
 // Raw API response schemas (what Suno actually sends)
 // ============================================================================
 
-/** Colors Suno ships for the model version badge; used to theme the card. */
+/**
+ * Colours Suno ships for a badge, one object per colour scheme.
+ *
+ * **Only `text_color` is still required.** Until about 2026-09-10 every side
+ * also carried `background_color` and `border_color`; Suno then dropped both
+ * from `songrow` (and from `secondary_badges`) and, on the newest model, added
+ * `text_color_gradient` — V6 ships `["FD429C", "FF5126"]`. While the two
+ * colours were still required here, every clip carrying a badge failed
+ * validation, and because validation was per page that took whole profiles
+ * down with it. The retired keys stay optional so older captures still parse.
+ */
 const ModelBadgeSideSchema = v.object({
   text_color: v.string(),
-  background_color: v.string(),
-  border_color: v.string(),
+  background_color: v.optional(v.string()),
+  border_color: v.optional(v.string()),
+  /** Hex stops, left to right. First seen ~2026-09-10 on V6 badges. */
+  text_color_gradient: v.optional(v.array(v.string())),
+});
+
+const ModelBadgeVariantSchema = v.object({
+  display_name: v.optional(v.string()),
+  light: v.optional(ModelBadgeSideSchema),
+  dark: v.optional(ModelBadgeSideSchema),
 });
 
 const ModelBadgesSchema = v.object({
-  songrow: v.optional(
-    v.object({
-      display_name: v.optional(v.string()),
-      light: v.optional(ModelBadgeSideSchema),
-      dark: v.optional(ModelBadgeSideSchema),
-    }),
-  ),
+  /** The compact row badge — what this project has always rendered. */
+  songrow: v.optional(ModelBadgeVariantSchema),
+  /**
+   * Same shape, but Suno's ARTWORK-OVERLAY badge, not a row badge. Appeared
+   * alongside the colour removal (~2026-09-10). On V6-family clips it still
+   * carries `background_color: "0000004D"` / `border_color: "00000000"` (a
+   * translucent plate over cover art) and `display_name` collapses to `"V6"`.
+   * Used only as a fallback when `songrow` is absent, and then with its
+   * bg/border dropped so overlay colours never reach a row badge.
+   */
+  songcard: v.optional(ModelBadgeVariantSchema),
 });
 
 /**
@@ -29,8 +51,11 @@ const ModelBadgesSchema = v.object({
  * Picks, 11 of 23 on "Best of v5.5". Vocabulary observed to date:
  *   - `{display_name: "Upload", icon_key: "uploaded"}` — human-uploaded audio
  *   - `{display_name: "Cover"}` with **no `icon_key`** (hence the field is optional)
- *   - `"full_song"` — historical
- * Parsed for completeness; nothing in this project renders them yet.
+ *   - `{display_name: "Full Song", icon_key: "full_song"}`
+ *
+ * Since ~2026-09-10 `display_name` arrives upper-cased (`UPLOAD`, `COVER`,
+ * `FULL SONG`) and each side carries only `text_color`. Normalised onto
+ * `SunoSong.secondaryBadges`; drawn only when `show_secondary_badges` is on.
  */
 const SecondaryBadgeSchema = v.object({
   display_name: v.optional(v.string()),
@@ -41,13 +66,18 @@ const SecondaryBadgeSchema = v.object({
 
 /**
  * One entry in the clip-level `media_urls[]` array — Suno's per-clip delivery
- * manifest, first observed 2026-08-24. Two entries on every clip measured
- * (149/149 across the clip, profile, playlist and editorial-shelf endpoints).
+ * manifest, first observed 2026-08-24. The history of this list is the finding:
  *
- * Both URLs are exactly derivable from the clip id (120/120 checked), so there
- * is nothing here a consumer could not already construct:
- *   - the `mp3` entry's `url` IS the clip's own `audio_url`
- *   - the `m4a-opus` entry is `d2lwuy8qc234o3.cloudfront.net/1/clip/{id}.m4a`
+ *   - 2026-08-24: two entries on every clip measured (149/149 across the clip,
+ *     profile, playlist and editorial-shelf endpoints) — an `mp3` whose `url`
+ *     was the clip's own `audio_url`, and an `m4a-opus` entry at
+ *     `d2lwuy8qc234o3.cloudfront.net/1/clip/{id}.m4a`. Both derivable from the
+ *     clip id (120/120 checked).
+ *   - Late August 2026: the public mp3 on `cdn1.suno.ai` began answering 403.
+ *   - Early September 2026: the `mp3` entry left the list. Measured 2026-09-17,
+ *     every clip sampled (100/100 across two profile pages, a user playlist and
+ *     the Staff Picks shelf) carries one entry, `m4a-opus`, and `audio_url` is
+ *     the placeholder `https://studio-api.prod.suno.com/api/forbidden`.
  *
  * `content_type` is a SUNO-SUPPLIED LABEL, not a verified property of the
  * bytes. The `m4a-opus` payload is opaque: measured 2026-08-24 in Chrome 148 it
@@ -55,16 +85,17 @@ const SecondaryBadgeSchema = v.object({
  * fetched whole and re-wrapped in a correctly-typed Blob, and the leading bytes
  * of three clips carried no container marker at ~7.95 bits/byte entropy.
  *
- * Practical consequence for anything rendering audio: **use `audio_url`.** A
- * two-`<source>` list with the opus tier first is worse than useless — the
- * browser reports the codec as supported, selects it confidently, and fails.
+ * This project does not decode it and will not try.
+ *
+ * Practical consequence: **there is no public, playable audio URL any more.**
+ * `SunoSong.audioUrl` is `null` when Suno sends the placeholder.
  */
 const MediaUrlEntrySchema = v.object({
   url: v.optional(v.string()),
   content_type: v.optional(v.string()),
   /** `"progressive"` on every entry observed so far. */
   delivery: v.optional(v.string()),
-  /** Absent on the mp3 entry; `"1.0.0"` on the m4a-opus entry. */
+  /** `"1.0.0"` on the m4a-opus entry; was absent on the retired mp3 entry. */
   encoding: v.optional(v.string()),
 });
 
@@ -245,6 +276,18 @@ const ClipMetadataSchema = v.object({
   secondary_badges: v.optional(v.array(SecondaryBadgeSchema)),
 
   /**
+   * Vocal render mode. `"strict"` on every clip sampled 2026-09-17 (100/100);
+   * `"beautified"` is the other value seen. Parsed, not used.
+   */
+  vox_render_mode: v.optional(v.nullable(v.string())),
+  /** Sparse (2 of 100 clips, 2026-09-17). Semantics not confirmed. */
+  is_max_mode: v.optional(v.nullable(v.boolean())),
+  /** Parent of an `upsample` clip. Redacted to the zero UUID, like the lineage pointers above. */
+  upsample_clip_id: v.optional(v.nullable(v.string())),
+  /** Sparse (1 of 100, 2026-09-17; observed `"normal"`). Semantics not confirmed. */
+  variation_category: v.optional(v.nullable(v.string())),
+
+  /**
    * Points at a Persona entity. A different namespace from the clip-parent
    * lineage pointers above, and not subject to their zero-UUID treatment.
    */
@@ -358,11 +401,18 @@ export const ClipSchema = v.object({
   // Media URLs
   image_url: v.string(),
   image_large_url: v.string(),
+  /**
+   * Was a public mp3 on `cdn1.suno.ai`. Since early September 2026 it is the
+   * literal placeholder `https://studio-api.prod.suno.com/api/forbidden` on
+   * every clip sampled, for every User-Agent tried. Still a string, so still
+   * required here; `mapClipToSong` turns the placeholder into `audioUrl: null`.
+   */
   audio_url: v.string(),
   video_url: v.optional(v.string()),
   /**
    * Per-clip delivery manifest (added 2026-08-24). Present on every clip
    * measured, and — unlike `metadata.secondary_badges` — NOT User-Agent-variant.
+   * A single `m4a-opus` entry since early September 2026 — see {@link MediaUrlEntrySchema}.
    * `v.optional` regardless: it is new, and every clip field here is optional so
    * one schema validates all response variants.
    */
@@ -442,8 +492,8 @@ export const PersonaSchema = v.object({
   description: v.optional(v.nullable(v.string())),
   /** Image URL (despite the name — not an actual S3 ID). */
   image_s3_id: v.optional(v.nullable(v.string())),
-  /** UUID of the clip this persona was derived from. */
-  root_clip_id: v.optional(v.string()),
+  /** UUID of the clip this persona was derived from. Often the zero UUID in anonymous responses. */
+  root_clip_id: v.optional(v.nullable(v.string())),
 
   /** Full embedded clip object. */
   clip: v.optional(ClipSchema),
@@ -571,6 +621,27 @@ export const ProfileResponseSchema = v.object({
 
 export type ProfileResponse = v.InferOutput<typeof ProfileResponseSchema>;
 
+/**
+ * The profile response with every clip left unvalidated. The fetcher checks
+ * this envelope first and then each `clips[]` entry against {@link ClipSchema}
+ * on its own, so one clip in a shape Suno has just changed costs that clip, not
+ * the whole page. `favorite_songs` and `personas[].clip` feed nothing that
+ * renders, so they are not validated at all.
+ */
+export const ProfileEnvelopeSchema = v.object({
+  ...ProfileResponseSchema.entries,
+  clips: v.array(v.unknown()),
+  favorite_songs: v.optional(v.array(v.unknown())),
+  personas: v.optional(
+    v.array(
+      v.object({
+        ...PersonaSchema.entries,
+        clip: v.optional(v.unknown()),
+      }),
+    ),
+  ),
+});
+
 /** /api/oembed?url=... response (W3C oEmbed rich type). */
 export const OEmbedResponseSchema = v.object({
   version: v.optional(v.string()),
@@ -644,6 +715,17 @@ export const PlaylistDetailSchema = v.object({
 
 export type PlaylistDetailResponse = v.InferOutput<typeof PlaylistDetailSchema>;
 
+/** {@link PlaylistDetailSchema} with each wrapped clip left unvalidated — see {@link ProfileEnvelopeSchema}. */
+export const PlaylistEnvelopeSchema = v.object({
+  ...PlaylistDetailSchema.entries,
+  playlist_clips: v.array(
+    v.object({
+      clip: v.unknown(),
+      relative_index: v.number(),
+    }),
+  ),
+});
+
 // ============================================================================
 // Normalized output types (what `fetchSong` / `fetchProfile` return)
 // ============================================================================
@@ -680,10 +762,27 @@ export type ClassifiedTags = {
   other: string[];
 };
 
+/**
+ * One colour scheme of a badge, as CSS colour strings.
+ *
+ * `bg` and `border` are `null` for badges captured after Suno stopped sending
+ * them (~2026-09-10). `gradient` is `null` unless Suno sends
+ * `text_color_gradient`, and then holds the stops in order. `text` is always
+ * set, and is the fallback wherever a gradient cannot be drawn.
+ */
 export type BadgeTheme = {
   text: string;
-  bg: string;
-  border: string;
+  bg: string | null;
+  border: string | null;
+  gradient: string[] | null;
+};
+
+/** A normalised secondary badge, e.g. `{ key: 'cover', label: 'Cover' }`. */
+export type SecondaryBadge = {
+  /** `icon_key` when Suno sends one, else `display_name` — lower-cased. */
+  key: string;
+  /** `display_name` in title case (`"FULL SONG"` → `"Full Song"`). */
+  label: string;
 };
 
 export type SunoSong = {
@@ -701,7 +800,12 @@ export type SunoSong = {
   };
   coverUrl: string;
   coverLargeUrl: string;
-  audioUrl: string;
+  /**
+   * A real media URL, or `null`. **Was `string` before 0.3.0.** Suno now sends
+   * a `/api/forbidden` placeholder instead of a public mp3, and the oEmbed
+   * fallback no longer invents a `cdn1` URL that would answer 403.
+   */
+  audioUrl: string | null;
   videoUrl: string | null;
   tags: string[];
   classifiedTags: ClassifiedTags;
@@ -718,6 +822,12 @@ export type SunoSong = {
     light: BadgeTheme;
     dark: BadgeTheme;
   } | null;
+  /**
+   * `metadata.secondary_badges`, normalised. `null` when Suno did not send the
+   * key — which is also what any User-Agent starting with `suno` gets, see
+   * `fetcher.ts` — and `[]` when it sent an empty list.
+   */
+  secondaryBadges: SecondaryBadge[] | null;
   shareUrl: string;
   embedUrl: string;
   /**
@@ -754,6 +864,10 @@ export type SunoPlaylistDetail = {
   numTotalTracks: number;
   currentPage: number;
   clips: SunoSong[];
+  /** Clips dropped because they failed {@link ClipSchema} on their own. */
+  skippedClips: number;
+  /** Dotted issue paths for the first few skipped clips, for logs. */
+  skippedIssues: string[];
   owner: {
     displayName: string;
     handle: string | null;

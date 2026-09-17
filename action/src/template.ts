@@ -26,6 +26,8 @@ export type ServiceTemplateOptions = {
   showProgress?: boolean | null;
   showLogo?: boolean | null;
   showLinkIcon?: boolean | null;
+  /** Off by default on the service too, so only `true` is worth a query param. */
+  showSecondaryBadges?: boolean;
 };
 
 /** URL-encode a single query parameter value. */
@@ -48,6 +50,7 @@ function buildCardUrl(
   if (opts.showProgress != null) params.push(`show_progress=${opts.showProgress}`);
   if (opts.showLogo != null) params.push(`show_logo=${opts.showLogo}`);
   if (opts.showLinkIcon != null) params.push(`show_link_icon=${opts.showLinkIcon}`);
+  if (opts.showSecondaryBadges) params.push('show_secondary_badges=true');
   return `${base.replace(/\/$/, '')}/api/card?${params.join('&')}`;
 }
 
