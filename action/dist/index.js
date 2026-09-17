@@ -29396,7 +29396,10 @@ var ANIMATION_CSS = `
   .eq-bar-3 { animation-duration:  980ms; animation-delay:  20ms; }
   .eq-bar-4 { animation-duration: 1120ms; animation-delay:  60ms; }
 
+  /* Scale about the ribbon's own box. The default SVG transform-box is the
+     view box, so "center" would be the middle of the whole SVG. */
   .new-badge {
+    transform-box: fill-box;
     transform-origin: center center;
     animation: new-pulse 2.2s ease-in-out infinite;
   }
@@ -29927,9 +29930,11 @@ function renderSecondaryBadgesHtml(song) {
 // ../packages/render/src/newBadge.ts
 function renderNewBadge(x, y, lang) {
   const label = escapeXml(t(lang, "new_badge"));
-  return `<g class="new-badge" transform="translate(${x}, ${y})" aria-hidden="true">
-    <rect x="0" y="0" width="38" height="18" rx="9" fill="#ef4444" />
-    <text x="19" y="13" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#ffffff" letter-spacing="0.5">${label}</text>
+  return `<g transform="translate(${x}, ${y})" aria-hidden="true">
+    <g class="new-badge">
+      <rect x="0" y="0" width="38" height="18" rx="9" fill="#ef4444" />
+      <text x="19" y="13" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="700" fill="#ffffff" letter-spacing="0.5">${label}</text>
+    </g>
   </g>`;
 }
 

@@ -55,7 +55,10 @@ export const ANIMATION_CSS = `
   .eq-bar-3 { animation-duration:  980ms; animation-delay:  20ms; }
   .eq-bar-4 { animation-duration: 1120ms; animation-delay:  60ms; }
 
+  /* Scale about the ribbon's own box. The default SVG transform-box is the
+     view box, so "center" would be the middle of the whole SVG. */
   .new-badge {
+    transform-box: fill-box;
     transform-origin: center center;
     animation: new-pulse 2.2s ease-in-out infinite;
   }
