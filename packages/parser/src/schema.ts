@@ -33,10 +33,12 @@ const ModelBadgesSchema = v.object({
   /** The compact row badge — what this project has always rendered. */
   songrow: v.optional(ModelBadgeVariantSchema),
   /**
-   * Same shape, for Suno's larger card view. Appeared alongside the colour
-   * removal (~2026-09-10), and on 2026-09-17 still carried
-   * `background_color`/`border_color` where `songrow` did not. Used only as a
-   * fallback when `songrow` is absent, so the rendered badge keeps its meaning.
+   * Same shape, but Suno's ARTWORK-OVERLAY badge, not a row badge. Appeared
+   * alongside the colour removal (~2026-09-10). On V6-family clips it still
+   * carries `background_color: "0000004D"` / `border_color: "00000000"` (a
+   * translucent plate over cover art) and `display_name` collapses to `"V6"`.
+   * Used only as a fallback when `songrow` is absent, and then with its
+   * bg/border dropped so overlay colours never reach a row badge.
    */
   songcard: v.optional(ModelBadgeVariantSchema),
 });

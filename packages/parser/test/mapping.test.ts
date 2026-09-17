@@ -68,9 +68,9 @@ describe('mapClipToSong — badges', () => {
     expect(song.modelBadgeTheme?.light.gradient).toEqual(['#FD429C', '#FF5126']);
   });
 
-  it('prefers songrow, and falls back to songcard only when songrow is absent', () => {
+  it('prefers songrow, and falls back to songcard (without its overlay colours) only when songrow is absent', () => {
     const row = { text_color: '111111' };
-    const card = { text_color: '222222', background_color: '0000004D' };
+    const card = { text_color: '222222', background_color: '0000004D', border_color: '00000000' };
     const both = mapClipToSong(
       clipWith({
         model_badges: {
@@ -87,7 +87,19 @@ describe('mapClipToSong — badges', () => {
       'clip',
     );
     expect(cardOnly.modelBadgeTheme?.light.text).toBe('#222222');
-    expect(cardOnly.modelBadgeTheme?.light.bg).toBe('rgba(0, 0, 0, 0.302)');
+    // songcard is an artwork overlay; its translucent bg must not reach a row badge.
+    expect(cardOnly.modelBadgeTheme?.light.bg).toBeNull();
+    expect(cardOnly.modelBadgeTheme?.dark.border).toBeNull();
+  });
+
+  it('keeps every stop of an N-stop gradient (V6-MINI ships six)', () => {
+    const stops = ['C2C2C2', 'C2C2C2', 'ADADAD', '989898', '838383', '6E6E6E'];
+    const side = { text_color: 'C2C2C2', text_color_gradient: stops };
+    const song = mapClipToSong(
+      clipWith({ model_badges: { songrow: { light: side, dark: side } } }),
+      'clip',
+    );
+    expect(song.modelBadgeTheme?.dark.gradient).toEqual(stops.map((s) => `#${s}`));
   });
 
   it('is null when a badge lacks either colour scheme', () => {
@@ -117,6 +129,7 @@ describe('mapClipToSong — secondary badges', () => {
           { display_name: 'COVER' },
           { icon_key: 'full_song', display_name: 'FULL SONG' },
           { icon_key: 'full_song' },
+          { icon_key: 'part', display_name: 'EXTEND 1' },
           {},
         ],
       }),
@@ -127,6 +140,7 @@ describe('mapClipToSong — secondary badges', () => {
       { key: 'cover', label: 'Cover' },
       { key: 'full_song', label: 'Full Song' },
       { key: 'full_song', label: 'Full Song' },
+      { key: 'part', label: 'Extend 1' },
     ]);
   });
 });

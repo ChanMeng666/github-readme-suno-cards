@@ -59,8 +59,8 @@ written-down claim turned out to be wrong. Expect to be the next one.
   Covers (`cdn2`) and the mp4 on `cdn1` still answer.
 - **Badges carry text colour only.** Since ~2026-09-10 `model_badges.songrow.{light,dark}` and
   `secondary_badges[].{light,dark}` send just `text_color` (plus `text_color_gradient` on V6);
-  `background_color`/`border_color` stay optional so older captures parse. `songcard` is a sibling
-  used only as a fallback. `BadgeTheme.bg`/`border`/`gradient` are nullable, and the renderer maps
+  `background_color`/`border_color` stay optional so older captures parse. `songcard` is an artwork-overlay
+  sibling used only as a fallback, with its bg/border dropped. `BadgeTheme.bg`/`border`/`gradient` are nullable, and the renderer maps
   null to `transparent`.
 - **Validation is per clip, not per page.** `profile.ts` and `playlist.ts` validate the envelope with
   clips as `unknown`, then each clip on its own (`clipList.ts`). A failing clip is dropped and

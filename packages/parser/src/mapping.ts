@@ -106,12 +106,16 @@ export function mapClipToSong(
   const isNew = Number.isFinite(createdAtMs) && nowMs - createdAtMs < SEVEN_DAYS_MS;
 
   // `songrow` first: it is the badge this card has always drawn. `songcard`
-  // only fills in when a clip has no row badge at all.
-  const badges = clip.metadata.model_badges?.songrow ?? clip.metadata.model_badges?.songcard;
+  // only fills in when a clip has no row badge at all — and it is Suno's
+  // artwork-overlay badge (V6 family: bg `0000004D`, border `00000000`), so its
+  // bg/border are dropped rather than painted onto a row badge.
+  const row = clip.metadata.model_badges?.songrow;
+  const card = row ? undefined : clip.metadata.model_badges?.songcard;
+  const badges = row ?? card;
+  const side = (s: BadgeSide): BadgeTheme =>
+    card ? { ...mapBadgeSide(s), bg: null, border: null } : mapBadgeSide(s);
   const modelBadgeTheme =
-    badges?.light && badges?.dark
-      ? { light: mapBadgeSide(badges.light), dark: mapBadgeSide(badges.dark) }
-      : null;
+    badges?.light && badges?.dark ? { light: side(badges.light), dark: side(badges.dark) } : null;
 
   return {
     id: clip.id,
