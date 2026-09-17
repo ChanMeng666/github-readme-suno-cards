@@ -1,9 +1,10 @@
 import * as v from 'valibot';
+import { validateClipList } from './clipList.js';
 import { SunoHandleNotFoundError, SunoInvalidRequestError, SunoSchemaError } from './errors.js';
 import { type FetchJsonOptions, fetchJson } from './fetcher.js';
 import { mapClipToSong } from './mapping.js';
 import {
-  ProfileResponseSchema,
+  ProfileEnvelopeSchema,
   type SortKey,
   type SunoPlaylist,
   type SunoProfile,
@@ -25,6 +26,10 @@ export type FetchProfilePageResult = {
   clips: SunoSong[];
   numTotalClips: number;
   currentPage: number;
+  /** Clips on this page dropped because they failed validation on their own. */
+  skippedClips: number;
+  /** Dotted issue paths for the first few skipped clips. */
+  skippedIssues: string[];
 };
 
 /**
@@ -63,7 +68,8 @@ export async function fetchProfilePage(
     throw new SunoSchemaError(url, { status }, body);
   }
 
-  const result = v.safeParse(ProfileResponseSchema, body);
+  // Envelope first, then each clip on its own — see `clipList.ts`.
+  const result = v.safeParse(ProfileEnvelopeSchema, body);
   if (!result.success) {
     throw new SunoSchemaError(url, result.issues, body);
   }
@@ -95,19 +101,29 @@ export async function fetchProfilePage(
     shareUrl: `${HANDLE_URL_BASE}${p.handle}`,
   };
 
-  const clips = p.clips.map((c) => mapClipToSong(c, 'profile'));
+  const validated = validateClipList(
+    url,
+    body,
+    p.clips,
+    (c) => c,
+    (i) => ['clips', i],
+  );
+  const clips = validated.kept.map(({ clip }) => mapClipToSong(clip, 'profile'));
 
   return {
     profile,
     clips,
     numTotalClips: p.num_total_clips,
     currentPage: p.current_page ?? page,
+    skippedClips: validated.skippedClips,
+    skippedIssues: validated.skippedIssues,
   };
 }
 
 /**
  * Summary-only fetch: returns just the `SunoProfile` (no clips) by calling
- * page 1 and discarding clips. Used by the `/api/profile` route handler.
+ * page 1 and discarding clips. Callers that want the skipped-clip count call
+ * `fetchProfilePage` directly, as the `/api/profile` route handler does.
  */
 export async function fetchProfile(
   handle: string,

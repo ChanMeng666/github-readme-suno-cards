@@ -24,7 +24,7 @@ import { SunoNetworkError } from './errors.js';
  * Keep the version in step with the latest release heading in `CHANGELOG.md`.
  */
 const USER_AGENT =
-  'github-readme-suno-cards/0.2.1 (+https://github.com/ChanMeng666/github-readme-suno-cards)';
+  'github-readme-suno-cards/0.3.0 (+https://github.com/ChanMeng666/github-readme-suno-cards)';
 
 export type FetchJsonOptions = {
   /** Override fetch implementation (test injection). */

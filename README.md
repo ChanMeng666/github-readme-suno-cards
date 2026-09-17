@@ -58,7 +58,7 @@
 - [Render Modes](#render-modes)
 - [Example Workflows](#example-workflows)
 - [See the bigger picture — Seismophone](#see-the-bigger-picture--seismophone)
-- [Status / upstream findings (2026-07)](#status--upstream-findings-2026-07)
+- [Status / upstream findings (2026-09)](#status--upstream-findings-2026-09)
 - [Roadmap](#roadmap)
 - [Architecture & Internals](#architecture--internals)
 - [Acknowledgements](#acknowledgements)
@@ -495,7 +495,7 @@ Or use the **[interactive builder](https://github-readme-suno-cards.vercel.app/b
 </details>
 
 <details>
-<summary><strong>Element toggles (11 options)</strong></summary>
+<summary><strong>Element toggles (12 options)</strong></summary>
 
 Each element can be shown or hidden independently. Defaults vary by layout.
 
@@ -507,7 +507,8 @@ Each element can be shown or hidden independently. Defaults vary by layout.
 | `show_likes` | `true` | `false` | Like count |
 | `show_author` | `true` | `false` | Author byline |
 | `show_duration` | `true` | `false` | Duration pill on cover |
-| `show_model_badge` | `true` | `false` | Suno model badge (v4.5/v5) |
+| `show_model_badge` | `true` | `false` | Suno model badge (v4.5, v5, V6 — V6 draws Suno's text gradient) |
+| `show_secondary_badges` | `false` | `false` | Suno's secondary badges (Cover, Upload, Full Song) as small chips beside the model badge. Classic layout only |
 | `show_new_badge` | `true` | `false` | NEW ribbon on recent songs |
 | `show_progress` | `false` | `true` | Progress bar + play button |
 | `show_logo` | `false` | `true` | SUNO logo in bottom-right |
@@ -571,6 +572,7 @@ Base URL: `https://github-readme-suno-cards.vercel.app`
 | `show_author` | boolean | layout-dep. | Author byline |
 | `show_duration` | boolean | layout-dep. | Duration pill |
 | `show_model_badge` | boolean | layout-dep. | Model badge |
+| `show_secondary_badges` | boolean | `false` | Cover / Upload / Full Song chips (classic layout) |
 | `show_new_badge` | boolean | layout-dep. | NEW ribbon |
 | `show_progress` | boolean | layout-dep. | Progress bar |
 | `show_logo` | boolean | layout-dep. | SUNO logo |
@@ -611,6 +613,8 @@ Includes all `/api/card` visual parameters, plus:
 | `featured` | CSV of UUIDs | — | Pin specific songs above all |
 | `allow_explicit` | boolean | `true` | Include explicit songs |
 | `show_profile_card` | boolean | `true` | Show profile card above songs |
+
+If Suno changes the shape of some clips but not others, the parser drops just those clips and the card still renders. `/api/cards` and `/api/profile` then add an `x-suno-skipped-clips: N` response header, and the Action logs a warning with the first failing field paths.
 
 ### Caching
 
@@ -665,6 +669,7 @@ Includes all `/api/card` visual parameters, plus:
 | `show_progress` | layout-dep. | Progress bar + play button |
 | `show_logo` | layout-dep. | SUNO logo in bottom-right |
 | `show_link_icon` | layout-dep. | Link icon in top-right |
+| `show_secondary_badges` | `false` | Cover / Upload / Full Song chips beside the model badge (classic layout) |
 
 ### Output & Format
 
@@ -775,7 +780,7 @@ It's a free, no-signup companion to this project (not affiliated with Suno — a
 
 ---
 
-## Status / upstream findings (2026-08)
+## Status / upstream findings (2026-09)
 
 A full audit on **2026-07-05** found the project healthy: all three deployed render surfaces (`/api/card`, `/api/profile`, `/api/cards`) were verified against live Suno data and render correctly. The parser already sends the now-required `clips_sort_by` / `playlists_sort_by` query params, so it is immune to the recent Suno profile-endpoint schema drift that returns HTTP `422` when they are missing.
 
@@ -787,7 +792,12 @@ Two findings shaped the current API surface:
 Two more landed in late August:
 
 - **Suno varies its response by `User-Agent`, and it is a *prefix* rule.** A request whose UA **begins with** `suno` (case-insensitive) gets a different serializer variant, with `metadata.secondary_badges` omitted entirely — 0 of 22 clips on a curated shelf, against 12–13 of 22 for every other UA tested, `curl` and ordinary bot strings included. Prefix, not substring: `xSuno/1.0` gets the normal variant. It is **not** bot-vs-browser and **not** identified-vs-anonymous; both of those readings were written down first and both were wrong. Practical consequence for anyone building on this API: **attach the User-Agent to every presence claim** — "field X is present on k of N clips" is not a complete statement. This package sends one honest, declared UA that does not begin with `suno`; don't change that without reading the note in `packages/parser/src/fetcher.ts`.
-- **Every clip now advertises a second audio file (`media_urls`), and you should keep using `audio_url`.** The manifest lists two tiers: the familiar `mp3` on `cdn1.suno.ai`, and an `m4a-opus` tier on a separate host. Both URLs are exactly derivable from the clip id, so there is nothing new to store — and the second one is **not playable**. Measured 2026-08-24 in Chrome 148: the browser reports the codec as supported, yet the payload fails to decode both from its URL and re-wrapped whole with the correct type declared, and its leading bytes carry no container header at all. `content_type` is Suno's label, not a verified fact about the bytes. A two-`<source>` list with the opus tier first is therefore *worse* than useless: the browser picks it confidently and fails every time. The full measurement — codec support, the two decode failures, and the container-header and entropy checks — is in the [CHANGELOG](CHANGELOG.md).
+- **Every clip started advertising a second audio file (`media_urls`) on 2026-08-24.** It listed the familiar `mp3` on `cdn1.suno.ai` and an `m4a-opus` tier on a separate host. The second one is **not playable**: measured 2026-08-24 in Chrome 148, the browser reports the codec as supported, yet the payload fails to decode both from its URL and re-wrapped whole with the correct type declared, and its leading bytes carry no container header at all. `content_type` is Suno's label, not a verified fact about the bytes. The full measurement is in the [CHANGELOG](CHANGELOG.md).
+
+And two in September, which together broke the profile and stack cards (v0.3.0 is the fix):
+
+- **Badge colours are gone.** Around **2026-09-10** Suno stopped sending `background_color` and `border_color` for model badges and secondary badges; each colour scheme now carries only `text_color`, and the newest model adds a `text_color_gradient` (V6: `FD429C` → `FF5126`). A sibling `model_badges.songcard` appeared with the same shape, and secondary badge names are now upper-case (`COVER`, `UPLOAD`, `FULL SONG`). The parser required the removed colours, so every clip with a badge failed validation — and because a profile page was validated as a unit, one such clip was enough to turn the whole card into `⚠️ Suno error`. The colours are optional now, the V6 gradient is drawn, and **a clip that fails validation on its own is dropped rather than taking the page with it** (the `x-suno-skipped-clips` header and an Action warning report it).
+- **There is no public mp3 any more.** `cdn1.suno.ai/{id}.mp3` has answered **403** since late August 2026; in early September the `mp3` entry left `media_urls`; and on every clip sampled on 2026-09-17 (100 of 100, across profile, playlist and curated-shelf responses, under every User-Agent tried) `audio_url` is the literal placeholder `https://studio-api.prod.suno.com/api/forbidden`. The only delivery left is the opaque `m4a-opus` stream above, which this project does not decode. `SunoSong.audioUrl` is therefore `string | null` (a breaking type change), and the oEmbed fallback no longer invents a `cdn1` URL. Cover art and video are unaffected.
 
 ---
 
@@ -798,7 +808,7 @@ Two more landed in late August:
 
 ### v0.2
 
-- [ ] **Waveform card variant** (Action local mode only) — download MP3, compute amplitude samples, render SVG `<path>`
+- [ ] ~~**Waveform card variant** (Action local mode only) — download MP3, compute amplitude samples, render SVG `<path>`~~ — **blocked:** Suno no longer serves a public mp3 (see [Status](#status--upstream-findings-2026-09)). The only audio left is an opaque stream this project does not decode.
 - [ ] **Lyrics excerpt card** — parse `[Chorus]` from structured prompt, render as card subtitle
 - [ ] **Playlist card** — render Suno playlists
 - [ ] **JSON API** — `/api/song.json` and `/api/profile.json` for third-party tools

@@ -1,8 +1,8 @@
-import { fetchProfile } from '@suno-cards/parser';
+import { fetchProfilePage } from '@suno-cards/parser';
 import { AVATAR_SIZE, renderSingleProfileSvg } from '@suno-cards/render';
 import type { NextRequest } from 'next/server';
 
-import { errorToSvg, svgResponse } from '@/lib/errorSvg';
+import { errorToSvg, svgResponse, withSkippedClips } from '@/lib/errorSvg';
 import { fetchAsDataUri } from '@/lib/image';
 import { QueryError, readProfileQuery } from '@/lib/query';
 
@@ -32,7 +32,8 @@ export async function GET(req: NextRequest): Promise<Response> {
   const theme = q.theme ?? 'auto';
 
   try {
-    const profile = await fetchProfile(q.handle);
+    // Page 1 rather than `fetchProfile`, so the skipped-clip count is visible.
+    const { profile, skippedClips } = await fetchProfilePage(q.handle);
     const avatarDataUri = await fetchAsDataUri(profile.avatarUrl, {
       renderWidth: AVATAR_SIZE,
     });
@@ -44,7 +45,7 @@ export async function GET(req: NextRequest): Promise<Response> {
       width: q.width,
       colorOverrides: q.colors,
     });
-    return svgResponse(svg, 600);
+    return withSkippedClips(svgResponse(svg, 600), skippedClips);
   } catch (err) {
     return svgResponse(errorToSvg(err, { lang, theme, width: q.width }), 300);
   }

@@ -5,9 +5,10 @@ import {
   SunoNotFoundError,
   SunoNotReadyError,
   SunoPrivateError,
+  SunoSchemaError,
 } from '@suno-cards/parser';
 import { describe, expect, it } from 'vitest';
-import { classifyError, errorToSvg, svgResponse } from '../lib/errorSvg.js';
+import { classifyError, errorToSvg, svgResponse, withSkippedClips } from '../lib/errorSvg.js';
 
 describe('classifyError', () => {
   it('maps SunoNotFoundError to not_found', () => {
@@ -33,6 +34,34 @@ describe('classifyError', () => {
     const err = new SunoInvalidRequestError('https://studio-api-prod.suno.com/api/profiles/x', 422);
     expect(classifyError(err).kind).toBe('error');
   });
+  it('maps SunoSchemaError to the endpoint path plus the first issue path, no query', () => {
+    const err = new SunoSchemaError(
+      'https://studio-api-prod.suno.com/api/profiles/chanmeng?clips_sort_by=created_at&page=1',
+      [
+        {
+          message: 'Invalid type',
+          path: [
+            { key: 'clips' },
+            { key: 3 },
+            { key: 'metadata' },
+            { key: 'model_badges' },
+            { key: 'songrow' },
+          ],
+        },
+        { message: 'second', path: [{ key: 'handle' }] },
+      ],
+    );
+    const { kind, detail } = classifyError(err);
+    expect(kind).toBe('error');
+    expect(detail).toBe('/api/profiles/chanmeng · clips.3.metadata.model_badges.songrow');
+    expect(detail).not.toContain('?');
+  });
+  it('maps SunoSchemaError with no issue path (non-2xx) to the path alone', () => {
+    const err = new SunoSchemaError('https://studio-api-prod.suno.com/api/clip/abc?x=1', {
+      status: 500,
+    });
+    expect(classifyError(err).detail).toBe('/api/clip/abc');
+  });
   it('maps unknown Error to generic error', () => {
     expect(classifyError(new Error('boom')).kind).toBe('error');
   });
@@ -51,6 +80,17 @@ describe('errorToSvg', () => {
   it('localizes error messages', () => {
     const svg = errorToSvg(new SunoNotFoundError('x'), { lang: 'zh' });
     expect(svg).toContain('歌曲未找到');
+  });
+});
+
+describe('withSkippedClips', () => {
+  it('adds x-suno-skipped-clips only when clips were dropped', () => {
+    expect(withSkippedClips(svgResponse('<svg/>'), 2).headers.get('x-suno-skipped-clips')).toBe(
+      '2',
+    );
+    expect(withSkippedClips(svgResponse('<svg/>'), 0).headers.has('x-suno-skipped-clips')).toBe(
+      false,
+    );
   });
 });
 

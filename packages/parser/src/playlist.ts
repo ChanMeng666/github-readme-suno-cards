@@ -1,11 +1,12 @@
 import * as v from 'valibot';
 import { STUDIO_API_BASE } from './clip.js';
+import { validateClipList } from './clipList.js';
 import { SunoInvalidRequestError, SunoNotFoundError, SunoSchemaError } from './errors.js';
 import { type FetchJsonOptions, fetchJson } from './fetcher.js';
 import { mapClipToSong } from './mapping.js';
 import {
-  type PlaylistDetailResponse,
-  PlaylistDetailSchema,
+  type ClipResponse,
+  PlaylistEnvelopeSchema,
   type SunoPlaylistDetail,
   type SunoSong,
 } from './schema.js';
@@ -50,12 +51,29 @@ export async function fetchPlaylistDetailUrl(
     throw new SunoSchemaError(fullUrl, { status }, body);
   }
 
-  const result = v.safeParse(PlaylistDetailSchema, body);
+  // Envelope first, then each wrapped clip on its own — see `clipList.ts`.
+  const result = v.safeParse(PlaylistEnvelopeSchema, body);
   if (!result.success) {
     throw new SunoSchemaError(fullUrl, result.issues, body);
   }
+  const raw = result.output;
+  const validated = validateClipList(
+    fullUrl,
+    body,
+    raw.playlist_clips,
+    (w) => w.clip,
+    (i) => ['playlist_clips', i, 'clip'],
+  );
+  const wrappers = validated.kept.map(({ item, clip }) => ({
+    clip,
+    relative_index: item.relative_index,
+  }));
 
-  return mapPlaylistDetail(result.output, opts.source ?? 'playlist');
+  return {
+    ...mapPlaylistDetail(raw, wrappers, opts.source ?? 'playlist'),
+    skippedClips: validated.skippedClips,
+    skippedIssues: validated.skippedIssues,
+  };
 }
 
 /** Fetch a user-owned playlist by UUID from `/api/playlist/{uuid}`. */
@@ -68,12 +86,13 @@ export function fetchPlaylist(
 }
 
 function mapPlaylistDetail(
-  raw: PlaylistDetailResponse,
+  raw: v.InferOutput<typeof PlaylistEnvelopeSchema>,
+  validWrappers: Array<{ clip: ClipResponse; relative_index: number }>,
   source: SunoSong['source'],
-): SunoPlaylistDetail {
+): Omit<SunoPlaylistDetail, 'skippedClips' | 'skippedIssues'> {
   // Sort by relative_index ascending — Suno already returns them in order,
   // but we sort defensively so downstream code doesn't depend on server order.
-  const wrappers = [...raw.playlist_clips].sort((a, b) => a.relative_index - b.relative_index);
+  const wrappers = [...validWrappers].sort((a, b) => a.relative_index - b.relative_index);
 
   // Filter + map each clip through the same pipeline as /api/clip/.
   // Playlist clips can include not-ready / private songs — skip them so the

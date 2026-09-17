@@ -20189,6 +20189,14 @@ var init_dist = __esm({
 });
 
 // ../packages/parser/src/errors.ts
+function formatIssuePath(issue) {
+  if (issue == null || typeof issue !== "object") return "";
+  const path = issue.path;
+  if (!Array.isArray(path)) return "";
+  return path.map(
+    (item) => item != null && typeof item === "object" && "key" in item ? String(item.key) : ""
+  ).filter((key) => key !== "").join(".");
+}
 var SunoError, SunoInvalidInputError, SunoNotFoundError, SunoHandleNotFoundError, SunoInvalidRequestError, SunoPrivateError, SunoNotReadyError, SunoSchemaError, SunoNetworkError;
 var init_errors = __esm({
   "../packages/parser/src/errors.ts"() {
@@ -20309,7 +20317,7 @@ var init_fetcher = __esm({
   "../packages/parser/src/fetcher.ts"() {
     "use strict";
     init_errors();
-    USER_AGENT = "github-readme-suno-cards/0.2.1 (+https://github.com/ChanMeng666/github-readme-suno-cards)";
+    USER_AGENT = "github-readme-suno-cards/0.3.0 (+https://github.com/ChanMeng666/github-readme-suno-cards)";
   }
 });
 
@@ -20853,18 +20861,46 @@ function hexToCss(hex2) {
   return `#${cleaned}`;
 }
 function mapBadgeSide(side) {
+  const stops = side.text_color_gradient ?? [];
   return {
     text: hexToCss(side.text_color),
-    bg: hexToCss(side.background_color),
-    border: hexToCss(side.border_color)
+    bg: side.background_color != null ? hexToCss(side.background_color) : null,
+    border: side.border_color != null ? hexToCss(side.border_color) : null,
+    gradient: stops.length > 0 ? stops.map(hexToCss) : null
   };
+}
+function normalizeMediaUrl(url) {
+  if (!url) return null;
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
+  }
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return null;
+  if (parsed.pathname.replace(/\/+$/, "") === "/api/forbidden") return null;
+  return url;
+}
+function titleCase(s) {
+  return s.toLowerCase().split(/\s+/).filter((w) => w.length > 0).map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+}
+function mapSecondaryBadges(raw) {
+  if (raw == null) return null;
+  const out = [];
+  for (const badge of raw) {
+    const keySource = badge.icon_key ?? badge.display_name;
+    if (!keySource) continue;
+    const labelSource = badge.display_name ?? keySource.replace(/_/g, " ");
+    out.push({ key: keySource.toLowerCase(), label: titleCase(labelSource) });
+  }
+  return out;
 }
 function mapClipToSong(clip, source, nowMs = Date.now()) {
   const tags = splitTags(clip.metadata.tags);
   const classifiedTags = classifyTags(tags);
   const createdAtMs = Date.parse(clip.created_at);
   const isNew = Number.isFinite(createdAtMs) && nowMs - createdAtMs < SEVEN_DAYS_MS;
-  const badges = clip.metadata.model_badges?.songrow;
+  const badges = clip.metadata.model_badges?.songrow ?? clip.metadata.model_badges?.songcard;
   const modelBadgeTheme = badges?.light && badges?.dark ? { light: mapBadgeSide(badges.light), dark: mapBadgeSide(badges.dark) } : null;
   return {
     id: clip.id,
@@ -20881,7 +20917,7 @@ function mapClipToSong(clip, source, nowMs = Date.now()) {
     },
     coverUrl: clip.image_url,
     coverLargeUrl: clip.image_large_url,
-    audioUrl: clip.audio_url,
+    audioUrl: normalizeMediaUrl(clip.audio_url),
     videoUrl: clip.video_url ?? null,
     tags,
     classifiedTags,
@@ -20895,6 +20931,7 @@ function mapClipToSong(clip, source, nowMs = Date.now()) {
     modelVersion: clip.major_model_version,
     modelName: clip.model_name,
     modelBadgeTheme,
+    secondaryBadges: mapSecondaryBadges(clip.metadata.secondary_badges),
     shareUrl: `${SONG_URL_BASE}${clip.id}`,
     embedUrl: `${EMBED_URL_BASE}${clip.id}`,
     source
@@ -20912,24 +20949,33 @@ var init_mapping = __esm({
 });
 
 // ../packages/parser/src/schema.ts
-var ModelBadgeSideSchema, ModelBadgesSchema, SecondaryBadgeSchema, MediaUrlEntrySchema, ConcatHistoryEntrySchema, ClipMetadataSchema, ActionConfigEntrySchema, ActionConfigSchema, ClipSchema, PersonaSchema, ProfileInlinePlaylistSchema, ProfileResponseSchema, OEmbedResponseSchema, PlaylistClipWrapperSchema, PlaylistDetailSchema;
+var ModelBadgeSideSchema, ModelBadgeVariantSchema, ModelBadgesSchema, SecondaryBadgeSchema, MediaUrlEntrySchema, ConcatHistoryEntrySchema, ClipMetadataSchema, ActionConfigEntrySchema, ActionConfigSchema, ClipSchema, PersonaSchema, ProfileInlinePlaylistSchema, ProfileResponseSchema, ProfileEnvelopeSchema, OEmbedResponseSchema, PlaylistClipWrapperSchema, PlaylistDetailSchema, PlaylistEnvelopeSchema;
 var init_schema = __esm({
   "../packages/parser/src/schema.ts"() {
     "use strict";
     init_dist();
     ModelBadgeSideSchema = object({
       text_color: string(),
-      background_color: string(),
-      border_color: string()
+      background_color: optional(string()),
+      border_color: optional(string()),
+      /** Hex stops, left to right. First seen ~2026-09-10 on V6 badges. */
+      text_color_gradient: optional(array(string()))
+    });
+    ModelBadgeVariantSchema = object({
+      display_name: optional(string()),
+      light: optional(ModelBadgeSideSchema),
+      dark: optional(ModelBadgeSideSchema)
     });
     ModelBadgesSchema = object({
-      songrow: optional(
-        object({
-          display_name: optional(string()),
-          light: optional(ModelBadgeSideSchema),
-          dark: optional(ModelBadgeSideSchema)
-        })
-      )
+      /** The compact row badge — what this project has always rendered. */
+      songrow: optional(ModelBadgeVariantSchema),
+      /**
+       * Same shape, for Suno's larger card view. Appeared alongside the colour
+       * removal (~2026-09-10), and on 2026-09-17 still carried
+       * `background_color`/`border_color` where `songrow` did not. Used only as a
+       * fallback when `songrow` is absent, so the rendered badge keeps its meaning.
+       */
+      songcard: optional(ModelBadgeVariantSchema)
     });
     SecondaryBadgeSchema = object({
       display_name: optional(string()),
@@ -20942,7 +20988,7 @@ var init_schema = __esm({
       content_type: optional(string()),
       /** `"progressive"` on every entry observed so far. */
       delivery: optional(string()),
-      /** Absent on the mp3 entry; `"1.0.0"` on the m4a-opus entry. */
+      /** `"1.0.0"` on the m4a-opus entry; was absent on the retired mp3 entry. */
       encoding: optional(string())
     });
     ConcatHistoryEntrySchema = object({
@@ -21090,6 +21136,17 @@ var init_schema = __esm({
        */
       secondary_badges: optional(array(SecondaryBadgeSchema)),
       /**
+       * Vocal render mode. `"strict"` on every clip sampled 2026-09-17 (100/100);
+       * `"beautified"` is the other value seen. Parsed, not used.
+       */
+      vox_render_mode: optional(nullable(string())),
+      /** Sparse (2 of 100 clips, 2026-09-17). Semantics not confirmed. */
+      is_max_mode: optional(nullable(boolean())),
+      /** Parent of an `upsample` clip. Redacted to the zero UUID, like the lineage pointers above. */
+      upsample_clip_id: optional(nullable(string())),
+      /** Sparse (1 of 100, 2026-09-17; observed `"normal"`). Semantics not confirmed. */
+      variation_category: optional(nullable(string())),
+      /**
        * Points at a Persona entity. A different namespace from the clip-parent
        * lineage pointers above, and not subject to their zero-UUID treatment.
        */
@@ -21174,11 +21231,18 @@ var init_schema = __esm({
       // Media URLs
       image_url: string(),
       image_large_url: string(),
+      /**
+       * Was a public mp3 on `cdn1.suno.ai`. Since early September 2026 it is the
+       * literal placeholder `https://studio-api.prod.suno.com/api/forbidden` on
+       * every clip sampled, for every User-Agent tried. Still a string, so still
+       * required here; `mapClipToSong` turns the placeholder into `audioUrl: null`.
+       */
       audio_url: string(),
       video_url: optional(string()),
       /**
        * Per-clip delivery manifest (added 2026-08-24). Present on every clip
        * measured, and — unlike `metadata.secondary_badges` — NOT User-Agent-variant.
+       * A single `m4a-opus` entry since early September 2026 — see {@link MediaUrlEntrySchema}.
        * `v.optional` regardless: it is new, and every clip field here is optional so
        * one schema validates all response variants.
        */
@@ -21245,8 +21309,8 @@ var init_schema = __esm({
       description: optional(nullable(string())),
       /** Image URL (despite the name — not an actual S3 ID). */
       image_s3_id: optional(nullable(string())),
-      /** UUID of the clip this persona was derived from. */
-      root_clip_id: optional(string()),
+      /** UUID of the clip this persona was derived from. Often the zero UUID in anonymous responses. */
+      root_clip_id: optional(nullable(string())),
       /** Full embedded clip object. */
       clip: optional(ClipSchema),
       // Creator attribution (denormalized from clip.{display_name, handle, avatar_image_url})
@@ -21345,6 +21409,19 @@ var init_schema = __esm({
       /** V2 profiles feature flag. */
       profiles_v2_enabled: optional(boolean())
     });
+    ProfileEnvelopeSchema = object({
+      ...ProfileResponseSchema.entries,
+      clips: array(unknown()),
+      favorite_songs: optional(array(unknown())),
+      personas: optional(
+        array(
+          object({
+            ...PersonaSchema.entries,
+            clip: optional(unknown())
+          })
+        )
+      )
+    });
     OEmbedResponseSchema = object({
       version: optional(string()),
       type: optional(string()),
@@ -21392,6 +21469,15 @@ var init_schema = __esm({
       // Valibot parse succeeds when it's present.
       next_cursor: optional(nullable(string()))
     });
+    PlaylistEnvelopeSchema = object({
+      ...PlaylistDetailSchema.entries,
+      playlist_clips: array(
+        object({
+          clip: unknown(),
+          relative_index: number()
+        })
+      )
+    });
   }
 });
 
@@ -21432,11 +21518,51 @@ var init_clip = __esm({
   }
 });
 
+// ../packages/parser/src/clipList.ts
+function validateClipList(endpoint, body, items, clipOf, pathOf) {
+  const kept = [];
+  const skippedIssues = [];
+  let skippedClips = 0;
+  let firstIssues = null;
+  items.forEach((item, index) => {
+    const result = safeParse(ClipSchema, clipOf(item));
+    if (result.success) {
+      kept.push({ item, clip: result.output });
+      return;
+    }
+    skippedClips++;
+    const prefix = pathOf(index).map((key) => ({ key }));
+    const issues = result.issues.map((issue) => ({
+      ...issue,
+      path: [...prefix, ...issue.path ?? []]
+    }));
+    firstIssues ??= issues;
+    if (skippedIssues.length < MAX_SKIPPED_ISSUES) {
+      skippedIssues.push(formatIssuePath(issues[0]));
+    }
+  });
+  if (items.length > 0 && kept.length === 0) {
+    throw new SunoSchemaError(endpoint, firstIssues, body);
+  }
+  return { kept, skippedClips, skippedIssues };
+}
+var MAX_SKIPPED_ISSUES;
+var init_clipList = __esm({
+  "../packages/parser/src/clipList.ts"() {
+    "use strict";
+    init_dist();
+    init_errors();
+    init_schema();
+    MAX_SKIPPED_ISSUES = 5;
+  }
+});
+
 // ../packages/parser/src/playlist.ts
 var init_playlist = __esm({
   "../packages/parser/src/playlist.ts"() {
     "use strict";
     init_clip();
+    init_clipList();
     init_errors();
     init_fetcher();
     init_mapping();
@@ -28876,7 +29002,9 @@ async function fetchOEmbed(uuid2, opts = {}) {
     },
     coverUrl: o.thumbnail_url ?? `https://cdn2.suno.ai/image_${uuid2}.jpeg`,
     coverLargeUrl: o.thumbnail_url ?? `https://cdn2.suno.ai/image_large_${uuid2}.jpeg`,
-    audioUrl: `https://cdn1.suno.ai/${uuid2}.mp3`,
+    // Not derivable any more: the public mp3 on cdn1 answers 403, and Suno no
+    // longer publishes an audio URL we could substitute.
+    audioUrl: null,
     videoUrl: null,
     tags: [],
     classifiedTags: {
@@ -28900,6 +29028,7 @@ async function fetchOEmbed(uuid2, opts = {}) {
     modelVersion: "",
     modelName: "",
     modelBadgeTheme: null,
+    secondaryBadges: null,
     shareUrl: songUrl,
     embedUrl: `${EMBED_URL_BASE2}${uuid2}`,
     source: "oembed"
@@ -28908,6 +29037,7 @@ async function fetchOEmbed(uuid2, opts = {}) {
 
 // ../packages/parser/src/profile.ts
 init_dist();
+init_clipList();
 init_errors();
 init_fetcher();
 init_mapping();
@@ -28934,7 +29064,7 @@ async function fetchProfilePage(handle, opts = {}) {
   if (status < 200 || status >= 300) {
     throw new SunoSchemaError(url, { status }, body);
   }
-  const result = safeParse(ProfileResponseSchema, body);
+  const result = safeParse(ProfileEnvelopeSchema, body);
   if (!result.success) {
     throw new SunoSchemaError(url, result.issues, body);
   }
@@ -28963,12 +29093,21 @@ async function fetchProfilePage(handle, opts = {}) {
     playlists,
     shareUrl: `${HANDLE_URL_BASE}${p.handle}`
   };
-  const clips = p.clips.map((c) => mapClipToSong(c, "profile"));
+  const validated = validateClipList(
+    url,
+    body,
+    p.clips,
+    (c) => c,
+    (i) => ["clips", i]
+  );
+  const clips = validated.kept.map(({ clip }) => mapClipToSong(clip, "profile"));
   return {
     profile,
     clips,
     numTotalClips: p.num_total_clips,
-    currentPage: p.current_page ?? page
+    currentPage: p.current_page ?? page,
+    skippedClips: validated.skippedClips,
+    skippedIssues: validated.skippedIssues
   };
 }
 async function fetchProfile(handle, opts = {}) {
@@ -28977,12 +29116,15 @@ async function fetchProfile(handle, opts = {}) {
 }
 
 // ../packages/parser/src/profileAll.ts
+init_clipList();
 async function fetchAllClips(handle, opts = {}) {
   const sortBy = opts.sortBy ?? "created_at";
   const maxPages = opts.maxPagesToFetch ?? 10;
   const maxClips = opts.maxClips ?? Number.POSITIVE_INFINITY;
   const accumulated = [];
   let profile = null;
+  let skippedClips = 0;
+  const skippedIssues = [];
   for (let page = 1; page <= maxPages; page++) {
     const result = await fetchProfilePage(handle, {
       ...opts,
@@ -28991,9 +29133,13 @@ async function fetchAllClips(handle, opts = {}) {
       page
     });
     if (profile === null) profile = result.profile;
-    if (result.clips.length === 0) break;
+    skippedClips += result.skippedClips;
+    for (const issue of result.skippedIssues) {
+      if (skippedIssues.length < MAX_SKIPPED_ISSUES) skippedIssues.push(issue);
+    }
+    if (result.clips.length === 0 && result.skippedClips === 0) break;
     accumulated.push(...result.clips);
-    if (accumulated.length >= result.numTotalClips) break;
+    if (accumulated.length + skippedClips >= result.numTotalClips) break;
     if (accumulated.length >= maxClips) break;
   }
   if (profile === null) {
@@ -29001,7 +29147,9 @@ async function fetchAllClips(handle, opts = {}) {
   }
   return {
     profile,
-    clips: maxClips === Number.POSITIVE_INFINITY ? accumulated : accumulated.slice(0, maxClips)
+    clips: maxClips === Number.POSITIVE_INFINITY ? accumulated : accumulated.slice(0, maxClips),
+    skippedClips,
+    skippedIssues
   };
 }
 
@@ -29099,7 +29247,12 @@ async function fetchAllClips2(handle, opts = {}) {
     maxClips: opts.max != null && opts.maxClips == null ? Math.max(opts.max * 2, 20) : opts.maxClips
   });
   const clips = filterAndRank(raw.clips, opts);
-  return { profile: raw.profile, clips };
+  return {
+    profile: raw.profile,
+    clips,
+    skippedClips: raw.skippedClips,
+    skippedIssues: raw.skippedIssues
+  };
 }
 
 // src/inputs.ts
@@ -29171,6 +29324,7 @@ function readInputs() {
     showProgress: maybeStr("show_progress") != null ? bool("show_progress", false) : null,
     showLogo: maybeStr("show_logo") != null ? bool("show_logo", false) : null,
     showLinkIcon: maybeStr("show_link_icon") != null ? bool("show_link_icon", false) : null,
+    showSecondaryBadges: bool("show_secondary_badges", false),
     renderMode: enumIn("render_mode", ["service", "local"], "service"),
     localCardsDir: str("local_cards_dir", ".suno-cards"),
     readmePath: str("readme_path", "./README.md"),
@@ -29343,17 +29497,52 @@ var CARD_CSS = `
     color: var(--c-chip-text);
     border: 1px solid var(--c-chip-border);
   }
+  /* Suno's badge tokens come in a light and a dark set. Pick one the same way
+     the card background does: the root's theme class when the theme is pinned,
+     prefers-color-scheme only under theme-auto. (The badge used to follow the
+     media query unconditionally, so theme=dark showed light tokens on a light OS.) */
   .badge-model-suno {
-    color: var(--badge-text-light);
+    --badge-text: var(--badge-text-light);
+    --badge-grad: var(--badge-grad-light);
+    color: var(--badge-text);
     background: var(--badge-bg-light);
     border: 1px solid var(--badge-border-light);
   }
+  .theme-dark .badge-model-suno {
+    --badge-text: var(--badge-text-dark);
+    --badge-grad: var(--badge-grad-dark);
+    background: var(--badge-bg-dark);
+    border-color: var(--badge-border-dark);
+  }
   @media (prefers-color-scheme: dark) {
-    .badge-model-suno {
-      color: var(--badge-text-dark);
+    .theme-auto .badge-model-suno {
+      --badge-text: var(--badge-text-dark);
+      --badge-grad: var(--badge-grad-dark);
       background: var(--badge-bg-dark);
-      border: 1px solid var(--badge-border-dark);
+      border-color: var(--badge-border-dark);
     }
+  }
+  /* Gradient text (V6 and later). Only where background-clip:text works;
+     elsewhere the rule is skipped and the plain text colour above shows. */
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .badge-model-suno.has-grad {
+      background-image: var(--badge-grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+  }
+  .badge-secondary {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 4px;
+    line-height: 1.1;
+    white-space: nowrap;
+    color: var(--c-subtext);
+    border: 1px solid var(--c-chip-border);
   }
   .duration-pill {
     fill: rgba(0, 0, 0, 0.7);
@@ -29393,8 +29582,31 @@ var CARD_CSS = `
     font-size: 10px;
     margin-left: 3px;
   }
+  .error-box {
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
   .error-title { font-size: 14px; font-weight: 700; color: var(--c-text); margin: 0; }
-  .error-subtitle { font-size: 11px; color: var(--c-subtext); margin-top: 4px; }
+  /* Details are often a URL or an issue path with no spaces; let them break
+     anywhere, and cap them at three lines rather than overflow the card. */
+  .error-subtitle {
+    font-size: 11px;
+    line-height: 1.35;
+    color: var(--c-subtext);
+    margin: 4px 0 0 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 
   /* Player layout elements */
   .player-title {
@@ -29648,6 +29860,11 @@ function renderLinkIcon(x, y, size = 14) {
 }
 
 // ../packages/render/src/modelBadge.ts
+function gradientCss(side) {
+  if (!side.gradient || side.gradient.length === 0) return null;
+  const stops = side.gradient.length === 1 ? [side.gradient[0], side.gradient[0]] : side.gradient;
+  return `linear-gradient(90deg, ${stops.join(", ")})`;
+}
 function renderModelBadgeHtml(song) {
   const version = song.modelVersion || song.modelName || "";
   if (!version) return "";
@@ -29656,15 +29873,32 @@ function renderModelBadgeHtml(song) {
   if (!theme) {
     return `<span class="badge-model badge-model-fallback">${safe}</span>`;
   }
-  const style = [
-    `--badge-text-light:${theme.light.text}`,
-    `--badge-bg-light:${theme.light.bg}`,
-    `--badge-border-light:${theme.light.border}`,
-    `--badge-text-dark:${theme.dark.text}`,
-    `--badge-bg-dark:${theme.dark.bg}`,
-    `--badge-border-dark:${theme.dark.border}`
-  ].join(";");
-  return `<span class="badge-model badge-model-suno" style="${style}">${safe}</span>`;
+  const vars = [];
+  let hasGradient = false;
+  for (const [mode, side] of [
+    ["light", theme.light],
+    ["dark", theme.dark]
+  ]) {
+    vars.push(
+      `--badge-text-${mode}:${side.text}`,
+      `--badge-bg-${mode}:${side.bg ?? "transparent"}`,
+      `--badge-border-${mode}:${side.border ?? "transparent"}`
+    );
+    const grad = gradientCss(side);
+    if (grad) hasGradient = true;
+    vars.push(
+      `--badge-grad-${mode}:${grad ?? `linear-gradient(90deg, ${side.text}, ${side.text})`}`
+    );
+  }
+  const cls = hasGradient ? "badge-model badge-model-suno has-grad" : "badge-model badge-model-suno";
+  return `<span class="${cls}" style="${escapeXml(vars.join(";"))}">${safe}</span>`;
+}
+function renderSecondaryBadgesHtml(song) {
+  const badges = song.secondaryBadges;
+  if (!badges || badges.length === 0) return "";
+  return badges.map(
+    (b) => `<span class="badge-secondary" data-key="${escapeXml(b.key)}">${escapeXml(b.label)}</span>`
+  ).join("");
 }
 
 // ../packages/render/src/newBadge.ts
@@ -29774,6 +30008,7 @@ function renderSongCard(song, opts = {}) {
   const showModelBadge = opts.showModelBadge ?? true;
   const showNewBadge = opts.showNewBadge ?? true;
   const showTags = opts.showTags ?? true;
+  const showSecondaryBadges = opts.showSecondaryBadges ?? false;
   const coverX = COVER_PADDING;
   const coverY = (height - COVER_SIZE) / 2;
   const coverClipId = `cover-clip-${song.id}`;
@@ -29813,7 +30048,8 @@ function renderSongCard(song, opts = {}) {
   }
   const statsRow = statItems.length > 0 ? `<div class="stats-row">${statItems.join("")}</div>` : "";
   const modelBadge = showModelBadge ? renderModelBadgeHtml(song) : "";
-  const metaFooter = modelBadge ? `<div class="meta-footer" style="display:flex;gap:6px;margin-top:7px;align-items:center">${modelBadge}</div>` : "";
+  const secondaryBadges = showSecondaryBadges ? renderSecondaryBadgesHtml(song) : "";
+  const metaFooter = modelBadge || secondaryBadges ? `<div class="meta-footer" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;align-items:center">${modelBadge}${secondaryBadges}</div>` : "";
   const foreignObject = `<foreignObject x="${textX}" y="${textY}" width="${textWidth}" height="${textHeight}">
     <div xmlns="http://www.w3.org/1999/xhtml" class="text-panel">
       <p class="song-title">${escapeXml(title)}</p>
@@ -30046,7 +30282,7 @@ function renderRootSvg(innerContent, opts) {
   const theme = resolveTheme(opts.theme ?? "auto", opts.colorOverrides ?? {}, baseTheme);
   const css = `${themeCss(theme)}${CARD_CSS}${ANIMATION_CSS}`;
   const titleTag = opts.title ? `<title>${escapeForTitle(opts.title)}</title>` : "";
-  const rootClass = theme.mode === "auto" ? "card-root theme-auto" : "card-root";
+  const rootClass = `card-root theme-${theme.mode}`;
   return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${opts.width}" height="${opts.height}" viewBox="0 0 ${opts.width} ${opts.height}" role="img" class="${rootClass}">
   ${titleTag}
   <defs>
@@ -30132,7 +30368,7 @@ function renderSingleProfileSvg(profile, opts = {}) {
 }
 
 // src/localRender.ts
-var ASSET_USER_AGENT = "github-readme-suno-cards/0.2.1 (+https://github.com/ChanMeng666/github-readme-suno-cards)";
+var ASSET_USER_AGENT = "github-readme-suno-cards/0.3.0 (+https://github.com/ChanMeng666/github-readme-suno-cards)";
 async function fetchAsDataUri(url, renderWidth) {
   if (!url) return null;
   const target = renderWidth ? resizeSunoCover(url, renderWidth * 2) : url;
@@ -30166,7 +30402,8 @@ async function writeSongSvgs(song, absCardsDir, opts) {
     preset: opts.preset,
     ...opts.showProgress != null && { showProgress: opts.showProgress },
     ...opts.showLogo != null && { showLogo: opts.showLogo },
-    ...opts.showLinkIcon != null && { showLinkIcon: opts.showLinkIcon }
+    ...opts.showLinkIcon != null && { showLinkIcon: opts.showLinkIcon },
+    ...opts.showSecondaryBadges && { showSecondaryBadges: true }
   };
   if (opts.theme === "auto") {
     const dark = renderSingleSongSvg(song, { ...songOpts, theme: "dark" });
@@ -30348,6 +30585,7 @@ function buildCardUrl(base, songId, theme, opts) {
   if (opts.showProgress != null) params.push(`show_progress=${opts.showProgress}`);
   if (opts.showLogo != null) params.push(`show_logo=${opts.showLogo}`);
   if (opts.showLinkIcon != null) params.push(`show_link_icon=${opts.showLinkIcon}`);
+  if (opts.showSecondaryBadges) params.push("show_secondary_badges=true");
   return `${base.replace(/\/$/, "")}/api/card?${params.join("&")}`;
 }
 function buildProfileUrl(base, handle, theme, opts) {
@@ -30404,6 +30642,13 @@ function classifyError(err) {
   if (err instanceof Error) return `${err.name}: ${err.message}`;
   return String(err);
 }
+function warnSkippedClips(source, skipped, issues) {
+  if (skipped <= 0) return;
+  const where = issues.length > 0 ? ` First issue paths: ${issues.join(", ")}.` : "";
+  core2.warning(
+    `Skipped ${skipped} clip(s) from ${source} that failed schema validation \u2014 Suno may have changed the clip shape.${where}`
+  );
+}
 async function resolveSongs(inputs) {
   if (inputs.handle) {
     core2.info(`Fetching @${inputs.handle}'s library via /api/profiles/...`);
@@ -30423,6 +30668,7 @@ async function resolveSongs(inputs) {
     core2.info(
       `  \u2192 ${result.clips.length} songs after filters (of ${result.profile.totalClips} total)`
     );
+    warnSkippedClips(`@${inputs.handle}`, result.skippedClips, result.skippedIssues);
     return {
       profile: inputs.showProfileCard ? result.profile : null,
       songs: result.clips
@@ -30493,6 +30739,7 @@ async function run() {
         showProgress: inputs.showProgress,
         showLogo: inputs.showLogo,
         showLinkIcon: inputs.showLinkIcon,
+        showSecondaryBadges: inputs.showSecondaryBadges,
         colorOverrides: {
           ...inputs.bgColor && { bg: inputs.bgColor },
           ...inputs.textColor && { text: inputs.textColor },
@@ -30516,7 +30763,8 @@ async function run() {
         preset: inputs.preset,
         showProgress: inputs.showProgress,
         showLogo: inputs.showLogo,
-        showLinkIcon: inputs.showLinkIcon
+        showLinkIcon: inputs.showLinkIcon,
+        showSecondaryBadges: inputs.showSecondaryBadges
       });
     }
     core2.setOutput("profile", profile ? JSON.stringify(profile) : "");

@@ -23,7 +23,9 @@ describe('fetchClip', () => {
     expect(song.author.displayName).toBe('Chan');
     expect(song.author.handle).toBe('chanmeng');
     expect(song.coverUrl).toContain('cdn2.suno.ai');
-    expect(song.audioUrl).toContain('cdn1.suno.ai');
+    // Since early September 2026 Suno sends a `/api/forbidden` placeholder in
+    // `audio_url` instead of a public mp3; it must not surface as a URL.
+    expect(song.audioUrl).toBeNull();
     expect(song.tags.length).toBeGreaterThan(5);
     expect(song.durationSeconds).toBeCloseTo(124.96, 1);
     expect(song.modelVersion).toBe('v4.5-all');

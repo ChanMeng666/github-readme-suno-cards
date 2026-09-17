@@ -50,7 +50,9 @@ export async function fetchOEmbed(uuid: string, opts: FetchJsonOptions = {}): Pr
     },
     coverUrl: o.thumbnail_url ?? `https://cdn2.suno.ai/image_${uuid}.jpeg`,
     coverLargeUrl: o.thumbnail_url ?? `https://cdn2.suno.ai/image_large_${uuid}.jpeg`,
-    audioUrl: `https://cdn1.suno.ai/${uuid}.mp3`,
+    // Not derivable any more: the public mp3 on cdn1 answers 403, and Suno no
+    // longer publishes an audio URL we could substitute.
+    audioUrl: null,
     videoUrl: null,
     tags: [],
     classifiedTags: {
@@ -74,6 +76,7 @@ export async function fetchOEmbed(uuid: string, opts: FetchJsonOptions = {}): Pr
     modelVersion: '',
     modelName: '',
     modelBadgeTheme: null,
+    secondaryBadges: null,
     shareUrl: songUrl,
     embedUrl: `${EMBED_URL_BASE}${uuid}`,
     source: 'oembed',

@@ -82,6 +82,7 @@ export const GALLERY_PRESETS: GalleryPreset[] = [
   preset('Full Info Classic', 'Every element enabled for maximum detail.', {
     layout: 'classic',
     theme: 'dark',
+    showSecondaryBadges: true,
     showProgress: true,
     showLogo: true,
     showLinkIcon: true,

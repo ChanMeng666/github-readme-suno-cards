@@ -57,6 +57,7 @@ const TOGGLES: { key: keyof CardConfig; label: string }[] = [
   { key: 'showAuthor', label: 'Author' },
   { key: 'showDuration', label: 'Duration' },
   { key: 'showModelBadge', label: 'Model Badge' },
+  { key: 'showSecondaryBadges', label: 'Secondary Badges' },
   { key: 'showNewBadge', label: 'NEW Badge' },
   { key: 'showProgress', label: 'Progress Bar' },
   { key: 'showLogo', label: 'SUNO Logo' },

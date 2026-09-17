@@ -4,7 +4,7 @@ import { escapeAttr, escapeXml } from './escape.js';
 import { formatCount, formatDuration } from './format.js';
 import { type Lang, formatRelativeTime, t } from './i18n/index.js';
 import { renderLinkIcon } from './linkIcon.js';
-import { renderModelBadgeHtml } from './modelBadge.js';
+import { renderModelBadgeHtml, renderSecondaryBadgesHtml } from './modelBadge.js';
 import { renderNewBadge } from './newBadge.js';
 import { renderProgressBar } from './progressBar.js';
 import { renderSunoLogo } from './sunoLogo.js';
@@ -29,6 +29,11 @@ export type SongCardOptions = {
   showAuthor?: boolean;
   showEqualizer?: boolean;
   showModelBadge?: boolean;
+  /**
+   * Show Suno's secondary badges ("Cover", "Upload", "Full Song") as chips
+   * beside the model badge. Classic layout only. Default `false`.
+   */
+  showSecondaryBadges?: boolean;
   showNewBadge?: boolean;
   showTags?: boolean;
   /** Show progress bar with play button and time labels. Default depends on layout. */
@@ -95,6 +100,7 @@ export function renderSongCard(song: SunoSong, opts: SongCardOptions = {}): stri
   const showModelBadge = opts.showModelBadge ?? true;
   const showNewBadge = opts.showNewBadge ?? true;
   const showTags = opts.showTags ?? true;
+  const showSecondaryBadges = opts.showSecondaryBadges ?? false;
 
   // ---------- Cover panel ---------------------------------------------------
   const coverX = COVER_PADDING;
@@ -160,9 +166,11 @@ export function renderSongCard(song: SunoSong, opts: SongCardOptions = {}): stri
   const statsRow = statItems.length > 0 ? `<div class="stats-row">${statItems.join('')}</div>` : '';
 
   const modelBadge = showModelBadge ? renderModelBadgeHtml(song) : '';
-  const metaFooter = modelBadge
-    ? `<div class="meta-footer" style="display:flex;gap:6px;margin-top:7px;align-items:center">${modelBadge}</div>`
-    : '';
+  const secondaryBadges = showSecondaryBadges ? renderSecondaryBadgesHtml(song) : '';
+  const metaFooter =
+    modelBadge || secondaryBadges
+      ? `<div class="meta-footer" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;align-items:center">${modelBadge}${secondaryBadges}</div>`
+      : '';
 
   const foreignObject = `<foreignObject x="${textX}" y="${textY}" width="${textWidth}" height="${textHeight}">
     <div xmlns="http://www.w3.org/1999/xhtml" class="text-panel">

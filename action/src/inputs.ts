@@ -35,6 +35,7 @@ export type ActionInputs = {
   showProgress: boolean | null;
   showLogo: boolean | null;
   showLinkIcon: boolean | null;
+  showSecondaryBadges: boolean;
 
   // Output
   renderMode: 'service' | 'local';
@@ -136,6 +137,7 @@ export function readInputs(): ActionInputs {
     showProgress: maybeStr('show_progress') != null ? bool('show_progress', false) : null,
     showLogo: maybeStr('show_logo') != null ? bool('show_logo', false) : null,
     showLinkIcon: maybeStr('show_link_icon') != null ? bool('show_link_icon', false) : null,
+    showSecondaryBadges: bool('show_secondary_badges', false),
 
     renderMode: enumIn('render_mode', ['service', 'local'] as const, 'service'),
     localCardsDir: str('local_cards_dir', '.suno-cards'),

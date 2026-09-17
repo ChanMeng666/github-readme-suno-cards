@@ -1,3 +1,4 @@
+import { MAX_SKIPPED_ISSUES } from './clipList.js';
 import type { FetchJsonOptions } from './fetcher.js';
 import { fetchProfilePage } from './profile.js';
 import type { SortKey, SunoProfile, SunoSong } from './schema.js';
@@ -13,6 +14,10 @@ export type FetchAllClipsOptions = FetchJsonOptions & {
 export type FetchAllClipsResult = {
   profile: SunoProfile;
   clips: SunoSong[];
+  /** Clips dropped across every fetched page because they failed validation. */
+  skippedClips: number;
+  /** Dotted issue paths for the first few skipped clips. */
+  skippedIssues: string[];
 };
 
 /**
@@ -32,6 +37,8 @@ export async function fetchAllClips(
 
   const accumulated: SunoSong[] = [];
   let profile: SunoProfile | null = null;
+  let skippedClips = 0;
+  const skippedIssues: string[] = [];
 
   for (let page = 1; page <= maxPages; page++) {
     const result = await fetchProfilePage(handle, {
@@ -42,11 +49,17 @@ export async function fetchAllClips(
     });
 
     if (profile === null) profile = result.profile;
+    skippedClips += result.skippedClips;
+    for (const issue of result.skippedIssues) {
+      if (skippedIssues.length < MAX_SKIPPED_ISSUES) skippedIssues.push(issue);
+    }
 
-    if (result.clips.length === 0) break;
+    if (result.clips.length === 0 && result.skippedClips === 0) break;
     accumulated.push(...result.clips);
 
-    if (accumulated.length >= result.numTotalClips) break;
+    // Skipped clips still count towards the total, or a page with a dropped
+    // clip would make the loop fetch one page past the end.
+    if (accumulated.length + skippedClips >= result.numTotalClips) break;
     if (accumulated.length >= maxClips) break;
   }
 
@@ -58,5 +71,7 @@ export async function fetchAllClips(
   return {
     profile,
     clips: maxClips === Number.POSITIVE_INFINITY ? accumulated : accumulated.slice(0, maxClips),
+    skippedClips,
+    skippedIssues,
   };
 }

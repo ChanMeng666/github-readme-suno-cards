@@ -1,4 +1,4 @@
-import type { BadgeTheme, ClipResponse, ClipStatus, SunoSong } from './schema.js';
+import type { BadgeTheme, ClipResponse, ClipStatus, SecondaryBadge, SunoSong } from './schema.js';
 import { classifyTags, splitTags } from './tags.js';
 
 const SONG_URL_BASE = 'https://suno.com/song/';
@@ -32,16 +32,62 @@ function hexToCss(hex: string): string {
   return `#${cleaned}`;
 }
 
-function mapBadgeSide(side: {
-  text_color: string;
-  background_color: string;
-  border_color: string;
-}): BadgeTheme {
+type BadgeSide = NonNullable<
+  NonNullable<NonNullable<ClipResponse['metadata']['model_badges']>['songrow']>['light']
+>;
+
+function mapBadgeSide(side: BadgeSide): BadgeTheme {
+  const stops = side.text_color_gradient ?? [];
   return {
     text: hexToCss(side.text_color),
-    bg: hexToCss(side.background_color),
-    border: hexToCss(side.border_color),
+    bg: side.background_color != null ? hexToCss(side.background_color) : null,
+    border: side.border_color != null ? hexToCss(side.border_color) : null,
+    gradient: stops.length > 0 ? stops.map(hexToCss) : null,
   };
+}
+
+/**
+ * Return `url` if it is a real, fetchable http(s) media URL, else `null`.
+ *
+ * Suno replaced the public mp3 in `audio_url` with the placeholder
+ * `https://studio-api.prod.suno.com/api/forbidden` in early September 2026.
+ * That is a well-formed URL, so "is it a string" is no longer a useful check —
+ * anything whose path is `/api/forbidden`, or which is not http(s), maps to null.
+ */
+export function normalizeMediaUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
+  }
+  if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+  if (parsed.pathname.replace(/\/+$/, '') === '/api/forbidden') return null;
+  return url;
+}
+
+function titleCase(s: string): string {
+  return s
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((w) => w.length > 0)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+
+function mapSecondaryBadges(
+  raw: ClipResponse['metadata']['secondary_badges'],
+): SecondaryBadge[] | null {
+  if (raw == null) return null;
+  const out: SecondaryBadge[] = [];
+  for (const badge of raw) {
+    const keySource = badge.icon_key ?? badge.display_name;
+    if (!keySource) continue;
+    const labelSource = badge.display_name ?? keySource.replace(/_/g, ' ');
+    out.push({ key: keySource.toLowerCase(), label: titleCase(labelSource) });
+  }
+  return out;
 }
 
 /**
@@ -59,7 +105,9 @@ export function mapClipToSong(
   const createdAtMs = Date.parse(clip.created_at);
   const isNew = Number.isFinite(createdAtMs) && nowMs - createdAtMs < SEVEN_DAYS_MS;
 
-  const badges = clip.metadata.model_badges?.songrow;
+  // `songrow` first: it is the badge this card has always drawn. `songcard`
+  // only fills in when a clip has no row badge at all.
+  const badges = clip.metadata.model_badges?.songrow ?? clip.metadata.model_badges?.songcard;
   const modelBadgeTheme =
     badges?.light && badges?.dark
       ? { light: mapBadgeSide(badges.light), dark: mapBadgeSide(badges.dark) }
@@ -80,7 +128,7 @@ export function mapClipToSong(
     },
     coverUrl: clip.image_url,
     coverLargeUrl: clip.image_large_url,
-    audioUrl: clip.audio_url,
+    audioUrl: normalizeMediaUrl(clip.audio_url),
     videoUrl: clip.video_url ?? null,
     tags,
     classifiedTags,
@@ -94,6 +142,7 @@ export function mapClipToSong(
     modelVersion: clip.major_model_version,
     modelName: clip.model_name,
     modelBadgeTheme,
+    secondaryBadges: mapSecondaryBadges(clip.metadata.secondary_badges),
     shareUrl: `${SONG_URL_BASE}${clip.id}`,
     embedUrl: `${EMBED_URL_BASE}${clip.id}`,
     source,

@@ -36,6 +36,7 @@ export type LocalRenderOptions = {
   showProgress?: boolean | null;
   showLogo?: boolean | null;
   showLinkIcon?: boolean | null;
+  showSecondaryBadges?: boolean;
   colorOverrides?: {
     bg?: string;
     text?: string;
@@ -59,7 +60,7 @@ export type LocalRenderResult = {
  * org, so the `+` URL a curious server operator would follow 404'd.)
  */
 const ASSET_USER_AGENT =
-  'github-readme-suno-cards/0.2.1 (+https://github.com/ChanMeng666/github-readme-suno-cards)';
+  'github-readme-suno-cards/0.3.0 (+https://github.com/ChanMeng666/github-readme-suno-cards)';
 
 /**
  * `renderWidth` is the size the asset will actually be drawn at. Suno's cover
@@ -113,6 +114,7 @@ async function writeSongSvgs(
     ...(opts.showProgress != null && { showProgress: opts.showProgress }),
     ...(opts.showLogo != null && { showLogo: opts.showLogo }),
     ...(opts.showLinkIcon != null && { showLinkIcon: opts.showLinkIcon }),
+    ...(opts.showSecondaryBadges && { showSecondaryBadges: true }),
   };
 
   if (opts.theme === 'auto') {

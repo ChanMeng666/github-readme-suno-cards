@@ -30,8 +30,15 @@ export function renderErrorCard(kind: ErrorKind, opts: ErrorCardOptions = {}): s
   const detailLine = opts.detail ?? '';
   const icon = ICONS[kind];
 
-  const foreignObject = `<foreignObject x="${width / 2 - 160}" y="${height / 2 - 30}" width="320" height="60">
-    <div xmlns="http://www.w3.org/1999/xhtml" class="error-box" style="text-align:center">
+  // The text box spans the card (less padding) rather than a fixed 320×60:
+  // details such as an endpoint path used to be cut off mid-word.
+  const padX = Math.min(24, Math.max(8, Math.round(width * 0.05)));
+  const padY = Math.min(16, Math.max(6, Math.round(height * 0.1)));
+  const boxWidth = Math.max(0, width - padX * 2);
+  const boxHeight = Math.max(0, height - padY * 2);
+
+  const foreignObject = `<foreignObject x="${padX}" y="${padY}" width="${boxWidth}" height="${boxHeight}">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="error-box">
       <p class="error-title">${icon} ${escapeXml(title)}</p>
       ${detailLine ? `<p class="error-subtitle">${escapeXml(detailLine)}</p>` : ''}
     </div>

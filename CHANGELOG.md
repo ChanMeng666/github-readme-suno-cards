@@ -7,19 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-17
+
+This release fixes the `⚠️ Suno error` that the Profile Summary Card and the Auto-Discovered Card Stack showed from about 2026-09-10, and records two Suno changes behind it. It also rolls up the previously unreleased August work below.
+
+### Changed
+- **Breaking (types): `SunoSong.audioUrl` is now `string | null`.** Suno no longer publishes a public mp3. `cdn1.suno.ai/{id}.mp3` has answered **403** since late August 2026; in early September the `mp3` entry disappeared from `media_urls`; and on 2026-09-17 `audio_url` was the literal placeholder `https://studio-api.prod.suno.com/api/forbidden` on 100 of 100 clips sampled (two profile pages, a user playlist and the Staff Picks shelf), identically for this project's User-Agent, `curl/8.0` and a Chrome string. `mapClipToSong` maps that placeholder — and anything that is not an http(s) URL — to `null` through the new exported `normalizeMediaUrl()`. `fetchOEmbed` returns `null` rather than fabricating a `cdn1` URL that would 403. Cover art on `cdn2` and the mp4 on `cdn1` still answer (200 / 206 on 2026-09-17).
+- **`BadgeTheme` gains `gradient`, and `bg`/`border` become nullable** — `{ text: string; bg: string | null; border: string | null; gradient: string[] | null }`.
+- **Profiles and playlists are validated per clip.** The envelope is validated with clips left as `unknown`, then each clip is checked against `ClipSchema` on its own; a failing clip is dropped instead of failing the page. `fetchProfilePage`, `fetchAllClips` and `fetchPlaylist` results carry `skippedClips` and `skippedIssues` (the first few dotted issue paths). `SunoSchemaError` is still thrown when the envelope fails, or when there was at least one clip and **all** of them failed.
+- The User-Agent is now `github-readme-suno-cards/0.3.0 (+https://github.com/ChanMeng666/github-readme-suno-cards)`.
+
+### Fixed
+- **Badge colours were removed upstream, and the parser required them.** Around 2026-09-10 `metadata.model_badges.songrow.{light,dark}` stopped carrying `background_color` and `border_color` — only `text_color` remains — and the same happened to `secondary_badges`. Every clip with a badge then failed `ClipSchema`, and because a profile page was validated as a unit, one such clip was enough to replace the whole card with an error. Both colours are optional now. Measured on 2026-09-17: 97 of 100 clips carried `model_badges`, none of them with a `songrow` background or border.
+- **The error card cut its own text off.** Its text box was a fixed 320×60; it now spans the card less padding, lets long details break anywhere and clamps them to three lines. For `SunoSchemaError` the detail is the endpoint path without its query string plus the first failing field — e.g. `/api/profiles/chanmeng · clips.3.metadata.model_badges.songrow.light.background_color` — instead of the full URL.
+- **The model badge ignored `theme=dark|light`.** Its dark colours switched on `prefers-color-scheme` alone, so a pinned dark card on a light OS drew light-scheme badge colours. The SVG root now carries `theme-dark`/`theme-light`/`theme-auto`, and the badge follows it the way the card background already did (verified in Chrome by computed style in all four combinations).
+
 ### Added
+- **Gradient model badges.** Suno sends `text_color_gradient` for V6 (`["FD429C", "FF5126"]` on both schemes). It is mapped to `BadgeTheme.gradient` and drawn with `background-clip: text` inside an `@supports` guard, so a renderer without it shows the plain `text_color`.
+- **`model_badges.songcard`**, a sibling of `songrow` added alongside the colour removal. The card still prefers `songrow` and uses `songcard` only when `songrow` is absent.
+- **Secondary badge chips, off by default.** `SunoSong.secondaryBadges: { key, label }[] | null` — `key` is `icon_key` (else `display_name`) lower-cased, `label` is `display_name` title-cased, because Suno now sends it upper-case (`COVER`, `UPLOAD`, `FULL SONG`). `null` means Suno did not send the key, which is also what a `suno`-prefixed User-Agent gets. New toggle `show_secondary_badges` on `/api/card`, `/api/cards`, the builder, and the Action (`show_secondary_badges` input, service and local modes); chips render beside the model badge in the classic layout.
+- **`x-suno-skipped-clips` response header** on `/api/cards` and `/api/profile` when clips were dropped, and a `core.warning` in the Action listing the first failing paths.
+- Newly modelled, parsed but unused: `metadata.vox_render_mode` (`"strict"` on 100 of 100 clips, 2026-09-17), and the sparse `is_max_mode` (2/100), `upsample_clip_id` (1/100, zero-UUID-redacted) and `variation_category` (1/100). `PersonaSchema.root_clip_id` accepts `null`.
+
+### Tests
+- Fixtures refreshed from a live capture on 2026-09-17 (profile pages 1 and 2, clip, playlist trimmed to 3 clips, Staff Picks shelf trimmed to one clip per shape combination — now including gradient/no-gradient and each secondary badge kind). The pre-2026-09 badge shape keeps its own inline test, since no fixture carries it any more.
+- The `media_urls` test now asserts a single `m4a-opus` entry and a `/api/forbidden` `audio_url`.
+- New: mixed page (one bad clip among good ones) keeps the good clips; an all-bad page still throws; skipped counts aggregate across pages without over-fetching.
+
+### Notes
+- The "use `audio_url`" advice in the August notes below is **superseded**: there is no playable `audio_url` any more. The waveform-card roadmap item is blocked for the same reason. The measurements below still stand as the record of the opaque `m4a-opus` payload, which is now the only audio delivery Suno publishes — and which this project does not decode.
+
+### Added (August 2026, previously unreleased)
 - **`media_urls` on the clip schema.** Suno now attaches a per-clip delivery manifest to every clip on every endpoint (present on 149 of 149 clips sampled 2026-08-24), listing two audio tiers: the familiar `mp3` on `cdn1.suno.ai` and an `m4a-opus` tier on a separate host. Modelled with every field optional, like the rest of the clip shape.
 - **`resizeSunoCover()`, exported from `@suno-cards/parser`.** Suno's cover CDN accepts `?width=N` only for `{100, 256, 360, 720}` — any other number is a **403**, not a smaller image — so this snaps a requested size up to the nearest allowed one and passes non-Suno URLs through untouched. Now applied on every cover and avatar fetch in the web service and the Action: cards draw covers at ~120px and avatars at 60px, and until now every cold render downloaded the full-size original.
 - **`editorial-shelf.json` test fixture** — a trimmed capture of Suno's live curated Explore shelf, kept because it is the one place Suno ships a genuinely heterogeneous clip array. It carries one clip per distinct shape combination, so the tests assert *kinds* rather than counts.
 
-### Fixed
+### Fixed (August 2026, previously unreleased)
 - **Corrected: the clips without `model_badges` are not "human uploads".** An earlier note said absence tracked `metadata.type: "upload"`. A later sample falsified it — 8 of 22 shelf clips lacked the badge: 6 `upload` **and 2 `studio_export`**. The explanation was right ("nothing generated them"), the predicate was wrong. The invariant is the absence of a generating model (`model_name: "chirp-chirp"` with an empty `major_model_version`), and the tests now assert that rather than the proxy, so a new no-model `type` passes instead of breaking.
 - **Corrected: `secondary_badges` absence is a property of the clip, not of the response shape.** The previous note framed it as a shape/UA rule. Presence tracks whether the clip actually carries a badge; the User-Agent prefix rule is a separate, additional effect, and both are now documented on the field.
 - **Two asset-fetch User-Agents pointed at the wrong GitHub org** (`chanmeng` rather than `ChanMeng666`), so the `+` URL a curious server operator would follow returned a 404. Both now use one project-identifying string kept in step with the parser's.
 - Dropped a stale "Known Issues" entry from `CONTRIBUTING.md`: `playlist.ts` already maps HTTP `422` to `SunoInvalidRequestError` (fixed in 0.2.0).
 
-### Notes
-- **Do not build a player on the `m4a-opus` tier — use `audio_url`.** Measured 2026-08-24 in Chrome 148: `canPlayType("audio/mp4; codecs=opus")` returns `"probably"`, so the codec is not the obstacle, yet the payload fails with `MediaError.code = 4` both from its URL and re-wrapped whole in a correctly-typed Blob; the first 4 KB of three clips from three different years carried no `ftyp`/`moov`/`mdat`/`OggS`/`OpusHead`/`ID3`/`fLaC`/`RIFF`/`EBML` marker, shared no opening bytes, and measured 7.949–7.962 bits per byte of entropy against a maximum of 8. `content_type` is Suno's label; we did not verify it, and we did not attempt to decode the payload. A two-`<source>` list with the opus tier first is worse than useless — the browser selects it confidently and fails every time.
+### Notes (August 2026, previously unreleased)
+- **Superseded 2026-09 — see 0.3.0 above.** **Do not build a player on the `m4a-opus` tier — use `audio_url`.** Measured 2026-08-24 in Chrome 148: `canPlayType("audio/mp4; codecs=opus")` returns `"probably"`, so the codec is not the obstacle, yet the payload fails with `MediaError.code = 4` both from its URL and re-wrapped whole in a correctly-typed Blob; the first 4 KB of three clips from three different years carried no `ftyp`/`moov`/`mdat`/`OggS`/`OpusHead`/`ID3`/`fLaC`/`RIFF`/`EBML` marker, shared no opening bytes, and measured 7.949–7.962 bits per byte of entropy against a maximum of 8. `content_type` is Suno's label; we did not verify it, and we did not attempt to decode the payload. A two-`<source>` list with the opus tier first is worse than useless — the browser selects it confidently and fails every time.
 
 ## [0.2.1] - 2026-08-16
 

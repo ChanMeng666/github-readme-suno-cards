@@ -32,6 +32,30 @@ describe('fetchAllClips', () => {
     expect(result.clips.length).toBe(expectedTotal);
   });
 
+  it('aggregates skipped clips across pages without fetching past the end', async () => {
+    type Page = { clips: Array<Record<string, unknown>>; num_total_clips: number };
+    const page1 = loadFixture<Page>('profile-page1.json');
+    const page2 = loadFixture<Page>('profile-page2.json');
+    const bad = (p: Page, i: number): Page => ({
+      ...p,
+      clips: p.clips.map((c, j) => (j === i ? { ...c, play_count: null } : c)),
+    });
+    const calls: string[] = [];
+    const fetchImpl = async (url: string | URL | Request) => {
+      const s = typeof url === 'string' ? url : url.toString();
+      calls.push(s);
+      if (s.includes('page=1')) return new Response(JSON.stringify(bad(page1, 0)), { status: 200 });
+      if (s.includes('page=2')) return new Response(JSON.stringify(bad(page2, 1)), { status: 200 });
+      throw new Error(`unexpected url ${s}`);
+    };
+
+    const result = await fetchAllClips('chanmeng', { fetchImpl });
+    expect(calls).toHaveLength(2);
+    expect(result.skippedClips).toBe(2);
+    expect(result.skippedIssues).toEqual(['clips.0.play_count', 'clips.1.play_count']);
+    expect(result.clips.length).toBe(page1.num_total_clips - 2);
+  });
+
   it('stops early when maxClips is reached', async () => {
     const page1 = loadFixture('profile-page1.json');
     let calls = 0;

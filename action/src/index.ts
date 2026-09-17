@@ -19,6 +19,19 @@ function classifyError(err: unknown): string {
   return String(err);
 }
 
+/**
+ * The parser drops a clip that fails validation on its own rather than failing
+ * the whole profile. That keeps the README rendering, but a silent drop would
+ * hide a Suno shape change — so say so in the workflow log.
+ */
+function warnSkippedClips(source: string, skipped: number, issues: string[]): void {
+  if (skipped <= 0) return;
+  const where = issues.length > 0 ? ` First issue paths: ${issues.join(', ')}.` : '';
+  core.warning(
+    `Skipped ${skipped} clip(s) from ${source} that failed schema validation — Suno may have changed the clip shape.${where}`,
+  );
+}
+
 async function resolveSongs(
   inputs: ActionInputs,
 ): Promise<{ profile: SunoProfile | null; songs: SunoSong[] }> {
@@ -41,6 +54,7 @@ async function resolveSongs(
     core.info(
       `  → ${result.clips.length} songs after filters (of ${result.profile.totalClips} total)`,
     );
+    warnSkippedClips(`@${inputs.handle}`, result.skippedClips, result.skippedIssues);
     return {
       profile: inputs.showProfileCard ? result.profile : null,
       songs: result.clips,
@@ -123,6 +137,7 @@ async function run(): Promise<void> {
         showProgress: inputs.showProgress,
         showLogo: inputs.showLogo,
         showLinkIcon: inputs.showLinkIcon,
+        showSecondaryBadges: inputs.showSecondaryBadges,
         colorOverrides: {
           ...(inputs.bgColor && { bg: inputs.bgColor }),
           ...(inputs.textColor && { text: inputs.textColor }),
@@ -147,6 +162,7 @@ async function run(): Promise<void> {
         showProgress: inputs.showProgress,
         showLogo: inputs.showLogo,
         showLinkIcon: inputs.showLinkIcon,
+        showSecondaryBadges: inputs.showSecondaryBadges,
       });
     }
 

@@ -142,6 +142,7 @@ export type CardQuery = {
   showAuthor: boolean | undefined;
   showEqualizer: boolean | undefined;
   showModelBadge: boolean | undefined;
+  showSecondaryBadges: boolean | undefined;
   showNewBadge: boolean | undefined;
   showTags: boolean | undefined;
   showProgress: boolean | undefined;
@@ -165,6 +166,7 @@ export function readCardQuery(params: URLSearchParams): CardQuery {
     showAuthor: readBool(params, 'show_author'),
     showEqualizer: readBool(params, 'show_equalizer'),
     showModelBadge: readBool(params, 'show_model_badge'),
+    showSecondaryBadges: readBool(params, 'show_secondary_badges'),
     showNewBadge: readBool(params, 'show_new_badge'),
     showTags: readBool(params, 'show_tags'),
     showProgress: readBool(params, 'show_progress'),
@@ -216,6 +218,7 @@ export type CardsQuery = {
   featured: string[] | undefined;
   allowExplicit: boolean | undefined;
   showProfileCard: boolean | undefined;
+  showSecondaryBadges: boolean | undefined;
   showProgress: boolean | undefined;
   showLogo: boolean | undefined;
   showLinkIcon: boolean | undefined;
@@ -242,6 +245,7 @@ export function readCardsQuery(params: URLSearchParams): CardsQuery {
     featured: readCsv(params, 'featured'),
     allowExplicit: readBool(params, 'allow_explicit'),
     showProfileCard: readBool(params, 'show_profile_card'),
+    showSecondaryBadges: readBool(params, 'show_secondary_badges'),
     showProgress: readBool(params, 'show_progress'),
     showLogo: readBool(params, 'show_logo'),
     showLinkIcon: readBool(params, 'show_link_icon'),
