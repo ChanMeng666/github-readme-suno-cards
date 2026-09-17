@@ -36,7 +36,7 @@ const FALLBACK_CONTENT_TYPE = 'image/jpeg';
  * URL, and deliberately NOT beginning with `suno` — see packages/parser/src/fetcher.ts.
  */
 const SUNO_CARDS_USER_AGENT =
-  'github-readme-suno-cards/0.2.1 (+https://github.com/ChanMeng666/github-readme-suno-cards)';
+  'github-readme-suno-cards/0.3.0 (+https://github.com/ChanMeng666/github-readme-suno-cards)';
 
 /**
  * Fetch `url` and return a `data:*;base64,*` URI, or `null` if the asset

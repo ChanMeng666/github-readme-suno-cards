@@ -29198,7 +29198,7 @@ init_mapping();
 // ../packages/parser/src/cdn.ts
 var ALLOWED_WIDTHS = [100, 256, 360, 720];
 var SUNO_IMAGE_HOST_RE = /^cdn2\.suno\.ai$/i;
-var SUNO_IMAGE_PATH_RE = /^\/image(?:_large)?_[0-9a-f-]+\.(?:jpeg|jpg|png|webp)$/i;
+var SUNO_IMAGE_PATH_RE = /^\/[\w.-]*[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}[\w.-]*\.(?:jpeg|jpg|png|webp)$/i;
 function resizeSunoCover(url, targetWidth) {
   if (!url) return "";
   if (targetWidth >= 720 || !Number.isFinite(targetWidth) || targetWidth <= 0) return url;
