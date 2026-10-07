@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '../lib/cn.js';
+import { LogoMark } from './LogoMark.js';
 import { ThemeToggle } from './ThemeToggle.js';
 
 const NAV_LINKS = [
@@ -24,7 +25,7 @@ export function Navbar() {
           href="/"
           className="focus-ring flex items-center gap-2.5 rounded-full px-2 py-1 text-foreground"
         >
-          <img src="/logo.svg" alt="" aria-hidden className="h-5 w-5" />
+          <LogoMark className="h-6 w-6" />
           <span className="font-display text-base leading-none tracking-tight">Suno Cards</span>
           <span aria-hidden className="hidden text-muted sm:inline">
             ·
