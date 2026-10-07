@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { SEISMOPHONE_URL } from '../lib/constants.js';
+import { LogoMark } from './LogoMark.js';
 
 export function Footer() {
   return (
@@ -8,7 +9,7 @@ export function Footer() {
         <div className="hairline" />
         <div className="flex flex-col items-start justify-between gap-4 py-8 sm:flex-row sm:items-center">
           <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-muted">
-            <img src="/logo.svg" alt="" aria-hidden className="h-4 w-4 opacity-70" />
+            <LogoMark className="h-5 w-5 opacity-70" />
             <span>© Suno Cards · MIT License</span>
           </div>
           <div className="flex items-center gap-2">

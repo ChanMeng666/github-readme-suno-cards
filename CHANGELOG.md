@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **New logo.** The yellow-and-purple stacked-squares mark is replaced by a monochrome one: a song card reduced to its frame, a round cover and two text lines. `docs/logo.svg` and `apps/web/public/logo.svg` carry it on a fixed dark tile so it reads on light and dark pages alike (README, favicon); the site's navbar and footer draw the bare mark inline in `currentColor` so it follows the theme toggle. `docs/logo-mark.svg` is the bare mark in ink on transparency, used as the source for the social cover (`og/og-cover.html`, `og-cover.png`), which was re-rendered with it.
+
 ## [0.3.0] - 2026-09-17
 
 This release fixes the `⚠️ Suno error` that the Profile Summary Card and the Auto-Discovered Card Stack showed from about 2026-09-10, and records two Suno changes behind it. It also rolls up the previously unreleased August work below.
