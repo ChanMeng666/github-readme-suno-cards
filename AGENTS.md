@@ -17,10 +17,17 @@ Suno's public API.
 
 - **pnpm workspaces.** `pnpm test` / `pnpm typecheck` are `pnpm -r`, so they only reach workspace
   packages. Vitest for all four.
-- **Biome 2** for lint and format (`pnpm check`, `pnpm format`). No ESLint, no Prettier — don't add
+- **Biome 1.9** for lint and format (`pnpm check`, `pnpm format`). No ESLint, no Prettier — don't add
   either. `scripts/**`, `**/fixtures/**` and `dist/` are outside its scope.
 - Imports inside the packages use explicit `.js` extensions (`from './schema.js'`) — that is ESM
   resolution, not a mistake, and TypeScript wants it that way here.
+
+## Releases
+
+- Tags are exact versions such as `v0.3.0`. There is no moving `v0` or `v0.1` tag, so a `uses:` line must name a tag that exists: `git ls-remote --tags origin`.
+- When you release, update the `uses:` lines in `docs/overview.md` and `examples/*.yml` to the new tag.
+- A release needs a matching `CHANGELOG.md` section, and the tag must contain the rebuilt `action/dist/index.js`.
+- No GitHub Marketplace listing was found on 2026-11-01. Call this a GitHub Action, not a Marketplace Action, until one exists.
 
 ## The Suno API is not a stable contract — read this before touching the schema
 
