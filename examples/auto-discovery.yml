@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Auto-discover Suno songs for @YOUR_HANDLE
-        uses: ChanMeng666/github-readme-suno-cards@v0.1
+        uses: ChanMeng666/github-readme-suno-cards@v0.3.0
         with:
           handle: YOUR_HANDLE
           sort: play_count
