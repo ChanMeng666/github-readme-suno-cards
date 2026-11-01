@@ -131,7 +131,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ChanMeng666/github-readme-suno-cards@v0.1
+      - uses: ChanMeng666/github-readme-suno-cards@v0.3.0
         with:
           handle: YOUR_SUNO_HANDLE
           sort: play_count
@@ -713,7 +713,7 @@ The Action writes markdown pointing at the hosted Vercel service. Cards auto-upd
 
 ```yaml
 # No extra config needed — service mode is the default
-- uses: ChanMeng666/github-readme-suno-cards@v0.1
+- uses: ChanMeng666/github-readme-suno-cards@v0.3.0
   with:
     handle: YOUR_HANDLE
 ```
@@ -723,7 +723,7 @@ The Action writes markdown pointing at the hosted Vercel service. Cards auto-upd
 The Action pre-renders SVGs with embedded base64 cover images into `.suno-cards/` in your repo. Zero dependency on any hosted service.
 
 ```yaml
-- uses: ChanMeng666/github-readme-suno-cards@v0.1
+- uses: ChanMeng666/github-readme-suno-cards@v0.3.0
   with:
     handle: YOUR_HANDLE
     render_mode: local
