@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { SEISMOPHONE_URL } from '../lib/constants.js';
 import { LogoMark } from './LogoMark.js';
 
 export function Footer() {
@@ -13,15 +12,6 @@ export function Footer() {
             <span>© Suno Cards · MIT License</span>
           </div>
           <div className="flex items-center gap-2">
-            <Link
-              href={`${SEISMOPHONE_URL}?ref=suno-cards`}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Seismophone — the independent observatory for AI music"
-              className="glass-pill-quiet focus-ring rounded-full px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground"
-            >
-              Seismophone
-            </Link>
             <Link
               href="https://github.com/ChanMeng666/github-readme-suno-cards"
               target="_blank"

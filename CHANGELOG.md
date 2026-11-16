@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+- **Seismophone links.** The Seismophone observatory (`seismophone.chanmeng.org`) was shut down on 2026-11-17, so every link to it would now be dead. Removed the cross-link on the landing page, the footer link, the overview section about it, and the two observatory reports cited under "Status / upstream findings". The builder's *Link Target* option, whose only alternative to suno.com was a Seismophone portfolio, is gone with them; `buildMarkdownEmbed` and `buildHtmlEmbed` lost their optional `link` argument and always link to the song on suno.com. Cards, the API and the Action are unaffected: none of them ever called Seismophone.
+
 ### Fixed
 - Workflow examples and `docs/overview.md` pointed at `@v0.1`, a tag that never existed, so copying them failed. They now use `@v0.3.0`.
 

@@ -50,7 +50,6 @@
 - [GitHub Action Reference](#github-action-reference)
 - [Render Modes](#render-modes)
 - [Example Workflows](#example-workflows)
-- [See the bigger picture — Seismophone](#see-the-bigger-picture--seismophone)
 - [Status / upstream findings (2026-09)](#status--upstream-findings-2026-09)
 - [Roadmap](#roadmap)
 - [Architecture & Internals](#architecture--internals)
@@ -752,34 +751,13 @@ See [`examples/`](../examples) for ready-to-copy workflow files:
 
 ---
 
-## See the bigger picture — Seismophone
-
-These cards put your music in your README. **[Seismophone](https://seismophone.chanmeng.org?ref=suno-cards)** — an independent observatory for AI music by the same author — puts it on the map.
-
-It's a free, no-signup companion to this project (not affiliated with Suno — an independent third-party observatory):
-
-- **Live Suno charts** — daily snapshots of Suno's curated Explore shelves, the feed that actually moves.
-- **Your free portfolio** at `https://seismophone.chanmeng.org/@your-handle` — the same public Suno data these cards render, as a shareable page.
-- **Remix-lineage explorer** — trace which songs remixed which, from a research-derived archive.
-- **Data-journalism reports** — short, sourced observatory pieces on how the AI-music ecosystem behaves.
-
-**Point your card at your portfolio instead of suno.com** — wrap any card (here, the profile card) in your Seismophone URL:
-
-```markdown
-[![](https://github-readme-suno-cards.vercel.app/api/profile?handle=YOUR_HANDLE)](https://seismophone.chanmeng.org/@YOUR_HANDLE)
-```
-
-> **Tip:** The **[interactive builder](https://github-readme-suno-cards.vercel.app/builder)** has a *Link Target* option that generates this for you — flip "Link to Seismophone portfolio" and enter your handle. The default stays suno.com.
-
----
-
 ## Status / upstream findings (2026-09)
 
 A full audit on **2026-07-05** found the project healthy: all three deployed render surfaces (`/api/card`, `/api/profile`, `/api/cards`) were verified against live Suno data and render correctly. The parser already sends the now-required `clips_sort_by` / `playlists_sort_by` query params, so it is immune to the recent Suno profile-endpoint schema drift that returns HTTP `422` when they are missing.
 
 Two findings shaped the current API surface:
 
-- **The `/api/trending` route was removed on 2026-07-24 — the object it served is still public.** The route was never a live feed; it was an alias for one abandoned playlist object, and `GET /api/playlist/1190bf92-10dc-4ce5-968a-7a377f37f984` still answers `200` today. That object's **membership has been frozen since September 2024** (it shares zero clips with Suno's curated Explore shelves) while its **per-clip statistics are still live**, so it is a historical exhibit, not a feed. `fetchTrending()` was therefore removed from the parser in v0.2.0 — if you want the object, ask for it by UUID with `fetchPlaylist('1190bf92-10dc-4ce5-968a-7a377f37f984')`, and build nothing time-sensitive on it. Background reading: [The feed Suno forgot](https://seismophone.chanmeng.org/observatory/the-explore-feed-that-froze) and [The day the fossil was deleted](https://seismophone.chanmeng.org/observatory/the-day-the-fossil-was-deleted).
+- **The `/api/trending` route was removed on 2026-07-24 — the object it served is still public.** The route was never a live feed; it was an alias for one abandoned playlist object, and `GET /api/playlist/1190bf92-10dc-4ce5-968a-7a377f37f984` still answers `200` today. That object's **membership has been frozen since September 2024** (it shares zero clips with Suno's curated Explore shelves) while its **per-clip statistics are still live**, so it is a historical exhibit, not a feed. `fetchTrending()` was therefore removed from the parser in v0.2.0 — if you want the object, ask for it by UUID with `fetchPlaylist('1190bf92-10dc-4ce5-968a-7a377f37f984')`, and build nothing time-sensitive on it.
 - **HTTP `422` now maps to its own error type.** Malformed requests raise `SunoInvalidRequestError` (distinct from the `404` `SunoHandleNotFoundError`, which means "no such handle"). The card surfaces render `422` as the generic error style, not "not found".
 
 Two more landed in late August:
