@@ -155,44 +155,23 @@ export function parseCardConfig(params: URLSearchParams): Partial<CardConfig> {
   return result;
 }
 
-/**
- * Where the embed's wrapping link points. Defaults to the song on suno.com;
- * `seismophone` instead links the card to the creator's free Seismophone
- * portfolio (`https://seismophone.chanmeng.org/@handle`, an independent
- * third-party observatory by the same author — not affiliated with Suno).
- */
-export type EmbedLinkTarget = { target: 'suno' } | { target: 'seismophone'; handle: string };
-
 const SUNO_SONG_BASE = 'https://suno.com/song';
-const SEISMOPHONE_PORTFOLIO_BASE = 'https://seismophone.chanmeng.org/@';
 
-/** Resolve the href the embed wraps around the card image. */
-function resolveEmbedHref(config: CardConfig, link: EmbedLinkTarget): string {
-  if (link.target === 'seismophone') {
-    const handle = link.handle.trim().replace(/^@/, '');
-    if (handle) return `${SEISMOPHONE_PORTFOLIO_BASE}${handle}?ref=suno-cards`;
-  }
+/** The song on suno.com, which the embed wraps around the card image. */
+function resolveEmbedHref(config: CardConfig): string {
   return `${SUNO_SONG_BASE}/${extractSongId(config.id)}`;
 }
 
-/** Build markdown embed string. Links to the song on suno.com by default. */
-export function buildMarkdownEmbed(
-  config: CardConfig,
-  origin: string,
-  link: EmbedLinkTarget = { target: 'suno' },
-): string {
+/** Build markdown embed string. Links to the song on suno.com. */
+export function buildMarkdownEmbed(config: CardConfig, origin: string): string {
   const url = buildCardUrl(config, origin);
-  return `[![](${url})](${resolveEmbedHref(config, link)})`;
+  return `[![](${url})](${resolveEmbedHref(config)})`;
 }
 
 /** Build HTML img tag. Links to the song on suno.com by default. */
-export function buildHtmlEmbed(
-  config: CardConfig,
-  origin: string,
-  link: EmbedLinkTarget = { target: 'suno' },
-): string {
+export function buildHtmlEmbed(config: CardConfig, origin: string): string {
   const url = buildCardUrl(config, origin);
-  return `<a href="${resolveEmbedHref(config, link)}"><img src="${url}" alt="Suno music card" /></a>`;
+  return `<a href="${resolveEmbedHref(config)}"><img src="${url}" alt="Suno music card" /></a>`;
 }
 
 function extractSongId(input: string): string {

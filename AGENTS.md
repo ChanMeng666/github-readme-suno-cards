@@ -105,8 +105,9 @@ arrive here by hand — there is no script, and there is no automated sync.
 
 1. **Rewrite the prose; never paste it.** The upstream notes cite internal probe paths and
    round numbers that mean nothing here and must not appear in a public repo.
-2. **Cite the public write-up, not the private source.** The observatory reports at
-   `https://seismophone.chanmeng.org/observatory/` are the public record; link those.
+2. **Cite a public write-up, never the private source.** Link a published post (for example on
+   `https://chanmeng.org/blog`) if one exists; otherwise state the measurement in your own words.
+   Do not link `seismophone.chanmeng.org` — that observatory was shut down on 2026-11-17.
 
 Record what changed in `CHANGELOG.md` with the measurement behind it, not just the conclusion — the
 0.2.1 entry is the model to follow.
